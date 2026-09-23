@@ -1,0 +1,185 @@
+import React from 'react';
+import { View, TextInput, TextInputInstance, TextInputProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants';
+import { COLORS } from '$constants/colors.constants';
+import { useAppTheme } from '$hooks/common';
+import { ITheme } from '$types/common.types';
+import { ThemeText } from '../themed';
+
+interface TextareaInputRef {
+  clear: () => void;
+  blur: () => void;
+  focus: () => void;
+}
+
+interface TextareaInputProps extends Omit<TextInputProps, 'style' | 'editable' | 'multiline'> {
+  label?: string;
+  error?: string;
+  disabled?: boolean;
+  LeftAccessory?: React.ReactNode;
+  RightAccessory?: React.ReactNode;
+}
+
+const TextareaInput = React.forwardRef<TextareaInputRef, TextareaInputProps>(({
+  label,
+  error,
+  disabled = false,
+  LeftAccessory,
+  RightAccessory,
+  autoComplete = 'off',
+  autoCapitalize = 'sentences',
+  spellCheck = true,
+  importantForAutofill = 'auto',
+  selectionColor,
+  accessible = true,
+  accessibilityLabel,
+  accessibilityHint,
+  placeholder,
+  blurOnSubmit = false, // Multiline inputs usually shouldn't blur on submit
+  ...props
+}, ref) => {
+
+  const { colors, theme } = useAppTheme();
+  const styles = styling(theme);
+
+  const inputRef = React.useRef<TextInputInstance>(null);
+
+  const [isFocused, setIsFocused] = React.useState<boolean>(false);
+
+  React.useImperativeHandle(ref, () => ({
+    clear: () => inputRef.current?.clear(),
+    blur: () => inputRef.current?.blur(),
+    focus: () => inputRef.current?.focus(),
+  }), []);
+
+  const handleFocus = React.useCallback((e: any) => {
+    setIsFocused(true);
+    if (props.onFocus) props.onFocus(e);
+  }, [props]);
+
+  const handleBlur = React.useCallback((e: any) => {
+    setIsFocused(false);
+    if (props.onBlur) props.onBlur(e);
+  }, [props]);
+
+  const handleSubmitEditing = React.useCallback((e: any) => {
+    if (!props.onSubmitEditing) {
+      inputRef.current?.blur();
+      return;
+    }
+    props.onSubmitEditing(e);
+  }, [props]);
+
+  const $EXTRA_STYLES = React.useMemo((): StyleProp<ViewStyle> => {
+    const hasLeft = !!LeftAccessory;
+    const hasRight = !!RightAccessory;
+
+    if (!hasLeft && !hasRight) {
+      return { paddingHorizontal: moderateScale(12) }
+    } else if (!hasLeft && hasRight) {
+      return { paddingLeft: moderateScale(12), paddingRight: 0 }
+    } else if (hasLeft && !hasRight) {
+      return { paddingRight: moderateScale(12), paddingLeft: 0 }
+    } else {
+      return { paddingHorizontal: 0 }
+    }
+  }, [LeftAccessory, RightAccessory])
+
+  return (
+    <View style={styles.wrapper}>
+      {label && <ThemeText style={styles.label}>{label}</ThemeText>}
+      <View
+        style={[styles.containerWrapper, { opacity: disabled ? 0.6 : 1 }, isFocused && { borderColor: colors['brand-primary'] }]}
+        accessible={accessible}
+        accessibilityLabel={accessibilityLabel || label}
+        accessibilityHint={accessibilityHint}
+      >
+        <View style={[styles.container, $EXTRA_STYLES]}>
+          {!!LeftAccessory && (<View style={styles.icon}>{LeftAccessory}</View>)}
+          <TextInput
+            {...props}
+            ref={inputRef}
+            numberOfLines={5}
+            multiline={true}
+            style={styles.textInput}
+            placeholder={placeholder || "Type Something here..."}
+            placeholderTextColor={colors['text-muted']}
+            textAlignVertical='top'
+            returnKeyType={props.returnKeyType || 'done'}
+            cursorColor={colors['brand-primary']}
+            selectionColor={selectionColor || colors['brand-primary']}
+            editable={!disabled}
+            keyboardAppearance={theme}
+            autoComplete={autoComplete}
+            autoCapitalize={autoCapitalize}
+            spellCheck={spellCheck}
+            importantForAutofill={importantForAutofill}
+            blurOnSubmit={blurOnSubmit}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onSubmitEditing={handleSubmitEditing}
+          />
+          {!!RightAccessory && (<View style={styles.icon}>{RightAccessory}</View>)}
+        </View>
+      </View>
+      {error && (
+        <View style={styles.errorContainer}>
+          <ThemeText numberOfLines={3} style={styles.errorText} accessibilityRole="alert">{error}</ThemeText>
+        </View>
+      )}
+    </View>
+  );
+});
+
+export default React.memo(TextareaInput);
+
+const styling = (theme: ITheme) => StyleSheet.create({
+  wrapper: {
+    width: '100%',
+  },
+  label: {
+    color: COLORS[theme]['text-primary'],
+    fontFamily: EFonts.REGULAR,
+    textAlign: 'left',
+    textTransform: 'capitalize',
+    marginBottom: moderateScale(4)
+  },
+  containerWrapper: {
+    borderWidth: moderateScale(1),
+    borderRadius: moderateScale(8),
+    borderColor: COLORS[theme].border,
+    overflow: 'hidden',
+  },
+  container: {
+    flexDirection: 'row',
+    height: moderateScale(150),
+  },
+  textInput: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    padding: 0,
+    textAlignVertical: 'top',
+    fontFamily: EFonts.REGULAR,
+    fontSize: EFontSize.XL,
+    color: COLORS[theme]['text-primary'],
+    paddingVertical: moderateScale(10),
+  },
+  errorContainer: {
+    marginTop: moderateScale(8),
+  },
+  errorText: {
+    fontFamily: EFonts.REGULAR,
+    fontSize: EFontSize.SM,
+    color: COLORS[theme]['state-danger'],
+    flexWrap: 'wrap',
+    letterSpacing: 0.2
+  },
+  icon: {
+    height: moderateScale(50),
+    paddingHorizontal: moderateScale(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-start',
+  }
+});
