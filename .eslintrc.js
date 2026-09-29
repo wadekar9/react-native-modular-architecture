@@ -1,3 +1,18 @@
+const fs = require('fs');
+const path = require('path');
+
+const verticalRoot = path.join(__dirname, 'src/modules/verticals');
+const verticalNames = fs.readdirSync(verticalRoot, { withFileTypes: true })
+  .filter(entry => entry.isDirectory())
+  .map(entry => entry.name);
+const verticalDependencyZones = verticalNames.map(verticalName => ({
+  target: verticalNames
+    .filter(otherVertical => otherVertical !== verticalName)
+    .map(otherVertical => `./src/modules/verticals/${otherVertical}`),
+  from: `./src/modules/verticals/${verticalName}`,
+  message: 'Verticals cannot depend on another vertical.',
+}));
+
 module.exports = {
   root: true,
   extends: '@react-native',
@@ -10,8 +25,8 @@ module.exports = {
     },
   },
   rules: {
-    'import/no-cycle': 'warn',
-    'import/no-restricted-paths': ['warn', {
+    'import/no-cycle': 'error',
+    'import/no-restricted-paths': ['error', {
       basePath: __dirname,
       zones: [
         {
@@ -30,9 +45,14 @@ module.exports = {
           message: 'Modules cannot depend on app.',
         },
         {
-          target: ['./src/core', './src/shared', './src/modules/platform', './src/modules/verticals'],
+          target: ['./src/core', './src/shared', './src/modules'],
           from: './src/modules/registry.ts',
           message: 'Only app code may import the module registry.',
+        },
+        {
+          target: './src/modules/platform',
+          from: './src/modules/verticals',
+          message: 'Platform modules cannot depend on verticals.',
         },
         {
           target: './src/modules/verticals',
@@ -40,26 +60,7 @@ module.exports = {
           except: ['index.ts'],
           message: 'Verticals may import platform modules only through the platform index.',
         },
-        {
-          target: ['./src/modules/verticals/instamart', './src/modules/verticals/dineout', './src/modules/verticals/events'],
-          from: './src/modules/verticals/food',
-          message: 'Verticals cannot depend on another vertical.',
-        },
-        {
-          target: ['./src/modules/verticals/food', './src/modules/verticals/dineout', './src/modules/verticals/events'],
-          from: './src/modules/verticals/instamart',
-          message: 'Verticals cannot depend on another vertical.',
-        },
-        {
-          target: ['./src/modules/verticals/food', './src/modules/verticals/instamart', './src/modules/verticals/events'],
-          from: './src/modules/verticals/dineout',
-          message: 'Verticals cannot depend on another vertical.',
-        },
-        {
-          target: ['./src/modules/verticals/food', './src/modules/verticals/instamart', './src/modules/verticals/dineout'],
-          from: './src/modules/verticals/events',
-          message: 'Verticals cannot depend on another vertical.',
-        },
+        ...verticalDependencyZones,
       ],
     }],
   },
