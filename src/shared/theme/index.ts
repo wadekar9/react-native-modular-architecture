@@ -1,1 +1,1 @@
-export { default as AppThemeProvider } from './app-theme.context';
+export { AppThemeContext } from './app-theme.context';

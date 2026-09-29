@@ -1,0 +1,1 @@
+export const INSTAMART_VERTICAL_ID = 'instamart' as const;

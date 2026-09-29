@@ -1,0 +1,1 @@
+export const FOOD_VERTICAL_ID = 'food' as const;

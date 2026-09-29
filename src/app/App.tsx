@@ -4,7 +4,7 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import FlashMessage from 'react-native-flash-message';
 import { Provider as StoreProvider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AppThemeProvider from '$context/app-theme.context';
+import AppThemeProvider from '@app/providers/app-theme.provider';
 import AppStackNavigator from '$navigation/app-stack-navigator.navigation';
 import store from '$store/redux.store';
 import { container } from '$styles/flexbox';

@@ -1,6 +1,6 @@
-import * as AuthRoutes from '$modules/auth';
+import * as AuthRoutes from '@modules/platform/auth';
 import * as HomeRoutes from '$modules/home';
-import * as NotificationRoutes from '$modules/notifications';
+import * as NotificationRoutes from '@modules/platform/notifications';
 
 export const PublicRoutes = {
 	Login: AuthRoutes.Login,

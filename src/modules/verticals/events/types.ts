@@ -1,0 +1,1 @@
+export const EVENTS_VERTICAL_ID = 'events' as const;
