@@ -8,6 +8,10 @@ module.exports = {
         extensions: ['.ios.js', '.android.js', '.ios.jsx', '.android.jsx', '.js', '.jsx', '.json', '.ts', '.tsx'],
         root: ['.'],
         alias: {
+          "@app": "./src/app",
+          "@core": "./src/core",
+          "@modules": "./src/modules",
+          "@shared": "./src/shared",
           "$app": "./src/app",
           "$assets": "./src/shared/assets",
           "$components": "./src/shared/components",
@@ -30,7 +34,7 @@ module.exports = {
           "$utils": "./src/core/utils",
           "$utils/permissions": "./src/core/platform/permissions",
           "$utils/storage": "./src/core/storage/storage",
-          "$validators": "./src/modules/auth/validators",
+          "$validators": "./src/modules/auth/schemas/validators",
         }
       }
     ]

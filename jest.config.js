@@ -4,6 +4,10 @@ module.exports = {
     './node_modules/react-native-gesture-handler/jestSetup.js',
   ],
   moduleNameMapper: {
+    '^@app/(.*)$': '<rootDir>/src/app/$1',
+    '^@core/(.*)$': '<rootDir>/src/core/$1',
+    '^@modules/(.*)$': '<rootDir>/src/modules/$1',
+    '^@shared/(.*)$': '<rootDir>/src/shared/$1',
     '^react-native-flash-message$': '<rootDir>/__mocks__/react-native-flash-message.js',
     '^react-native-gesture-handler$': '<rootDir>/__mocks__/react-native-gesture-handler.js',
     '^react-native-keyboard-controller$': '<rootDir>/__mocks__/react-native-keyboard-controller.js',

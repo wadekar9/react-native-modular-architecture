@@ -17,6 +17,18 @@
       "ES2017"
     ],
     "paths": {
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@core/*": [
+        "src/core/*"
+      ],
+      "@modules/*": [
+        "src/modules/*"
+      ],
+      "@shared/*": [
+        "src/shared/*"
+      ],
       "$app/*": [
         "src/app/*"
       ],
@@ -84,7 +96,7 @@
         "src/core/storage/storage"
       ],
       "$validators/*": [
-        "src/modules/auth/validators/*"
+        "src/modules/auth/schemas/validators/*"
       ],
     }
   }
