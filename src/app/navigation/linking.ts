@@ -1,23 +1,24 @@
-import { AppStackParamsList } from '$navigation/navigation.types';
-import { LinkingOptions } from '@react-navigation/native';
-import { EStackScreens, EBottomScreens } from '$constants/screen.constants';
+import type { LinkingOptions } from '@react-navigation/native';
+import type { RootStackParamList } from './navigation.types';
 
 /**
  * Deep linking configuration for the application.
  */
-export const linking: LinkingOptions<AppStackParamsList> = {
+export const linking: LinkingOptions<RootStackParamList> = {
     prefixes: ['awesome://app'], // Replace with actual scheme
     config: {
         screens: {
-            [EStackScreens.SPLASH]: 'splash',
-            [EStackScreens.LOGIN]: 'login',
-            [EStackScreens.NOTIFICATIONS]: 'notifications',
-            [EStackScreens.BOTTOM_TAB_NAVIGATOR]: {
+            Login: 'login',
+            Main: {
                 screens: {
-                    [EBottomScreens.HOME]: 'home',
-                    [EBottomScreens.SETTINGS]: 'settings',
+                    food: 'food',
+                    instamart: 'instamart',
+                    dineout: 'dineout',
+                    events: 'events',
                 },
             },
+            Profile: 'profile',
+            Payment: 'payment',
         },
     },
 };

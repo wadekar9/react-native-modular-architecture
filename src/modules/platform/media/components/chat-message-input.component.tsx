@@ -7,7 +7,6 @@ import { waitForSeconds } from '$helpers/utils.helper';
 import { IMediaFile } from '$dto/common';
 import { ITheme } from '$types/common.types';
 import { useAppTheme } from '$hooks/common';
-import { useDocumentPicker } from '$core/platform/document-picker.hook';
 import { IconButton } from '@shared/components/ui/buttons';
 import { Paperclip, SendHorizontal, Smile } from 'lucide-react-native';
 import { MediaUploadOptionsSheet } from '../';
@@ -24,13 +23,13 @@ interface ChatMessageInputRef {
   clear: () => void;
 };
 
-const DEFAULT_HEIGHT = Platform.OS == 'ios' ? 40 : 50;
+const DEFAULT_HEIGHT = Platform.OS === 'ios' ? 40 : 50;
 const MAX_HEIGHT = 135;
 const MAX_CONTENT = 500;
 
 const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputProps>(({
   onSend,
-  onSendMedia,
+  onSendMedia: _onSendMedia,
   containerAccessible = true,
   containerAccessibilityLabel = "Message input area",
   containerAccessibilityHint = "Type a message or attach media",
@@ -48,8 +47,6 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
   const [text, setText] = React.useState<string>('');
   const [height, setHeight] = React.useState<number>(DEFAULT_HEIGHT);
   const insets = useSafeAreaInsets();
-  const { openPicker } = useDocumentPicker((e) => onSendMedia && onSendMedia(e));
-
   const inputRef = React.useRef<TextInputInstance>(null);
   const mediaOptionSheet = React.useRef<any>(null);
 
@@ -69,7 +66,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
   const handleContentSizeChange = React.useCallback((event: any) => {
     const newHeight = event.nativeEvent.contentSize.height;
     setHeight(Math.min(Math.max(DEFAULT_HEIGHT, newHeight), MAX_HEIGHT));
-  }, [MAX_HEIGHT, DEFAULT_HEIGHT]);
+  }, []);
 
   const handleSend = React.useCallback(() => {
     if (text.trim().length > 0) {
@@ -77,7 +74,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
       setText('');
       setHeight(DEFAULT_HEIGHT);
     }
-  }, [text, onSend, DEFAULT_HEIGHT]);
+  }, [text, onSend]);
 
   const iosPlatformStyles = React.useMemo(() => {
     return Platform.OS === 'ios' ? {

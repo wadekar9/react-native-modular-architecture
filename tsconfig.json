@@ -96,7 +96,7 @@
         "src/core/storage/storage"
       ],
       "$validators/*": [
-        "src/modules/auth/schemas/validators/*"
+        "src/modules/platform/auth/schemas/validators/*"
       ],
     }
   }

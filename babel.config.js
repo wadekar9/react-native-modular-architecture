@@ -34,7 +34,7 @@ module.exports = {
           "$utils": "./src/core/utils",
           "$utils/permissions": "./src/core/platform/permissions",
           "$utils/storage": "./src/core/storage/storage",
-          "$validators": "./src/modules/auth/schemas/validators",
+          "$validators": "./src/modules/platform/auth/schemas/validators",
         }
       }
     ]

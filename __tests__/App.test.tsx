@@ -5,7 +5,7 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
-jest.mock('../src/app/navigation/app-stack-navigator.navigation', () => ({
+jest.mock('../src/app/navigation/root-navigator.navigation', () => ({
   __esModule: true,
   default: () => null,
 }));
