@@ -2,8 +2,7 @@ import { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
 import { EStackScreens } from "$constants/screen.constants";
-import { Storage } from '$core/storage/storage';
-import { EStorageKeys } from '$constants/storage.constants';
+import { getAccessToken } from '@core/auth/session';
 
 /**
  * Custom hook to manage the initial authentication flow.
@@ -39,7 +38,7 @@ export const useAuthenticationFlow = () => {
      */
     const handleAuthentication = useCallback(async () => {
         try {
-            const token = Storage.getString(EStorageKeys.ACCESS_TOKEN);
+            const token = getAccessToken();
 
             if (!token) {
                 navigateToLogin();

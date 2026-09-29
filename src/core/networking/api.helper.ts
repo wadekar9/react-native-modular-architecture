@@ -1,10 +1,9 @@
 import { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Storage } from '$core/storage/storage';
-import { EStorageKeys } from '$constants/storage.constants';
+import { getAccessToken } from '@core/auth/session';
 
 const onRequest = async (config: InternalAxiosRequestConfig) => {
 
-    const token = Storage.getString(EStorageKeys.ACCESS_TOKEN);
+    const token = getAccessToken();
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
