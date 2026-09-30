@@ -1,5 +1,5 @@
 import { DefaultTheme, DarkTheme, Theme } from '@react-navigation/native';
-import { useAppTheme } from '@shared/hooks';
+import { useAppTheme } from '@shared/hooks/app-theme.hook';
 import { useMemo } from 'react';
 
 /**

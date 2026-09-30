@@ -10,7 +10,6 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
  * @param exitMessage Optional message to show when back is pressed once on root screen.
  */
 export const useAppBackHandler = (exitMessage: string = 'Press back again to exit') => {
-
     const navigation = useNavigation();
     const backPressedOnce = useRef(false);
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -19,13 +18,11 @@ export const useAppBackHandler = (exitMessage: string = 'Press back again to exi
         if (Platform.OS === 'android') {
             ToastAndroid.show(message, ToastAndroid.SHORT);
         } else {
-            // Toast fallback for non-android if needed, though hardware back is Android specific
             Alert.alert('', message, [{ text: 'OK' }]);
         }
     }, []);
 
     const handleBackPress = useCallback(() => {
-        // If navigation can go back, let the default behavior happen (e.g., pop screen)
         if (navigation.canGoBack()) {
             return false;
         }
@@ -66,5 +63,4 @@ export const useAppBackHandler = (exitMessage: string = 'Press back again to exi
             };
         }, [handleBackPress])
     );
-
 };

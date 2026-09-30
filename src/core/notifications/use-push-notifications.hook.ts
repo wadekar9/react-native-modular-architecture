@@ -1,34 +1,33 @@
 import { useEffect } from 'react';
 import { showMessage } from 'react-native-flash-message';
-import { rootNavigationRef } from '@app/navigation/navigation';
-import { queryClient } from '@app/providers/query.provider';
+import { queryClient } from '@core/networking/query-client';
+import { navigate, navigationRef } from '@core/navigation';
 import {
   getInitialPushMessage,
   subscribeToPushMessages,
   type PushMessage,
-} from '@core/notifications/push.service';
+} from './push.service';
 
 export const usePushNotifications = (): void => {
   useEffect(() => {
     const handlePushRoute = (route?: string) => {
-      if (!rootNavigationRef.isReady()) {
+      if (!navigationRef.isReady()) {
         return;
       }
 
-      if (route && (rootNavigationRef as any).isReady()) {
+      if (route) {
         try {
-          (rootNavigationRef as any).navigate(route);
+          navigate(route);
           return;
         } catch {}
       }
 
       try {
-        (rootNavigationRef as any).navigate('Notifications');
+        navigate('Notifications');
       } catch {}
     };
 
     const handleForeground = (message: PushMessage) => {
-      // Invalidate notifications query to refresh UI
       queryClient.invalidateQueries({ queryKey: ['platform', 'notifications'] });
 
       showMessage({
@@ -45,10 +44,8 @@ export const usePushNotifications = (): void => {
       handlePushRoute(message.route);
     };
 
-    // Check if app was launched via push notification from quit state
     getInitialPushMessage().then(initialMessage => {
       if (initialMessage) {
-        // Wait briefly for navigator to become ready
         setTimeout(() => handlePushRoute(initialMessage.route), 600);
       }
     });

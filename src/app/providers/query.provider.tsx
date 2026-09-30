@@ -1,32 +1,10 @@
-import React, { PropsWithChildren, useEffect } from 'react';
-import { AppState } from 'react-native';
-import NetInfo from '@react-native-community/netinfo';
-import { focusManager, onlineManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from '@core/networking/query-client';
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      staleTime: 30_000,
-    },
-  },
-});
+export { queryClient };
 
-const QueryProvider = ({ children }: PropsWithChildren) => {
-  useEffect(() => {
-    const appStateSubscription = AppState.addEventListener('change', state => {
-      focusManager.setFocused(state === 'active');
-    });
-    const unsubscribeNetInfo = NetInfo.addEventListener(state => {
-      onlineManager.setOnline(Boolean(state.isConnected));
-    });
-
-    return () => {
-      appStateSubscription.remove();
-      unsubscribeNetInfo();
-    };
-  }, []);
-
+const QueryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 

@@ -8,8 +8,9 @@ import { logout } from '@app/auth/logout';
 import type { RootStackParamList } from './navigation.types';
 import { linking } from './linking';
 import MainNavigator from './main-navigator.navigation';
-import { useNavigationTheme, usePushNotifications } from './hooks';
-import { rootNavigationRef } from './navigation';
+import { useNavigationTheme } from '@shared/hooks';
+import { usePushNotifications } from '@core/notifications';
+import { navigationRef } from '@core/navigation';
 import { StackScreens } from '@shared/constants/screens.constants';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -25,7 +26,7 @@ const RootNavigator = () => {
     useEffect(() => {
         const hideSplash = async () => {
             try {
-                if (await BootSplash.isVisible()) {
+                if (BootSplash.isVisible()) {
                     await BootSplash.hide({ fade: true });
                 }
             } catch {}
@@ -35,7 +36,7 @@ const RootNavigator = () => {
     }, []);
 
     return (
-        <NavigationContainer ref={rootNavigationRef} theme={navigationTheme} linking={linking}>
+        <NavigationContainer ref={navigationRef} theme={navigationTheme} linking={linking}>
             <RootStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
                 {isSignedIn ? (
                     <>

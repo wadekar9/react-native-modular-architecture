@@ -9,13 +9,6 @@ export type RootStackParamList = {
     [StackScreens.PAYMENT]: undefined;
     [StackScreens.LOGIN]: undefined;
     [StackScreens.MAIN]: undefined;
-    Profile: undefined;
-    AccountDetails: undefined;
-    Notifications: undefined;
-    Settings: undefined;
-    Payment: undefined;
-    Login: undefined;
-    Main: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

@@ -2,7 +2,7 @@ import { clearSession, setSignedIn, setUser } from '@core/auth';
 import { clearCart } from '@core/store/slices/cart.slice';
 import store from '@core/store/redux.store';
 import { runLogoutHooks } from '@modules/registry';
-import { queryClient } from '@app/providers/query.provider';
+import { queryClient } from '@core/networking/query-client';
 
 export const logout = (): void => {
   clearSession();
