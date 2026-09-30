@@ -8,8 +8,9 @@ import { logout } from '@app/auth/logout';
 import type { RootStackParamList } from './navigation.types';
 import { linking } from './linking';
 import MainNavigator from './main-navigator.navigation';
-import { useNavigationTheme } from './hooks/navigation-theme.hook';
+import { useNavigationTheme, usePushNotifications } from './hooks';
 import { rootNavigationRef } from './navigation';
+import { StackScreens } from '@shared/constants/screens.constants';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
@@ -18,6 +19,8 @@ const ProfileRoute = () => <Profile onLogout={logout} />;
 const RootNavigator = () => {
     const navigationTheme = useNavigationTheme();
     const isSignedIn = useAppSelector(state => state.session.isSignedIn);
+
+    usePushNotifications();
 
     useEffect(() => {
         const hideSplash = async () => {
@@ -36,15 +39,15 @@ const RootNavigator = () => {
             <RootStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
                 {isSignedIn ? (
                     <>
-                        <RootStack.Screen name="Main" component={MainNavigator} />
-                        <RootStack.Screen name="Profile" component={ProfileRoute} />
-                        <RootStack.Screen name="AccountDetails" component={AccountDetails} />
-                        <RootStack.Screen name="Notifications" component={Notifications} />
-                        <RootStack.Screen name="Settings" component={Settings} />
-                        <RootStack.Screen name="Payment" component={Payment} />
+                        <RootStack.Screen name={StackScreens.MAIN} component={MainNavigator} />
+                        <RootStack.Screen name={StackScreens.PROFILE} component={ProfileRoute} />
+                        <RootStack.Screen name={StackScreens.ACCOUNT_DETAILS} component={AccountDetails} />
+                        <RootStack.Screen name={StackScreens.NOTIFICATIONS} component={Notifications} />
+                        <RootStack.Screen name={StackScreens.SETTINGS} component={Settings} />
+                        <RootStack.Screen name={StackScreens.PAYMENT} component={Payment} />
                     </>
                 ) : (
-                    <RootStack.Screen name="Login" component={Login} />
+                    <RootStack.Screen name={StackScreens.LOGIN} component={Login} />
                 )}
             </RootStack.Navigator>
         </NavigationContainer>

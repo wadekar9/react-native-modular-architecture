@@ -1,5 +1,13 @@
 import { PermissionsAndroid, Platform } from 'react-native';
-import { getMessaging, getToken, onMessage, onNotificationOpenedApp, requestPermission } from '@react-native-firebase/messaging';
+import {
+  getInitialNotification,
+  getMessaging,
+  getToken,
+  onMessage,
+  onNotificationOpenedApp,
+  requestPermission,
+  setBackgroundMessageHandler,
+} from '@react-native-firebase/messaging';
 import { doc, setDoc } from '@react-native-firebase/firestore';
 import { ensureFirebaseIdentity, getFirebaseDatabase, isFirebaseConfigured } from '@core/firebase/firebase';
 
@@ -16,8 +24,12 @@ const requestPushPermission = async (): Promise<boolean> => {
     return result === PermissionsAndroid.RESULTS.GRANTED;
   }
 
-  const status = await requestPermission(getMessaging());
-  return status === 1 || status === 2;
+  try {
+    const status = await requestPermission(getMessaging());
+    return status === 1 || status === 2;
+  } catch {
+    return false;
+  }
 };
 
 export const registerPushDevice = async (): Promise<string | null> => {
@@ -41,6 +53,47 @@ export const registerPushDevice = async (): Promise<string | null> => {
   return token;
 };
 
+export const getInitialPushMessage = async (): Promise<PushMessage | null> => {
+  if (!isFirebaseConfigured()) {
+    return null;
+  }
+
+  try {
+    const messaging = getMessaging();
+    const message = await getInitialNotification(messaging);
+    if (!message) {
+      return null;
+    }
+
+    return {
+      title: message.notification?.title,
+      body: message.notification?.body,
+      notificationId: typeof message.data?.notificationId === 'string' ? message.data.notificationId : undefined,
+      route: typeof message.data?.route === 'string' ? message.data.route : undefined,
+    };
+  } catch {
+    return null;
+  }
+};
+
+export const registerBackgroundMessageHandler = (): void => {
+  if (!isFirebaseConfigured()) {
+    return;
+  }
+
+  try {
+    const messaging = getMessaging();
+    setBackgroundMessageHandler(messaging, async remoteMessage => {
+      if (__DEV__) {
+        // Log background message in development mode
+        console.log('[FCM Background Message]', remoteMessage.messageId);
+      }
+    });
+  } catch {
+    // Gracefully ignore if native background worker cannot register
+  }
+};
+
 export const subscribeToPushMessages = (
   onForegroundMessage: (message: PushMessage) => void,
   onOpenedMessage: (message: PushMessage) => void,
@@ -49,22 +102,26 @@ export const subscribeToPushMessages = (
     return () => undefined;
   }
 
-  const messaging = getMessaging();
-  const mapMessage = (message: {
-    data?: Record<string, string | object>;
-    notification?: { title?: string; body?: string };
-  }): PushMessage => ({
-    title: message.notification?.title,
-    body: message.notification?.body,
-    notificationId: typeof message.data?.notificationId === 'string' ? message.data.notificationId : undefined,
-    route: typeof message.data?.route === 'string' ? message.data.route : undefined,
-  });
+  try {
+    const messaging = getMessaging();
+    const mapMessage = (message: {
+      data?: Record<string, string | object>;
+      notification?: { title?: string; body?: string };
+    }): PushMessage => ({
+      title: message.notification?.title,
+      body: message.notification?.body,
+      notificationId: typeof message.data?.notificationId === 'string' ? message.data.notificationId : undefined,
+      route: typeof message.data?.route === 'string' ? message.data.route : undefined,
+    });
 
-  const unsubscribeForeground = onMessage(messaging, message => onForegroundMessage(mapMessage(message)));
-  const unsubscribeOpened = onNotificationOpenedApp(messaging, message => onOpenedMessage(mapMessage(message)));
+    const unsubscribeForeground = onMessage(messaging, message => onForegroundMessage(mapMessage(message)));
+    const unsubscribeOpened = onNotificationOpenedApp(messaging, message => onOpenedMessage(mapMessage(message)));
 
-  return () => {
-    unsubscribeForeground();
-    unsubscribeOpened();
-  };
+    return () => {
+      unsubscribeForeground();
+      unsubscribeOpened();
+    };
+  } catch {
+    return () => undefined;
+  }
 };

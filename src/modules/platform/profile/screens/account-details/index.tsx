@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
+import { useProfileDetails, useSaveProfileDetails } from '../../profile.queries';
+
 type AccountDetailsNavigationProp = {
   goBack: () => void;
 };
-import { useProfileDetails, useSaveProfileDetails } from '../../profile.queries';
 
 const AccountDetails = () => {
   const navigation = useNavigation<AccountDetailsNavigationProp>();
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => styling(colors), [colors]);
   const user = useAppSelector(state => state.user.user);
   const profileQuery = useProfileDetails();
   const saveProfile = useSaveProfileDetails();
@@ -28,14 +31,25 @@ const AccountDetails = () => {
   }, [profileQuery.data, user]);
 
   const handleSave = async () => {
-    await saveProfile.mutateAsync({
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      avatar: profileQuery.data?.avatar ?? user?.avatar,
-    });
-    navigation.goBack();
+    try {
+      await saveProfile.mutateAsync({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        avatar: profileQuery.data?.avatar ?? user?.avatar,
+      });
+
+      showMessage({
+        message: 'Profile Updated',
+        description: 'Your account details have been saved successfully.',
+        type: 'success',
+      });
+
+      navigation.goBack();
+    } catch {
+      // Handled via saveProfile.error
+    }
   };
 
   const inputStyle = [styles.input, { borderColor: colors.border, color: colors['text-primary'] }];
@@ -53,19 +67,50 @@ const AccountDetails = () => {
 
         <View style={styles.field}>
           <ThemeText variant="body5">First name</ThemeText>
-          <TextInput accessibilityLabel="First name" value={firstName} onChangeText={setFirstName} style={inputStyle} />
+          <TextInput
+            accessibilityLabel="First name"
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder="Enter first name"
+            placeholderTextColor={colors['text-muted']}
+            style={inputStyle}
+          />
         </View>
         <View style={styles.field}>
           <ThemeText variant="body5">Last name</ThemeText>
-          <TextInput accessibilityLabel="Last name" value={lastName} onChangeText={setLastName} style={inputStyle} />
+          <TextInput
+            accessibilityLabel="Last name"
+            value={lastName}
+            onChangeText={setLastName}
+            placeholder="Enter last name"
+            placeholderTextColor={colors['text-muted']}
+            style={inputStyle}
+          />
         </View>
         <View style={styles.field}>
           <ThemeText variant="body5">Email</ThemeText>
-          <TextInput accessibilityLabel="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" style={inputStyle} />
+          <TextInput
+            accessibilityLabel="Email"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Enter email address"
+            placeholderTextColor={colors['text-muted']}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={inputStyle}
+          />
         </View>
         <View style={styles.field}>
           <ThemeText variant="body5">Phone</ThemeText>
-          <TextInput accessibilityLabel="Phone" value={phone} onChangeText={setPhone} keyboardType="phone-pad" style={inputStyle} />
+          <TextInput
+            accessibilityLabel="Phone"
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="Enter phone number"
+            placeholderTextColor={colors['text-muted']}
+            keyboardType="phone-pad"
+            style={inputStyle}
+          />
         </View>
 
         {profileQuery.error || saveProfile.error ? (
@@ -74,7 +119,12 @@ const AccountDetails = () => {
           </ThemeText>
         ) : null}
 
-        <Pressable accessibilityRole="button" onPress={handleSave} disabled={saveProfile.isPending} style={[styles.save, { backgroundColor: colors['brand-primary'] }]}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={handleSave}
+          disabled={saveProfile.isPending}
+          style={[styles.save, { backgroundColor: colors['brand-primary'] }]}
+        >
           <ThemeText variant="body5" style={{ color: colors.surface }}>
             {saveProfile.isPending ? 'Saving…' : 'Save details'}
           </ThemeText>
@@ -84,13 +134,14 @@ const AccountDetails = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  screen: { flex: 1 },
-  content: { padding: 20, gap: 16 },
-  back: { alignSelf: 'flex-start', paddingVertical: 8 },
-  field: { gap: 7 },
-  input: { minHeight: 48, borderWidth: 1, borderRadius: 8, paddingHorizontal: 12 },
-  save: { minHeight: 48, borderRadius: 8, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
-});
+const styling = (_colors: ReturnType<typeof useAppTheme>['colors']) =>
+  StyleSheet.create({
+    screen: { flex: 1 },
+    content: { padding: 20, gap: 16 },
+    back: { alignSelf: 'flex-start', paddingVertical: 8 },
+    field: { gap: 7 },
+    input: { minHeight: 48, borderWidth: 1, borderRadius: 8, paddingHorizontal: 12 },
+    save: { minHeight: 48, borderRadius: 8, alignItems: 'center', justifyContent: 'center', marginTop: 8 },
+  });
 
 export default AccountDetails;
