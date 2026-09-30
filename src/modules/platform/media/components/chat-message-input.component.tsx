@@ -3,12 +3,13 @@ import { Keyboard, Platform, StyleSheet, TextInput, View, TextInputProps } from 
 import { IconButton } from '@shared/components/ui/buttons';
 import { Paperclip, SendHorizontal, Smile } from 'lucide-react-native';
 import { MediaUploadOptionsSheet } from '../';
-import { IMediaFile, ITheme } from '@shared/types/dto';
+import type { ITheme } from '@shared/types/theme.types';
+import type { IMediaFile } from '@core/platform/media/types';
 import { useAppTheme } from '@shared/hooks';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
-import { EFonts, EFontSize } from '@shared/constants/styles.constants';
+import { EFonts } from '@shared/constants/styles.constants';
 
 
 interface ChatMessageInputProps extends Omit<TextInputProps, 'style' | 'multiline' | 'value' | 'onChangeText'> {
@@ -50,7 +51,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
   const inputRef = React.useRef<TextInput>(null);
   const mediaOptionSheet = React.useRef<any>(null);
 
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   React.useImperativeHandle(ref, () => ({
     blur: () => inputRef.current?.blur(),
@@ -145,7 +146,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
         </View>
         <View style={styles.linear}>
           <IconButton
-            style={[styles.sendButton, { opacity: text.trim().length === 0 ? 0.5 : 1 }]}
+            style={[styles.sendButton, text.trim().length === 0 && styles.sendButtonDisabled]}
             onPress={handleSend}
             accessibilityLabel="Send message"
             accessibilityRole="button"
@@ -191,6 +192,9 @@ const styling = (theme: ITheme) => StyleSheet.create({
     justifyContent: 'center',
     width: '100%',
     height: '100%'
+  },
+  sendButtonDisabled: {
+    opacity: 0.5,
   },
   content: {
     flex: 1,

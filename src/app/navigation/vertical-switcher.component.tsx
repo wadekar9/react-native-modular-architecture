@@ -1,7 +1,6 @@
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import type { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
-import { openVertical } from '@core/navigation/types';
 import { useAppTheme } from '@shared/hooks';
 
 const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarProps) => {
@@ -19,7 +18,7 @@ const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarP
             key={route.key}
             accessibilityRole="tab"
             accessibilityState={{ selected: focused }}
-            onPress={() => openVertical(name => navigation.navigate(name), route.name)}
+            onPress={() => navigation.navigate(route.name)}
             style={[styles.tab, focused && styles.selectedTab]}
           >
             <Text style={[styles.label, focused && styles.selectedLabel]}>{title}</Text>

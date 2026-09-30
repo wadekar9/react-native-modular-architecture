@@ -1,4 +1,4 @@
-import type { ModuleManifest } from '@core/modules/types';
+import type { ModuleManifest } from '@modules/module.types';
 import { INSTAMART_VERTICAL_ID } from './types';
 
 const instamartManifest: ModuleManifest = {

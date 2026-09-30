@@ -1,5 +1,3 @@
-import { BaseApiResponse } from './base-api.dto';
-
 interface IPWhoisDto {
     readonly About_Us: string;
     readonly ip: string;
@@ -46,4 +44,4 @@ interface Timezone {
     readonly current_time: Date;
 }
 
-export interface IPWhoisApiResponse extends BaseApiResponse<IPWhoisDto> { }
+export type IPWhoisApiResponse = IPWhoisDto;

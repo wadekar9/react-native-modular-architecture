@@ -1,4 +1,4 @@
-import type { ModuleManifest } from '@core/modules/types';
+import type { ModuleManifest } from '@modules/module.types';
 import { DINEOUT_VERTICAL_ID } from './types';
 
 const dineoutManifest: ModuleManifest = {

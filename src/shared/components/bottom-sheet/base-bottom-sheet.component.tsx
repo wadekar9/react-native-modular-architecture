@@ -2,7 +2,8 @@ import { Keyboard, Platform, StyleSheet, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle } from 'react'
 import ActionSheet, { ActionSheetProps, ActionSheetRef } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetRef, ITheme } from '@shared/types/common.types';
+import { BottomSheetRef } from '@shared/types/common.types';
+import type { ITheme } from '@shared/types/theme.types';
 import { useAppTheme } from '@shared/hooks';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
@@ -20,7 +21,15 @@ const BaseBottomSheet = forwardRef<BaseBottomSheetRef, BaseBottomSheetProps>((pr
     const { colors, theme } = useAppTheme();
     const sheetRef = React.useRef<ActionSheetRef>(null);
     const safeAreaInsets = useSafeAreaInsets();
-    const styles = styling(theme);
+    const styles = React.useMemo(() => styling(theme), [theme]);
+
+    const containerStyle = React.useMemo(() => [
+        styles.sheetContainer,
+        {
+            backgroundColor: colors.background,
+            paddingBottom: (safeAreaInsets.bottom || safeAreaInsets.top) + moderateScale(24),
+        }
+    ], [colors.background, safeAreaInsets.bottom, safeAreaInsets.top, styles.sheetContainer]);
 
     const openSheet = () => {
         sheetRef.current?.show();
@@ -41,13 +50,7 @@ const BaseBottomSheet = forwardRef<BaseBottomSheetRef, BaseBottomSheetProps>((pr
             <ActionSheet
                 closeOnTouchBackdrop
                 closeOnPressBack
-                containerStyle={{
-                    backgroundColor: colors.background,
-                    borderTopLeftRadius: moderateScale(30),
-                    borderTopRightRadius: moderateScale(30),
-                    overflow: 'hidden',
-                    paddingBottom: (safeAreaInsets.bottom || safeAreaInsets.top) + moderateScale(24)
-                }}
+                containerStyle={containerStyle}
                 animated={true}
                 gestureEnabled={false}
                 ref={sheetRef}
@@ -70,6 +73,11 @@ const BaseBottomSheet = forwardRef<BaseBottomSheetRef, BaseBottomSheetProps>((pr
 export default React.memo(BaseBottomSheet);
 
 const styling = (theme: ITheme) => StyleSheet.create({
+    sheetContainer: {
+        borderTopLeftRadius: moderateScale(30),
+        borderTopRightRadius: moderateScale(30),
+        overflow: 'hidden',
+    },
     wrapper: {
         backgroundColor: COLORS[theme].surface,
         gap: moderateScale(5)

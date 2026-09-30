@@ -14,23 +14,12 @@ import { useSignIn } from '../../hooks/use-sign-in.hook';
 
 const Login: React.FC = () => {
   const { colors } = useAppTheme();
-  const signIn = useSignIn();
+  const { signIn, isLoading, error } = useSignIn();
   const [username, setUsername] = useState('emilys');
   const [password, setPassword] = useState('emilyspass');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      setLoading(true);
-      setError('');
-
-      await signIn(username, password);
-    } catch (exc: unknown) {
-      setError(exc instanceof Error ? exc.message : 'Unable to sign in. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+  const handleLogin = () => {
+    return signIn(username, password);
   };
 
   return (
@@ -68,16 +57,16 @@ const Login: React.FC = () => {
         <Pressable
           accessibilityRole="button"
           onPress={handleLogin}
-          disabled={loading}
+          disabled={isLoading}
           style={({ pressed }) => [
             styles.button,
             {
               backgroundColor: colors['brand-primary'],
-              opacity: pressed || loading ? 0.8 : 1,
+              opacity: pressed || isLoading ? 0.8 : 1,
             },
           ]}
         >
-          {loading ? (
+          {isLoading ? (
             <ActivityIndicator color={colors.surface} />
           ) : (
             <Text style={[styles.buttonText, { color: colors.surface }]}>Sign in</Text>

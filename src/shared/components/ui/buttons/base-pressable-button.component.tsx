@@ -1,6 +1,7 @@
-import { Animated, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
-import React from 'react'
+import { Animated, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
+import React from 'react';
 import { ITheme } from '@shared/types/theme.types';
+import { useAppTheme } from '@shared/hooks';
 import { EFonts, moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
 
@@ -15,7 +16,7 @@ interface BasePressableButtonProps extends PressableProps {
 }
 
 const BasePressableButton: React.FC<BasePressableButtonProps> = ({
-    theme = 'light',
+    theme: propTheme,
     label,
     labelStyle,
     containerStyle,
@@ -25,8 +26,9 @@ const BasePressableButton: React.FC<BasePressableButtonProps> = ({
     outline = false,
     ...props
 }) => {
-
-    const styles = styling(theme);
+    const { theme: appTheme } = useAppTheme();
+    const theme = propTheme || appTheme;
+    const styles = React.useMemo(() => styling(theme), [theme]);
     const scaleAnim = React.useRef(new Animated.Value(1)).current;
 
     const handlePressIn = (e: any) => {
@@ -48,7 +50,7 @@ const BasePressableButton: React.FC<BasePressableButtonProps> = ({
     };
 
     return (
-        <Animated.View style={[{ transform: [{ scale: scaleAnim }], width: '100%' }, containerStyle]}>
+        <Animated.View style={[{ transform: [{ scale: scaleAnim }] }, styles.animatedContainer, containerStyle]}>
             <Pressable
                 {...props}
                 disabled={disabled}
@@ -57,7 +59,7 @@ const BasePressableButton: React.FC<BasePressableButtonProps> = ({
                 style={[
                     styles.wrapper,
                     outline && styles.outlineWrapper,
-                    disabled && { opacity: 0.5 }
+                    disabled && styles.disabledWrapper
                 ]}
                 accessibilityRole={props.accessibilityRole || "button"}
                 accessibilityState={{ ...props.accessibilityState, disabled: !!disabled }}
@@ -73,6 +75,12 @@ const BasePressableButton: React.FC<BasePressableButtonProps> = ({
 export default React.memo(BasePressableButton);
 
 const styling = (theme: ITheme) => StyleSheet.create({
+    animatedContainer: {
+        width: '100%',
+    },
+    disabledWrapper: {
+        opacity: 0.5,
+    },
     wrapper: {
         width: '100%',
         height: moderateScale(50),

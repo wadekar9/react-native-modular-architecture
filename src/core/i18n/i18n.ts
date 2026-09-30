@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from '@shared/locales/en';
-import es from '@shared/locales/es';
-import hi from '@shared/locales/hi';
+import en from './locales/en';
+import es from './locales/es';
+import hi from './locales/hi';
 
 export const defaultNS = 'actions';
 export const resources = {

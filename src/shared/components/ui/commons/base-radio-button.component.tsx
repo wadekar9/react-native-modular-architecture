@@ -26,7 +26,7 @@ const BaseRadioButton: React.FC<BaseRadioButtonProps> = ({
 }) => {
 
   const { theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   const opacity = React.useRef(new Animated.Value(0)).current;
 
@@ -34,9 +34,9 @@ const BaseRadioButton: React.FC<BaseRadioButtonProps> = ({
     Animated.timing(opacity, {
       toValue: value ? 1 : 0,
       duration: 200,
-      useNativeDriver: false
+      useNativeDriver: true,
     }).start();
-  }, [value]);
+  }, [value, opacity]);
 
   return (
     <TouchableOpacity
@@ -44,7 +44,7 @@ const BaseRadioButton: React.FC<BaseRadioButtonProps> = ({
       {...props}
       style={[
         styles.wrapper,
-        disabled && { opacity: 0.7 },
+        disabled && styles.disabledOpacity,
         { width: moderateScale(size), height: moderateScale(size), borderRadius: moderateScale(size / 2) }
       ]}
       onPress={(e) => {
@@ -71,11 +71,11 @@ export const BaseLabelRadioButton: React.FC<BaseLabelRadioButtonProps> = ({
 }) => {
 
   const { theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (
     <TouchableOpacity
-      style={[styles.flexWrapper, props.disabled && { opacity: 0.7 }]}
+      style={[styles.flexWrapper, props.disabled && styles.disabledOpacity]}
       activeOpacity={0.7}
       onPress={() => props.onValueChange(!props.value)}
       disabled={props.disabled}
@@ -94,6 +94,9 @@ export const BaseLabelRadioButton: React.FC<BaseLabelRadioButtonProps> = ({
 export default React.memo(BaseRadioButton);
 
 const styling = (theme: ITheme) => StyleSheet.create({
+  disabledOpacity: {
+    opacity: 0.7,
+  },
   wrapper: {
     width: moderateScale(22),
     height: moderateScale(22),

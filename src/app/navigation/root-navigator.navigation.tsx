@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { Login, Payment, Profile } from '@modules/platform';
+import { AccountDetails, Login, Notifications, Payment, Profile, Settings } from '@modules/platform';
 import { logout } from '@app/auth/logout';
 import type { RootStackParamList } from './navigation.types';
 import { linking } from './linking';
@@ -38,6 +38,9 @@ const RootNavigator = () => {
                     <>
                         <RootStack.Screen name="Main" component={MainNavigator} />
                         <RootStack.Screen name="Profile" component={ProfileRoute} />
+                        <RootStack.Screen name="AccountDetails" component={AccountDetails} />
+                        <RootStack.Screen name="Notifications" component={Notifications} />
+                        <RootStack.Screen name="Settings" component={Settings} />
                         <RootStack.Screen name="Payment" component={Payment} />
                     </>
                 ) : (

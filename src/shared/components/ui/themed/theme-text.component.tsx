@@ -20,7 +20,6 @@ const ThemeText: React.FC<ThemeTextProps> = ({
   return (
     <Text
       accessible={true}
-      numberOfLines={1}
       {...props}
       style={[{ color: COLORS[theme]['text-primary'] }, typography[variant], style]}
     >

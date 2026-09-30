@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { setupInterceptorsTo } from './api.helper';
-import { API_URL } from '@shared/constants/api.constants';
+import { API_URL } from './api.constants';
 
 export const axiosInstance: AxiosInstance = setupInterceptorsTo(
     axios.create({

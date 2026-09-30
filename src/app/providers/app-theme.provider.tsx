@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Appearance } from 'react-native';
-import { EStorageKeys } from '@shared/constants/storage.constants';
+import { EStorageKeys } from '@core/storage/storage.constants';
 import { AppThemeContext } from '@shared/theme/app-theme.context';
-import type { IBaseTheme, ITheme } from '@shared/types/dto';
+import type { IBaseTheme, ITheme } from '@shared/types/theme.types';
 import { Storage } from '@core/storage/storage';
 
 const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

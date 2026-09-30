@@ -7,13 +7,13 @@ import { useAppTheme } from '@shared/hooks';
 import { IMAGES } from '@shared/assets/images';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { EFonts, EFontSize } from '@shared/constants/styles.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 import { ThemedView, ThemeText, BaseButton } from '@shared/components/ui';
 
 const NoInternetConnectionPage: React.FC = () => {
 
-  const { netInfo: { type, isConnected }, refresh } = useNetInfoInstance();
+  const { netInfo: { isConnected }, refresh } = useNetInfoInstance();
   const navigation = useNavigation();
   const { theme, colors } = useAppTheme();
   const styles = styling(theme);
@@ -22,12 +22,9 @@ const NoInternetConnectionPage: React.FC = () => {
     if (isConnected) {
       if (navigation.canGoBack()) {
         navigation.goBack();
-        return;
-      };
-
-      // If there's no back stack, navigate to a default screen, e.g., Home
+      }
     }
-  }, [isConnected])
+  }, [isConnected, navigation]);
 
   return (
     <ThemedView>

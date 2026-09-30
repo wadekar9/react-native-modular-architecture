@@ -3,7 +3,7 @@ import { View, TextInput, TextInputProps, StyleSheet, ViewStyle, StyleProp } fro
 import { ThemeText } from '../themed';
 import { useAppTheme } from '@shared/hooks';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 
 interface TextareaInputRef {
@@ -40,7 +40,7 @@ const TextareaInput = React.forwardRef<TextareaInputRef, TextareaInputProps>(({
 }, ref) => {
 
   const { colors, theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   const inputRef = React.useRef<TextInput>(null);
 
@@ -89,7 +89,7 @@ const TextareaInput = React.forwardRef<TextareaInputRef, TextareaInputProps>(({
     <View style={styles.wrapper}>
       {label && <ThemeText style={styles.label}>{label}</ThemeText>}
       <View
-        style={[styles.containerWrapper, { opacity: disabled ? 0.6 : 1 }, isFocused && { borderColor: colors['brand-primary'] }]}
+        style={[styles.containerWrapper, disabled && styles.disabledWrapper, isFocused && { borderColor: colors['brand-primary'] }]}
         accessible={accessible}
         accessibilityLabel={accessibilityLabel || label}
         accessibilityHint={accessibilityHint}
@@ -149,6 +149,9 @@ const styling = (theme: ITheme) => StyleSheet.create({
     borderRadius: moderateScale(8),
     borderColor: COLORS[theme].border,
     overflow: 'hidden',
+  },
+  disabledWrapper: {
+    opacity: 0.6,
   },
   container: {
     flexDirection: 'row',

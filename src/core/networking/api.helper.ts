@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { getAccessToken } from '@core/auth/session';
+import { clearSession, getAccessToken } from '@core/auth/session';
 
 const onRequest = async (config: InternalAxiosRequestConfig) => {
 
@@ -9,7 +9,7 @@ const onRequest = async (config: InternalAxiosRequestConfig) => {
         config.headers.Authorization = `Bearer ${token}`;
     }
     if (config.data instanceof FormData) {
-        config.headers['Content-Type'] = 'multipart/form-data';
+        delete config.headers['Content-Type'];
     }
     return config;
 };
@@ -27,7 +27,7 @@ const onResponse = (response: AxiosResponse) => {
 
 const onResponseError = (error: AxiosError) => {
     if (error.response?.status === 401) {
-        // clear user local storage data
+        clearSession();
     }
     return Promise.reject(error.response?.data || error.message);
 };

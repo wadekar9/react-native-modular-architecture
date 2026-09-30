@@ -1,4 +1,4 @@
-import type { ModuleManifest } from '@core/modules/types';
+import type { ModuleManifest } from './module.types';
 import dineoutManifest from './verticals/dineout/manifest';
 import eventsManifest from './verticals/events/manifest';
 import foodManifest from './verticals/food/manifest';

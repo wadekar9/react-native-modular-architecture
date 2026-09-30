@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { types, pick, isErrorWithCode } from '@react-native-documents/picker';
-import { IMediaFile, MEDIA_TYPE } from '@shared/types/dto';
+import type { IMediaFile, MEDIA_TYPE } from './types';
 import { generateMediaFileSchema } from './files.helper';
 
 

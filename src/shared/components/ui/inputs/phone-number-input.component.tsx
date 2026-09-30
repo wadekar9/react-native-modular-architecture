@@ -36,7 +36,7 @@ const PhoneNumberInput = React.forwardRef<PhoneNumberInputRef, PhoneNumberInputP
 }, ref) => {
 
     const { colors, theme } = useAppTheme();
-    const styles = styling(theme);
+    const styles = React.useMemo(() => styling(theme), [theme]);
 
     const inputRef = React.useRef<any>(null);
     const [isFocused, setIsFocused] = React.useState<boolean>(false);
@@ -75,7 +75,7 @@ const PhoneNumberInput = React.forwardRef<PhoneNumberInputRef, PhoneNumberInputP
                 layout="first"
                 onChangeText={props.onChangeText}
                 onChangeFormattedText={props.onChangeFormattedText}
-                withDarkTheme={theme == 'dark'}
+                withDarkTheme={theme === 'dark'}
                 withShadow={false}
                 autoFocus={false}
                 placeholder={props.placeholder || "Enter Contact Number"}
@@ -101,28 +101,20 @@ const PhoneNumberInput = React.forwardRef<PhoneNumberInputRef, PhoneNumberInputP
                     multiline: false,
                     numberOfLines: 1
                 }}
-                containerStyle={[styles.containerWrapper, { opacity: disabled ? 0.6 : 1 }, isFocused && { borderColor: colors['brand-primary'] }]}
-                textContainerStyle={{ height: moderateScale(50), backgroundColor: COLORS[theme].background }}
+                containerStyle={[styles.containerWrapper, disabled && styles.disabledContainer, isFocused && { borderColor: colors['brand-primary'] }]}
+                textContainerStyle={styles.textContainer}
                 codeTextStyle={{
                     fontFamily: EFonts.REGULAR,
                     fontSize: EFontSize.XL,
                     color: COLORS[theme]['text-secondary']
                 }}
-                textInputStyle={{
-                    flex: 1,
-                    height: '100%',
-                    padding: 0,
-                    fontFamily: EFonts.REGULAR,
-                    fontSize: EFontSize.XL,
-                    color: COLORS[theme]['text-secondary'],
-                    backgroundColor: COLORS[theme].background
-                }}
+                textInputStyle={styles.phoneTextInput}
                 flagButtonStyle={{
                     borderRightWidth: moderateScale(1.5),
                     borderRightColor: COLORS[theme].border
                 }}
                 renderDropdownImage={() => (
-                    <View style={{ height: '100%', justifyContent: 'center' }}>
+                    <View style={styles.dropdownImageWrapper}>
                         <ChevronDown width={moderateScale(12)} height={moderateScale(7)} color={colors['text-secondary']} />
                     </View>
                 )}
@@ -160,6 +152,26 @@ const styling = (theme: ITheme) => StyleSheet.create({
         overflow: 'hidden',
         padding: 0,
         width: '100%'
+    },
+    disabledContainer: {
+        opacity: 0.6,
+    },
+    textContainer: {
+        height: moderateScale(50),
+        backgroundColor: COLORS[theme].background,
+    },
+    phoneTextInput: {
+        flex: 1,
+        height: '100%',
+        padding: 0,
+        fontFamily: EFonts.REGULAR,
+        fontSize: EFontSize.XL,
+        color: COLORS[theme]['text-secondary'],
+        backgroundColor: COLORS[theme].background,
+    },
+    dropdownImageWrapper: {
+        height: '100%',
+        justifyContent: 'center',
     },
     container: {
         flexDirection: 'row',

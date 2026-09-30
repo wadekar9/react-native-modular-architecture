@@ -1,4 +1,4 @@
-import { EStorageKeys } from '@shared/constants/storage.constants';
+import { EStorageKeys } from '@core/storage/storage.constants';
 import { Storage } from '@core/storage/storage';
 
 export const getAccessToken = (): string | undefined =>

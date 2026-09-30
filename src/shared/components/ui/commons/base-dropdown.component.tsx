@@ -25,20 +25,20 @@ const BaseDropdown: React.FC<BaseDropdownProps> = (props) => {
 
     const { data = [], label, value, placeholder = 'Select Item', error, disabled, variant, onValueChange, icon, accessibilityLabel } = props;
     const { theme, colors } = useAppTheme();
-    const styles = styling(theme);
+    const styles = React.useMemo(() => styling(theme), [theme]);
 
     const [isFocus, setIsFocus] = useState<boolean>(false);
 
-    const DATA = useMemo(() => data.map(item => ({ label: item.name, value: `${item.id}` })), [data]);
+    const DATA = useMemo(() => data.map(item => ({ label: item.name ?? item.label, value: `${item.id ?? item.value}` })), [data]);
 
     return (
         <View
             style={styles.wrapper}
             accessible={true}
-            accessibilityLabel={props.accessibilityLabel || label || placeholder}
+            accessibilityLabel={accessibilityLabel || label || placeholder}
         >
             {label && <ThemeText numberOfLines={2} style={styles.label}>{label}</ThemeText>}
-            <View style={[styles.containerWrapper, (variant == 'secondary') && { borderRadius: moderateScale(100) }]}>
+            <View style={[styles.containerWrapper, (variant === 'secondary') && { borderRadius: moderateScale(100) }]}>
                 <Dropdown
                     style={[styles.container, isFocus && { borderColor: colors['brand-primary'] }]}
                     placeholderStyle={[styles.value, styles.placeholder]}

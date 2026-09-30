@@ -1,4 +1,4 @@
-import { useAppTranslation } from '@shared/hooks';
+import { useAppTranslation } from '@core/i18n';
 import { BottomSheetRef } from '@shared/types/common.types';
 import { ITheme } from '@shared/types/theme.types';
 import { waitForSeconds } from '@shared/utils/utils.helper';
@@ -54,7 +54,7 @@ const AskPermissionModal = React.forwardRef<PermissionModalRef, PermissionModalP
             case 'notification': return common_t('PERMISSIONS_LABEL', { label: mode });
             default: return '';
         }
-    }, [mode]);
+    }, [common_t, mode]);
 
     const DESCRIPTION = React.useMemo(() => {
         switch (mode) {
@@ -64,7 +64,7 @@ const AskPermissionModal = React.forwardRef<PermissionModalRef, PermissionModalP
             case 'notification': return messages_t('NOTIFICATION_PERMISSION');
             default: return '';
         }
-    }, [mode]);
+    }, [messages_t, mode]);
 
     return (
         <Modal

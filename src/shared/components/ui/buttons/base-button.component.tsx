@@ -1,7 +1,7 @@
 import React from 'react'
 import BasePressableButton from './base-pressable-button.component';
 import { PressableProps, StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 
 interface BaseButtonProps extends PressableProps {
   theme?: ITheme;
@@ -14,7 +14,7 @@ interface BaseButtonProps extends PressableProps {
 };
 
 const BaseButton: React.FC<BaseButtonProps> = ({
-  theme = 'light',
+  theme,
   label,
   labelStyle,
   containerStyle,

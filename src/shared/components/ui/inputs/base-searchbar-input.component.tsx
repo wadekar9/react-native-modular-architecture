@@ -4,7 +4,7 @@ import { Search, X } from 'lucide-react-native';
 import { IconButton } from '../buttons';
 import { useAppTheme, useDebounce } from '@shared/hooks';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 
 interface BaseSearchbarRef {
@@ -34,7 +34,7 @@ const BaseSearchbar = React.forwardRef<BaseSearchbarRef, BaseSearchbarProps>(({
 }, ref) => {
 
     const { theme, colors } = useAppTheme();
-    const styles = styling(theme);
+    const styles = React.useMemo(() => styling(theme), [theme]);
 
     const inputRef = React.useRef<TextInput>(null);
 
@@ -52,20 +52,20 @@ const BaseSearchbar = React.forwardRef<BaseSearchbarRef, BaseSearchbarProps>(({
     }), [])
 
     React.useEffect(() => {
-        onChange && onChange(debouncedSearch)
-    }, [debouncedSearch])
+        onChange && onChange(debouncedSearch);
+    }, [debouncedSearch, onChange]);
 
     const handleClear = () => {
         setSearch('');
         inputRef.current?.focus();
-    }
+    };
 
     return (
         <View style={[styles.container, isFocused && { borderColor: colors['brand-primary'] }, containerStyle]}>
             <View style={styles.icon}>
                 <Search width={moderateScale(24)} height={moderateScale(24)} color={colors['icon-default']} />
             </View>
-            <View style={{ flex: 1, height: '100%' }}>
+            <View style={styles.inputContainer}>
                 <TextInput
                     {...props}
                     ref={inputRef}
@@ -129,6 +129,10 @@ const styling = (theme: ITheme) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: moderateScale(4)
+    },
+    inputContainer: {
+        flex: 1,
+        height: '100%',
     },
     input: {
         flex: 1,

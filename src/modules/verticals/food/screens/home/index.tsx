@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -12,37 +12,30 @@ import {
 } from 'react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { getCatalogCategories, getCatalogProducts, type CatalogProduct } from '@modules/catalog';
+import {
+  useCatalogCategories,
+  useCatalogProducts,
+  type CatalogProduct,
+} from '@modules/catalog';
 import { useCart } from '@core/store/hooks/use-cart.hook';
+
+const EMPTY_PRODUCTS: CatalogProduct[] = [];
+const EMPTY_CATEGORIES: string[] = [];
 
 const FoodHomeScreen = () => {
   const { colors } = useAppTheme();
   const { itemCount, total, addProduct } = useCart();
-  const [products, setProducts] = useState<CatalogProduct[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  const productsQuery = useCatalogProducts();
+  const categoriesQuery = useCatalogCategories();
+  const products = productsQuery.data;
+  const categories = categoriesQuery.data ?? EMPTY_CATEGORIES;
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const [catalog, availableCategories] = await Promise.all([
-          getCatalogProducts(),
-          getCatalogCategories(),
-        ]);
-        setProducts(catalog);
-        setCategories(availableCategories);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
-  }, []);
+  const loading = productsQuery.isPending || categoriesQuery.isPending;
+  const queryError = productsQuery.error ?? categoriesQuery.error;
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return (products ?? EMPTY_PRODUCTS).filter((product) => {
       const matchesCategory =
         selectedCategory === 'all' || product.category === selectedCategory;
       const matchesSearch =
@@ -135,7 +128,11 @@ const FoodHomeScreen = () => {
         ))}
       </ScrollView>
 
-      {loading ? (
+      {queryError ? (
+        <View style={styles.emptyState}>
+          <ThemeText variant="h4">Unable to load the catalog. Please try again later.</ThemeText>
+        </View>
+      ) : loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={colors['brand-primary']} />
         </View>

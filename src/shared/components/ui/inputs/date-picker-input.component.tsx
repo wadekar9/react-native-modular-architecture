@@ -5,7 +5,7 @@ import DateTimePickerModal, { DateTimePickerProps } from 'react-native-modal-dat
 import { ThemeText } from '../themed';
 import { useAppTheme } from '@shared/hooks';
 import { EFonts, moderateScale } from '@shared/constants/styles.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 
 interface DatePickerInputProps extends Omit<DateTimePickerProps, 'onConfirm' | 'onCancel' | 'isVisible'> {
@@ -35,7 +35,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
 }) => {
 
   const { colors, theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   const [TODAY_DATE] = useState<Date>(new Date());
   const [isDatePickerVisible, setIsDatePickerVisible] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const DatePickerInput: React.FC<DatePickerInputProps> = ({
     <View style={styles.wrapper}>
       {label && <ThemeText style={styles.label}>{label}</ThemeText>}
       <Pressable
-        style={[styles.container, { opacity: disabled ? 0.5 : 1 }]}
+        style={[styles.container, disabled && styles.disabledContainer]}
         onPress={showPicker}
         disabled={disabled}
         accessible={accessible}
@@ -110,6 +110,9 @@ const styling = (theme: ITheme) => StyleSheet.create({
     overflow: 'hidden',
     flexDirection: 'row',
     alignItems: 'stretch',
+  },
+  disabledContainer: {
+    opacity: 0.5,
   },
   label: {
     color: COLORS[theme]['text-primary'],

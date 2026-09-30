@@ -15,6 +15,7 @@ module.exports = {
     '^react-native-gesture-handler$': '<rootDir>/__mocks__/react-native-gesture-handler.js',
     '^react-native-keyboard-controller$': '<rootDir>/__mocks__/react-native-keyboard-controller.js',
     '^react-native-mmkv$': '<rootDir>/__mocks__/react-native-mmkv.js',
+    '^@react-native-community/netinfo$': '<rootDir>/__mocks__/react-native-netinfo.js',
     '^react-redux$': '<rootDir>/__mocks__/react-redux.js',
     '^\\$navigation/app-stack-navigator\\.navigation$': '<rootDir>/__mocks__/app-stack-navigator.js',
     '^\\$store/redux\\.store$': '<rootDir>/__mocks__/redux.store.ts',

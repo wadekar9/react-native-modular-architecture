@@ -1,0 +1,1 @@
+export { default as AskPermissionModal } from './ask-permission-modal.component';

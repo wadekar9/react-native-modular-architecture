@@ -1,7 +1,11 @@
-import type { PlatformParamList } from '@core/navigation/types';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-export type RootStackParamList = PlatformParamList & {
+export type RootStackParamList = {
+    Profile: undefined;
+    AccountDetails: undefined;
+    Notifications: undefined;
+    Settings: undefined;
+    Payment: undefined;
     Login: undefined;
     Main: undefined;
 };

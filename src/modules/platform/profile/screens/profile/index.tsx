@@ -1,19 +1,26 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
+type ProfileNavigationProp = {
+  navigate: (screen: string) => void;
+};
 
 type ProfileProps = {
   onLogout: () => void;
 };
 
 const Profile = ({ onLogout }: ProfileProps) => {
+  const navigation = useNavigation<ProfileNavigationProp>();
   const { colors } = useAppTheme();
   const user = useAppSelector(state => state.user.user);
 
   return (
     <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.content}>
+      <ThemeText variant="h2">Your account</ThemeText>
       <View style={styles.header}>
         {user?.avatar ? (
           <Image source={{ uri: user.avatar }} style={styles.avatar} />
@@ -22,56 +29,50 @@ const Profile = ({ onLogout }: ProfileProps) => {
         )}
         <View style={styles.profileMeta}>
           <ThemeText variant="h3">
-            {user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Guest User' : 'Guest User'}
+            {user ? `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || 'Account' : 'Account'}
           </ThemeText>
           <ThemeText variant="body5" style={{ color: colors['text-muted'] }}>
-            {user?.email ?? 'guest@dummyjson.com'}
+            {user?.email ?? 'No email on file'}
           </ThemeText>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <ThemeText variant="h4">Account</ThemeText>
-        <View style={styles.row}>
-          <ThemeText variant="body5">Member ID</ThemeText>
-          <ThemeText variant="body5">#{user?.id ?? 'N/A'}</ThemeText>
-        </View>
-        <View style={styles.row}>
-          <ThemeText variant="body5">Plan</ThemeText>
-          <ThemeText variant="body5">Premium</ThemeText>
-        </View>
-      </View>
-
-      <View style={styles.card}>
-        <ThemeText variant="h4">Quick stats</ThemeText>
-        <View style={styles.statsGrid}>
-          <View style={styles.statBox}>
-            <ThemeText variant="h3">12</ThemeText>
-            <ThemeText variant="body5">Orders</ThemeText>
-          </View>
-          <View style={styles.statBox}>
-            <ThemeText variant="h3">4.8</ThemeText>
-            <ThemeText variant="body5">Rating</ThemeText>
-          </View>
-          <View style={styles.statBox}>
-            <ThemeText variant="h3">$189</ThemeText>
-            <ThemeText variant="body5">Savings</ThemeText>
-          </View>
-        </View>
+      <View style={[styles.menu, { borderColor: colors.border }]}>
+        <MenuAction label="Account details" detail="Name, email and phone" onPress={() => navigation.navigate('AccountDetails')} />
+        <MenuAction label="Notifications" detail="Your recent updates" onPress={() => navigation.navigate('Notifications')} />
+        <MenuAction label="Settings" detail="Appearance and preferences" onPress={() => navigation.navigate('Settings')} />
       </View>
 
       <Pressable accessibilityRole="button" onPress={onLogout} style={styles.logoutButton}>
-        <Text style={{ color: colors.surface, fontWeight: '700' }}>Log out</Text>
+        <Text style={[styles.logoutText, { color: colors.surface }]}>Log out</Text>
       </Pressable>
+      </ScrollView>
     </ThemedView>
+  );
+};
+
+type MenuActionProps = { label: string; detail: string; onPress: () => void };
+
+const MenuAction = ({ label, detail, onPress }: MenuActionProps) => {
+  const { colors } = useAppTheme();
+  return (
+    <Pressable accessibilityRole="button" onPress={onPress} style={[styles.menuAction, { borderBottomColor: colors.border }]}>
+      <View style={styles.menuCopy}>
+        <ThemeText variant="body5">{label}</ThemeText>
+        <ThemeText variant="body5" style={{ color: colors['text-muted'] }}>{detail}</ThemeText>
+      </View>
+      <Text style={{ color: colors['text-muted'] }}>›</Text>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  content: {
     padding: 20,
-    gap: 18,
+    gap: 20,
   },
   header: {
     flexDirection: 'row',
@@ -92,29 +93,19 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 6,
   },
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 18,
-    padding: 18,
+  menu: {
     borderWidth: 1,
-    borderColor: '#E5E7EB',
-    gap: 12,
+    borderRadius: 8,
+    paddingHorizontal: 14,
   },
-  row: {
+  menuAction: {
+    minHeight: 68,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  statsGrid: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  statBox: {
-    flex: 1,
-    backgroundColor: '#F3F4F6',
-    borderRadius: 12,
-    padding: 12,
-    alignItems: 'center',
+  menuCopy: {
     gap: 4,
   },
   logoutButton: {
@@ -124,6 +115,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 8,
+  },
+  logoutText: {
+    fontWeight: '700',
   },
 });
 

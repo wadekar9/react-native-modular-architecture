@@ -1,7 +1,7 @@
 import { COLORS } from '@shared/constants/colors.constants';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { useAppTheme } from '@shared/hooks';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import React, { useRef, useEffect } from 'react';
 import {
     StyleSheet,

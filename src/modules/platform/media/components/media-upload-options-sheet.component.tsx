@@ -5,14 +5,15 @@ import { COLORS } from '@shared/constants/colors.constants';
 import { MediaType } from 'react-native-image-picker';
 import { Camera, Folder, Images } from 'lucide-react-native';
 import BaseBottomSheet from '@shared/components/bottom-sheet/base-bottom-sheet.component';
-import { IMediaFile } from '@shared/types/dto';
-import { BottomSheetRef, ITheme } from '@shared/types/common.types';
+import type { IMediaFile } from '@core/platform/media/types';
+import { BottomSheetRef } from '@shared/types/common.types';
+import type { ITheme } from '@shared/types/theme.types';
 import { useAppTheme } from '@shared/hooks';
-import { useImagePicker } from '@core/platform/image-picker.hook';
-import { useDocumentPicker } from '@core/platform/document-picker.hook';
+import { useImagePicker } from '@core/platform/media/image-picker.hook';
+import { useDocumentPicker } from '@core/platform/media/document-picker.hook';
 import { waitForSeconds } from '@shared/utils/utils.helper';
 import {ThemeText, IconButton} from '@shared/components/ui';
-import { AskPermissionModal } from '@shared/components';
+import { AskPermissionModal } from '@modules/platform/permissions';
 
 interface MediaUploadOptionsSheetProps {
     onChooseFile: (e: IMediaFile[]) => void;

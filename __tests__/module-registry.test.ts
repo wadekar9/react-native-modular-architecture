@@ -1,4 +1,4 @@
-import type { ModuleManifest } from '../src/core/modules/types';
+import type { ModuleManifest } from '../src/modules/module.types';
 
 const mockFoodNavigatorLoaded = jest.fn();
 jest.mock('../src/modules/verticals/food/navigation/vertical.navigator', () => {

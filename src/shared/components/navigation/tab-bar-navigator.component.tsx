@@ -63,18 +63,20 @@ const TabBarNavigator: React.FC<TabBarNavigatorProps> = ({ state, descriptors, n
                     };
 
                     const TabBarButton = options.tabBarButton as any;
+                    const accessibilityLabel =
+                        options.tabBarAccessibilityLabel || (typeof label === 'string' ? label : route.name);
 
                     return (
                         <TabBarButton
-                            key={index.toString()}
+                            key={route.key}
                             accessibilityRole="tab"
                             accessibilityState={isFocused ? { selected: true } : {}}
-                            accessibilityLabel={options.tabBarAccessibilityLabel}
+                            accessibilityLabel={accessibilityLabel}
                             onPress={onPress}
                             onLongPress={onLongPress}
-                            style={{ flex: 1 }}
+                            style={styles.tabItem}
                         />
-                    )
+                    );
                 })}
             </View>
         </View>
@@ -84,6 +86,9 @@ const TabBarNavigator: React.FC<TabBarNavigatorProps> = ({ state, descriptors, n
 export default TabBarNavigator;
 
 const styling = (theme: ITheme) => StyleSheet.create({
+    tabItem: {
+        flex: 1,
+    },
     container: {
         width: '100%',
         height: '100%',

@@ -1,6 +1,6 @@
 import { COLORS } from '@shared/constants/colors.constants';
 import { useAppTheme } from '@shared/hooks';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import React from 'react'
 import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from 'react-native-keyboard-controller'
 

@@ -4,7 +4,7 @@ import { ImageSourcePropType } from 'react-native'
 import { IMAGES } from '@shared/assets/images';
 import { useAppTheme } from '@shared/hooks';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 

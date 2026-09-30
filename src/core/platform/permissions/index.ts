@@ -3,7 +3,7 @@ import {
   getMessaging,
   requestPermission as requestMessagingPermission,
 } from '@react-native-firebase/messaging';
-import { IPermissionResult } from '@shared/types/dto/permission.dto';
+import type { IPermissionResult } from './types';
 import { PermissionsAndroid, Platform } from 'react-native';
 import { PERMISSIONS, requestMultiple, Permission } from 'react-native-permissions';
 

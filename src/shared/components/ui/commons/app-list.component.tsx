@@ -46,15 +46,14 @@ function AppList<T>({
         );
     }
 
-    const ListEmptyComponent = () => {
-        if (renderEmptyComponent) return <>{renderEmptyComponent}</>;
-        return (
-            <EmptyStatePage
-                title={emptyTitle}
-                description={emptyDescription}
-            />
-        );
-    };
+    const emptyComponent = renderEmptyComponent ? (
+        <>{renderEmptyComponent}</>
+    ) : (
+        <EmptyStatePage
+            title={emptyTitle}
+            description={emptyDescription}
+        />
+    );
 
     return (
         <LegendList
@@ -65,7 +64,7 @@ function AppList<T>({
                 data?.length === 0 && styles.emptyContainer,
                 contentContainerStyle
             ]}
-            ListEmptyComponent={ListEmptyComponent}
+            ListEmptyComponent={emptyComponent}
             refreshControl={
                 onRefresh ? (
                     <RefreshControl

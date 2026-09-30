@@ -5,7 +5,7 @@ import { ThemeText } from '../themed';
 import { useAppTheme } from '@shared/hooks';
 import { EFonts, moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
-import { ITheme } from '@shared/types/dto';
+import { ITheme } from '@shared/types/theme.types';
 
 interface BaseCheckboxProps extends Omit<TouchableOpacityProps, 'style'> {
   value: boolean;
@@ -25,7 +25,7 @@ const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
 }) => {
 
   const { theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   const opacity = React.useRef(new Animated.Value(0)).current;
 
@@ -33,15 +33,15 @@ const BaseCheckbox: React.FC<BaseCheckboxProps> = ({
     Animated.timing(opacity, {
       toValue: value ? 1 : 0,
       duration: 200,
-      useNativeDriver: false
+      useNativeDriver: true,
     }).start();
-  }, [value]);
+  }, [value, opacity]);
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       {...props}
-      style={[styles.wrapper, disabled && { opacity: 0.7 }]}
+      style={[styles.wrapper, disabled && styles.disabledOpacity]}
       onPress={(e) => {
         onValueChange(!value);
         if (props.onPress) props.onPress(e);
@@ -65,11 +65,11 @@ export const BaseLabelCheckbox: React.FC<BaseLabelCheckboxProps> = ({
 }) => {
 
   const { theme } = useAppTheme();
-  const styles = styling(theme);
+  const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (
     <TouchableOpacity
-      style={[styles.flexWrapper, props.disabled && { opacity: 0.7 }]}
+      style={[styles.flexWrapper, props.disabled && styles.disabledOpacity]}
       activeOpacity={0.7}
       onPress={() => props.onValueChange(!props.value)}
       disabled={props.disabled}
@@ -88,6 +88,9 @@ export const BaseLabelCheckbox: React.FC<BaseLabelCheckboxProps> = ({
 export default React.memo(BaseCheckbox);
 
 const styling = (theme: ITheme) => StyleSheet.create({
+  disabledOpacity: {
+    opacity: 0.7,
+  },
   wrapper: {
     width: moderateScale(22),
     height: moderateScale(22),

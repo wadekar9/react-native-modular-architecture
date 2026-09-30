@@ -17,14 +17,13 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props: any) => {
     const {
         icons,
         style,
-        theme,
         delayLongPress,
         disabled,
         onLongPress,
         onBlur,
         onFocus,
         pressRetentionOffset,
-        pressOpacity,
+        pressOpacity = 0.65,
         ...remainingProps
     } = props;
 
@@ -32,7 +31,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props: any) => {
 
     return (
         <TouchableOpacity
-            activeOpacity={0.65}
+            activeOpacity={pressOpacity}
             {...remainingProps}
             disabled={disabled ?? undefined}
             onLongPress={onLongPress ?? undefined}

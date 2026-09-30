@@ -2,6 +2,7 @@ import { getI18n } from 'react-i18next';
 import { Platform, StatusBar } from 'react-native';
 import { MessageOptions, showMessage } from 'react-native-flash-message';
 import { fetch } from '@react-native-community/netinfo';
+import '@core/i18n';
 import { EFonts, moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
 
@@ -16,13 +17,13 @@ export function showFlashMessage(props: MessageOptions) {
         textStyle: {
             fontFamily: EFonts.MEDIUM,
             fontSize: moderateScale(14),
-            color: COLORS.light['surface'],
+            color: COLORS.light.surface,
             letterSpacing: 0.5,
         },
         titleStyle: {
             fontFamily: EFonts.SEMI_BOLD,
             fontSize: moderateScale(15),
-            color: COLORS.light['surface'],
+            color: COLORS.light.surface,
             letterSpacing: 0.5,
         },
         titleProps: { numberOfLines: 3 },

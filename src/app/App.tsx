@@ -5,23 +5,27 @@ import FlashMessage from 'react-native-flash-message';
 import { Provider as StoreProvider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppThemeProvider from '@app/providers/app-theme.provider';
+import QueryProvider from '@app/providers/query.provider';
 import RootNavigator from '@app/navigation/root-navigator.navigation';
+import '@core/i18n';
 import store from '@core/store/redux.store';
 import { container } from '@shared/styles/flexbox';
 
 const App = () => (
-  <AppThemeProvider>
-    <StoreProvider store={store}>
-      <KeyboardProvider>
-        <SafeAreaProvider>
-          <GestureHandlerRootView style={container}>
-            <RootNavigator />
-          </GestureHandlerRootView>
-        </SafeAreaProvider>
-      </KeyboardProvider>
-    </StoreProvider>
-    <FlashMessage position="top" />
-  </AppThemeProvider>
+  <SafeAreaProvider>
+    <AppThemeProvider>
+      <StoreProvider store={store}>
+        <QueryProvider>
+          <KeyboardProvider>
+            <GestureHandlerRootView style={container}>
+              <RootNavigator />
+            </GestureHandlerRootView>
+          </KeyboardProvider>
+        </QueryProvider>
+      </StoreProvider>
+      <FlashMessage position="top" />
+    </AppThemeProvider>
+  </SafeAreaProvider>
 );
 
 export default App;
