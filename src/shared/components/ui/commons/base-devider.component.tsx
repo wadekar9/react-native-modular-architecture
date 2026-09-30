@@ -1,7 +1,7 @@
 import { StyleProp, StyleSheet, View, ViewStyle, ViewProps } from 'react-native'
 import React from 'react'
-import { moderateScale } from '$constants/styles.constants';
-import { useAppTheme } from '$hooks/common';
+import { useAppTheme } from '@shared/hooks';
+import { moderateScale } from '@shared/constants/styles.constants';
 
 interface BaseDeviderProps extends ViewProps {
   wrapperStyle?: StyleProp<ViewStyle>;

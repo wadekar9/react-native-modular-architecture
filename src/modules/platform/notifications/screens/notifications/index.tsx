@@ -1,5 +1,5 @@
+import {ThemedView, ThemeText} from '@shared/components/ui';
 import React from 'react';
-import { ThemedView, ThemeText } from '$components/ui';
 
 const Notifications: React.FC = () => {
 

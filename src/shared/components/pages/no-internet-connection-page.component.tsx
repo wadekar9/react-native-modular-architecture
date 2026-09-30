@@ -1,15 +1,15 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
-import { ThemedView } from '$components/ui'
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants'
-import { ITheme } from '$types/common.types'
-import { useAppTheme } from '$hooks/common'
-import { COLORS } from '$constants/colors.constants'
-import { BaseButton, ThemeText } from '$components/ui'
 import { useNetInfoInstance } from "@react-native-community/netinfo";
 import { useNavigation } from '@react-navigation/native'
-import { IMAGES } from '$assets/images'
 import { RotateCcw } from 'lucide-react-native'
+import { useAppTheme } from '@shared/hooks';
+import { IMAGES } from '@shared/assets/images';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { EFonts, EFontSize } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
+import { ThemedView, ThemeText, BaseButton } from '@shared/components/ui';
 
 const NoInternetConnectionPage: React.FC = () => {
 

@@ -1,11 +1,11 @@
 import { StyleSheet, TouchableOpacity, Animated, StyleProp, TextStyle, TouchableOpacityProps, View } from 'react-native'
 import React from 'react'
-import { EFonts, moderateScale } from '$constants/styles.constants';
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
 import { Check } from 'lucide-react-native';
 import { ThemeText } from '../themed';
+import { useAppTheme } from '@shared/hooks';
+import { EFonts, moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
+import { ITheme } from '@shared/types/dto';
 
 interface BaseCheckboxProps extends Omit<TouchableOpacityProps, 'style'> {
   value: boolean;

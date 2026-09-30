@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, TextInput, TextInputInstance, TextInputProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
+import { View, TextInput, TextInputProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { ThemeText } from '../themed';
+import { useAppTheme } from '@shared/hooks';
+import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface TextareaInputRef {
   clear: () => void;
@@ -42,7 +42,7 @@ const TextareaInput = React.forwardRef<TextareaInputRef, TextareaInputProps>(({
   const { colors, theme } = useAppTheme();
   const styles = styling(theme);
 
-  const inputRef = React.useRef<TextInputInstance>(null);
+  const inputRef = React.useRef<TextInput>(null);
 
   const [isFocused, setIsFocused] = React.useState<boolean>(false);
 

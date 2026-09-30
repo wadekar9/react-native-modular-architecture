@@ -1,18 +1,18 @@
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
-import { waitForSeconds } from '$helpers/utils.helper';
+import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 import { MediaType } from 'react-native-image-picker';
-import { IMediaFile } from '$dto/common';
-import { BottomSheetRef, ITheme } from '$types/common.types';
-import { useAppTheme } from '$hooks/common';
-import { useDocumentPicker } from '$core/platform/document-picker.hook';
-import { useImagePicker } from '$core/platform/image-picker.hook';
-import { IconButton, ThemeText } from '$components/ui';
-import { AskPermissionModal } from '$components/modals';
 import { Camera, Folder, Images } from 'lucide-react-native';
 import BaseBottomSheet from '@shared/components/bottom-sheet/base-bottom-sheet.component';
+import { IMediaFile } from '@shared/types/dto';
+import { BottomSheetRef, ITheme } from '@shared/types/common.types';
+import { useAppTheme } from '@shared/hooks';
+import { useImagePicker } from '@core/platform/image-picker.hook';
+import { useDocumentPicker } from '@core/platform/document-picker.hook';
+import { waitForSeconds } from '@shared/utils/utils.helper';
+import {ThemeText, IconButton} from '@shared/components/ui';
+import { AskPermissionModal } from '@shared/components';
 
 interface MediaUploadOptionsSheetProps {
     onChooseFile: (e: IMediaFile[]) => void;

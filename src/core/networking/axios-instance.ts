@@ -1,6 +1,6 @@
-import { API_URL } from '$core/config/api.constants';
-import { setupInterceptorsTo } from '$networking/api.helper';
 import axios, { AxiosInstance } from 'axios';
+import { setupInterceptorsTo } from './api.helper';
+import { API_URL } from '@shared/constants/api.constants';
 
 export const axiosInstance: AxiosInstance = setupInterceptorsTo(
     axios.create({

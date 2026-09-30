@@ -1,13 +1,12 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
-import { ThemedView } from '$components/ui'
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants'
-import { useAppTheme } from '$hooks/common'
-import { ITheme } from '$types/common.types'
-import { COLORS } from '$constants/colors.constants'
-import { IMAGES } from '$assets/images'
-import { ThemeText } from '$components/ui'
 import { ImageSourcePropType } from 'react-native'
+import { IMAGES } from '@shared/assets/images';
+import { useAppTheme } from '@shared/hooks';
+import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
+import { ThemedView, ThemeText } from '@shared/components/ui';
 
 export interface EmptyStatePageProps {
   title?: string;

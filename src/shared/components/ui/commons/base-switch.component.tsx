@@ -1,3 +1,7 @@
+import { COLORS } from '@shared/constants/colors.constants';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { useAppTheme } from '@shared/hooks';
+import { ITheme } from '@shared/types/dto';
 import React, { useRef, useEffect } from 'react';
 import {
     StyleSheet,
@@ -5,10 +9,6 @@ import {
     Animated,
     TouchableOpacityProps
 } from 'react-native';
-import { moderateScale } from '$constants/styles.constants';
-import { useAppTheme } from '$hooks/common';
-import { COLORS } from '$constants/colors.constants';
-import { ITheme } from '$types/common.types';
 
 interface BaseSwitchProps extends Omit<TouchableOpacityProps, 'style'> {
     value: boolean;

@@ -1,8 +1,8 @@
 import { Animated, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import React from 'react'
-import { ITheme } from '$types/common.types';
-import { EFonts, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
+import { ITheme } from '@shared/types/theme.types';
+import { EFonts, moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface BasePressableButtonProps extends PressableProps {
     theme?: ITheme;

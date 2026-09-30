@@ -1,11 +1,13 @@
+import { useAppTranslation } from '@shared/hooks';
+import { BottomSheetRef } from '@shared/types/common.types';
+import { ITheme } from '@shared/types/theme.types';
+import { waitForSeconds } from '@shared/utils/utils.helper';
+import { ThemeText, IconButton } from '@shared/components/ui';
 import React from 'react';
 import { StyleSheet, View, Modal, Linking } from 'react-native';
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
-import { waitForSeconds } from '$helpers/utils.helper';
-import { BottomSheetRef, ITheme } from '$types/common.types';
-import { useAppTranslation } from '$hooks/common';
-import { IconButton, ThemeText } from '$components/ui';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
+import { EFonts, EFontSize } from '@shared/constants/styles.constants';
 
 interface PermissionModalProps {
     theme: ITheme;

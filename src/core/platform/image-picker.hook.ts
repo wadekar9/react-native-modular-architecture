@@ -1,8 +1,8 @@
+import { IMediaFile } from '@shared/types/dto';
 import { useCallback } from 'react';
-import { generateImageFileSchema } from '$helpers/files.helper';
-import { IMediaFile } from '$dto/common';
-import { requestCameraPermissions, requestMediaPermissions } from '$core/platform/permissions';
 import { launchCamera, launchImageLibrary, MediaType } from 'react-native-image-picker';
+import { requestCameraPermissions, requestMediaPermissions } from './permissions';
+import { generateImageFileSchema } from './files.helper';
 
 export const useImagePicker = (onSelect: (e: IMediaFile[]) => void, onPermissionFailed?: (mode: 'media' | 'camera') => void) => {
 

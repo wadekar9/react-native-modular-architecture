@@ -1,8 +1,8 @@
+import { COLORS } from '@shared/constants/colors.constants';
+import { useAppTheme } from '@shared/hooks';
+import { ITheme } from '@shared/types/theme.types';
 import React from 'react';
 import { StyleSheet, View, ViewProps, ViewStyle, DimensionValue } from 'react-native';
-import { useAppTheme } from '$hooks/common';
-import { COLORS } from '$constants/colors.constants';
-import { ITheme } from '$types/common.types';
 
 interface ThemedDividerProps extends ViewProps {
     theme?: ITheme;

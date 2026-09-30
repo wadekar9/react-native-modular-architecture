@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, TextInput, TextInputInstance, TextInputProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
-import { useAppTheme } from '$hooks/common';
+import { View, TextInput, TextInputProps, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { EyeOff, Eye } from 'lucide-react-native';
-import { ITheme } from '$types/common.types';
 import IconButton from '../buttons/icon-button.component';
 import ThemeText from '../themed/theme-text.component';
+import { useAppTheme } from '@shared/hooks';
+import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface BaseTextInputRef {
     clear: () => void;
@@ -49,7 +49,7 @@ const BaseTextInput = React.forwardRef<BaseTextInputRef, BaseTextInputProps>(({
     const { colors, theme } = useAppTheme();
     const styles = styling(theme);
 
-    const inputRef = React.useRef<TextInputInstance>(null);
+    const inputRef = React.useRef<TextInput>(null);
 
     const [isSecure, setIsSecure] = React.useState<boolean>(secureTextEntry || false);
     const [isFocused, setIsFocused] = React.useState<boolean>(false);

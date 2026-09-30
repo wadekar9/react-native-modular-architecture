@@ -1,12 +1,12 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { EFonts, moderateScale } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
 import { Calendar } from 'lucide-react-native';
 import DateTimePickerModal, { DateTimePickerProps } from 'react-native-modal-datetime-picker';
 import { ThemeText } from '../themed';
+import { useAppTheme } from '@shared/hooks';
+import { EFonts, moderateScale } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface DatePickerInputProps extends Omit<DateTimePickerProps, 'onConfirm' | 'onCancel' | 'isVisible'> {
   label?: string;

@@ -1,4 +1,5 @@
-import { ITheme, IBaseTheme } from '$dto/common';
+import { IBaseTheme, ITheme } from "./theme.types";
+
 export type { ITheme, IBaseTheme };
 
 export interface AppThemeContextProps {

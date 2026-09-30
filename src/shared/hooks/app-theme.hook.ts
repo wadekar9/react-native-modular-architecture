@@ -1,5 +1,5 @@
-import { COLORS } from '$constants/colors.constants';
-import { AppThemeContext } from '$context/app-theme.context';
+import { COLORS } from '@shared/constants/colors.constants';
+import { AppThemeContext } from '@shared/theme';
 import { useContext, useMemo } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

@@ -1,8 +1,8 @@
+import { COLORS } from '@shared/constants/colors.constants';
+import { useAppTheme } from '@shared/hooks';
+import { ITheme } from '@shared/types/dto';
 import React from 'react'
 import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from 'react-native-keyboard-controller'
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
 
 interface KeyboardViewProps extends KeyboardAwareScrollViewProps {
     children: React.ReactNode;

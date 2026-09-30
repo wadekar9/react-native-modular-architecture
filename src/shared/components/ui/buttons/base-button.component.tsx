@@ -1,7 +1,7 @@
 import React from 'react'
-import { ITheme } from '$types/common.types';
 import BasePressableButton from './base-pressable-button.component';
 import { PressableProps, StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { ITheme } from '@shared/types/dto';
 
 interface BaseButtonProps extends PressableProps {
   theme?: ITheme;

@@ -1,5 +1,5 @@
-import { EFonts, EFontSize } from '$constants/styles.constants';
 import { TextStyle } from 'react-native';
+import { EFontSize, EFonts } from '@shared/constants/styles.constants';
 
 const baseTextStyles: TextStyle = {
   fontSize: EFontSize.BASE,
@@ -50,6 +50,7 @@ export const typography = {
   },
   body4: {
     ...baseTextStyles,
+    fontSize: EFontSize.BASE,
     fontFamily: EFonts.MEDIUM
   },
   body5: {

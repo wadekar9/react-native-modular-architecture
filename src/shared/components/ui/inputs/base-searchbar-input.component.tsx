@@ -1,11 +1,11 @@
-import { StyleSheet, TextInput, TextInputInstance, View, TextInputProps, StyleProp, ViewStyle } from 'react-native'
+import { StyleSheet, TextInput, View, TextInputProps, StyleProp, ViewStyle } from 'react-native'
 import React from 'react'
-import { EFonts, EFontSize, moderateScale } from '$constants/styles.constants'
-import { COLORS } from '$constants/colors.constants'
-import { useAppTheme, useDebounce } from '$hooks/common';
 import { Search, X } from 'lucide-react-native';
-import { ITheme } from '$types/common.types';
 import { IconButton } from '../buttons';
+import { useAppTheme, useDebounce } from '@shared/hooks';
+import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/dto';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface BaseSearchbarRef {
     clear: () => void;
@@ -36,7 +36,7 @@ const BaseSearchbar = React.forwardRef<BaseSearchbarRef, BaseSearchbarProps>(({
     const { theme, colors } = useAppTheme();
     const styles = styling(theme);
 
-    const inputRef = React.useRef<TextInputInstance>(null);
+    const inputRef = React.useRef<TextInput>(null);
 
     const [isFocused, setIsFocused] = React.useState<boolean>(false);
     const [search, setSearch] = React.useState(value || '');

@@ -1,8 +1,8 @@
 import { StyleSheet, View, ViewProps } from 'react-native'
 import React from 'react'
-import { useAppTheme, useSafeAreaInsetsStyle } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
+import { ITheme } from '@shared/types/theme.types';
+import { useAppTheme, useSafeAreaInsetsStyle } from '@shared/hooks';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface ThemedViewProps extends ViewProps {
     children: React.ReactNode;

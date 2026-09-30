@@ -1,18 +1,18 @@
+import { COLORS } from '@shared/constants/colors.constants';
+import { useAppTheme } from '@shared/hooks';
+import { ITheme } from '@shared/types/theme.types';
 import React from 'react';
 import { StatusBar, StyleSheet, View, ViewProps } from 'react-native';
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
-import AppHeader, { AppHeaderProps } from '$components/navigation/app-header.component';
-import { ThemedView, KeyboardView } from '$components/ui';
 import { KeyboardAwareScrollViewProps } from 'react-native-keyboard-controller';
+import { KeyboardView, ThemedView } from '.';
+import { AppHeader } from '@shared/components/navigation';
 
 interface ThemedScreenProps {
     children: React.ReactNode;
     theme?: ITheme;
     preset?: 'fixed' | 'scroll';
     headerComponent?: React.ReactNode;
-    headerProps?: AppHeaderProps;
+    headerProps?: any; // Replace 'any' with the actual type of AppHeaderProps if available
     showStatusBar?: boolean;
     statusBarProps?: React.ComponentProps<typeof StatusBar>;
     containerStyle?: ViewProps['style'];

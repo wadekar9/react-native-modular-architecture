@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
-import { generateMediaFileSchema } from '$helpers/files.helper';
-import { IMediaFile, MEDIA_TYPE } from '$dto/common';
 import { types, pick, isErrorWithCode } from '@react-native-documents/picker';
+import { IMediaFile, MEDIA_TYPE } from '@shared/types/dto';
+import { generateMediaFileSchema } from './files.helper';
 
 
 export const useDocumentPicker = (onSelect: (response: IMediaFile[]) => void) => {

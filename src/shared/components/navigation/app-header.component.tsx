@@ -1,14 +1,14 @@
-import { StyleSheet, View, ViewProps, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, ViewProps } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { moderateScale } from '$constants/styles.constants';
-import { useAppTheme, useSafeAreaInsetsStyle } from '$hooks/common';
-import { IconButton, ThemeText } from '$components/ui';
-import { ArrowLeft } from 'lucide-react-native';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
+import { ITheme } from '@shared/types/theme.types';
+import { useAppTheme, useSafeAreaInsetsStyle } from '@shared/hooks';
+import { COLORS } from '@shared/constants/colors.constants';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { ThemeText, IconButton } from '@shared/components/ui';
+import ArrowLeft from '@shared/assets/icons/arrow-left.svg';
 
-export interface AppHeaderProps extends Omit<ViewProps, 'style'> {
+interface AppHeaderProps extends Omit<ViewProps, 'style'> {
     title?: string;
     leftComponent?: React.ReactNode;
     rightComponent?: React.ReactNode;

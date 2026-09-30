@@ -1,15 +1,15 @@
 import React from 'react';
-import { Keyboard, Platform, StyleSheet, TextInput, TextInputInstance, View, TextInputProps } from 'react-native';
-import { EFonts, moderateScale } from '$constants/styles.constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { COLORS } from '$constants/colors.constants';
-import { waitForSeconds } from '$helpers/utils.helper';
-import { IMediaFile } from '$dto/common';
-import { ITheme } from '$types/common.types';
-import { useAppTheme } from '$hooks/common';
+import { Keyboard, Platform, StyleSheet, TextInput, View, TextInputProps } from 'react-native';
 import { IconButton } from '@shared/components/ui/buttons';
 import { Paperclip, SendHorizontal, Smile } from 'lucide-react-native';
 import { MediaUploadOptionsSheet } from '../';
+import { IMediaFile, ITheme } from '@shared/types/dto';
+import { useAppTheme } from '@shared/hooks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
+import { EFonts, EFontSize } from '@shared/constants/styles.constants';
+
 
 interface ChatMessageInputProps extends Omit<TextInputProps, 'style' | 'multiline' | 'value' | 'onChangeText'> {
   onSend?: (text: string) => void;
@@ -29,7 +29,7 @@ const MAX_CONTENT = 500;
 
 const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputProps>(({
   onSend,
-  onSendMedia: _onSendMedia,
+  onSendMedia,
   containerAccessible = true,
   containerAccessibilityLabel = "Message input area",
   containerAccessibilityHint = "Type a message or attach media",
@@ -47,7 +47,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
   const [text, setText] = React.useState<string>('');
   const [height, setHeight] = React.useState<number>(DEFAULT_HEIGHT);
   const insets = useSafeAreaInsets();
-  const inputRef = React.useRef<TextInputInstance>(null);
+  const inputRef = React.useRef<TextInput>(null);
   const mediaOptionSheet = React.useRef<any>(null);
 
   const styles = styling(theme);
@@ -61,12 +61,16 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
     },
   }));
 
-  React.useEffect(() => Keyboard.dismiss, []);
-
   const handleContentSizeChange = React.useCallback((event: any) => {
     const newHeight = event.nativeEvent.contentSize.height;
     setHeight(Math.min(Math.max(DEFAULT_HEIGHT, newHeight), MAX_HEIGHT));
   }, []);
+
+  const handleMediaSelection = React.useCallback((files: IMediaFile[]) => {
+    if (files.length > 0 && onSendMedia) {
+      onSendMedia(files);
+    }
+  }, [onSendMedia]);
 
   const handleSend = React.useCallback(() => {
     if (text.trim().length > 0) {
@@ -96,7 +100,6 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
             style={styles.icon}
             onPress={() => {
               Keyboard.dismiss();
-              waitForSeconds(() => console.log("Emoji button pressed"), 500);
             }}
             accessibilityLabel="Open emoji picker"
             accessibilityRole="button"
@@ -132,7 +135,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
             style={styles.icon}
             onPress={() => {
               Keyboard.dismiss();
-              waitForSeconds(() => mediaOptionSheet.current?.open(), 500);
+              mediaOptionSheet.current?.open();
             }}
             accessibilityLabel="Attach media"
             accessibilityRole="button"
@@ -155,11 +158,7 @@ const ChatMessageInput = React.forwardRef<ChatMessageInputRef, ChatMessageInputP
 
       <MediaUploadOptionsSheet
         ref={mediaOptionSheet}
-        onChooseFile={(e) => {
-          if (e.length) {
-            console.log("mediaOptionSheet", e);
-          }
-        }}
+        onChooseFile={handleMediaSelection}
       />
     </View>
   )

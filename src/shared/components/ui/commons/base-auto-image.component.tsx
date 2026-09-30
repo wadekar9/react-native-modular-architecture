@@ -1,9 +1,9 @@
 import React from "react";
-import { moderateScale } from "$constants/styles.constants"
-import { useAutoImage } from "$hooks/common";
 import { Platform, StyleSheet, StyleProp, ViewStyle, View, ViewProps } from "react-native"
 import FastImage, { FastImageProps, ImageStyle, Source } from "@d11/react-native-fast-image";
-import { COLORS } from "$constants/colors.constants";
+import { useAutoImage } from "@shared/hooks";
+import { moderateScale } from "@shared/constants/styles.constants";
+import { COLORS } from "@shared/constants/colors.constants";
 
 interface AutoImageProps extends Omit<FastImageProps, 'style'> {
     width?: number;

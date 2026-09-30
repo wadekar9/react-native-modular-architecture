@@ -1,5 +1,5 @@
-import { IPWhoisApiResponse } from '$dto/common';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { IPWhoisApiResponse } from '@shared/types/dto';
 import axios from 'axios';
 
 export const IPWhoApi = createAsyncThunk('common/ipWhoApi', async (_, thunkApi) => {

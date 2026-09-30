@@ -1,4 +1,4 @@
-import { resources, defaultNS } from '@app/bootstrap/i18n';
+import { resources, defaultNS } from '@core/config/i18n';
 
 declare module 'i18next' {
   interface CustomTypeOptions {

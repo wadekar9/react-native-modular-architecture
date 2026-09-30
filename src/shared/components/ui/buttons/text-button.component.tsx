@@ -1,8 +1,8 @@
 import { StyleProp, StyleSheet, TextStyle, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import React from 'react'
-import { EFonts, EFontSize } from '$constants/styles.constants';
-import { COLORS } from '$constants/colors.constants';
 import { ThemeText } from '../themed';
+import { EFonts, EFontSize } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface TextButtonProps extends TouchableOpacityProps {
   label: string;

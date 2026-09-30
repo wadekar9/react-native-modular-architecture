@@ -1,11 +1,11 @@
 import React from 'react';
 import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
 import { LegendList, LegendListProps } from '@legendapp/list';
-import { useAppTheme } from '$hooks/common';
-import { ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
-import { EmptyStatePage } from '$components/pages';
-import { moderateScale } from '$constants/styles.constants';
+import { ITheme } from '@shared/types/theme.types';
+import { useAppTheme } from '@shared/hooks';
+import { COLORS } from '@shared/constants/colors.constants';
+import { EmptyStatePage } from '@shared/components/pages';
+import { moderateScale } from '@shared/constants/styles.constants';
 
 interface AppListProps<T> extends Omit<LegendListProps<T>, 'data'> {
     data: T[] | null | undefined;

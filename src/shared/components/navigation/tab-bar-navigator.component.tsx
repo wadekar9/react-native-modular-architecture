@@ -1,11 +1,11 @@
-import { COLORS } from '$constants/colors.constants';
-import { DEVICE_WIDTH, moderateScale } from '$constants/styles.constants';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import { ITheme } from '$types/common.types';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { ITheme } from '@shared/types/theme.types';
+import { DEVICE_WIDTH, moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 
 interface TabBarNavigatorProps extends BottomTabBarProps {
     theme: ITheme;

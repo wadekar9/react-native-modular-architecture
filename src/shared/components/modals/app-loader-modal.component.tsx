@@ -1,6 +1,6 @@
 import { ActivityIndicator, Modal, StyleSheet, View } from 'react-native';
 import React, { memo } from 'react';
-import { useAppTheme } from '$hooks/common';
+import { useAppTheme } from '@shared/hooks';
 
 const AppLoaderModal: React.FC = () => {
 

@@ -2,10 +2,10 @@ import { Keyboard, Platform, StyleSheet, View } from 'react-native'
 import React, { forwardRef, useImperativeHandle } from 'react'
 import ActionSheet, { ActionSheetProps, ActionSheetRef } from "react-native-actions-sheet";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useAppTheme } from '$hooks/common';
-import { BottomSheetRef, ITheme } from '$types/common.types';
-import { COLORS } from '$constants/colors.constants';
-import { moderateScale } from '$constants/styles.constants';
+import { BottomSheetRef, ITheme } from '@shared/types/common.types';
+import { useAppTheme } from '@shared/hooks';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 
 export interface BaseBottomSheetRef extends BottomSheetRef { }
 

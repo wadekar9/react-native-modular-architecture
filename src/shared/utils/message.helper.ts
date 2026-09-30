@@ -1,9 +1,9 @@
-import { EFonts, moderateScale } from '$constants/styles.constants';
 import { getI18n } from 'react-i18next';
 import { Platform, StatusBar } from 'react-native';
 import { MessageOptions, showMessage } from 'react-native-flash-message';
 import { fetch } from '@react-native-community/netinfo';
-import { COLORS } from '$constants/colors.constants';
+import { EFonts, moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
 
 export function showFlashMessage(props: MessageOptions) {
 
