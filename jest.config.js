@@ -3,6 +3,9 @@ module.exports = {
   setupFiles: [
     './node_modules/react-native-gesture-handler/jestSetup.js',
   ],
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|@react-native|@reduxjs/toolkit|immer)/)',
+  ],
   moduleNameMapper: {
     '^@app/(.*)$': '<rootDir>/src/app/$1',
     '^@core/(.*)$': '<rootDir>/src/core/$1',

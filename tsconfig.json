@@ -13,6 +13,7 @@
     "moduleResolution": "bundler",
     "ignoreDeprecations": "6.0",
     "target": "ESNext",
+    "types": ["jest"],
     "lib": [
       "ES2017"
     ],
@@ -28,76 +29,7 @@
       ],
       "@shared/*": [
         "src/shared/*"
-      ],
-      "$app/*": [
-        "src/app/*"
-      ],
-      "$assets/*": [
-        "src/shared/assets/*"
-      ],
-      "$components/*": [
-        "src/shared/components/*"
-      ],
-      "$constants/*": [
-        "src/shared/constants/*"
-      ],
-      "$context/*": [
-        "src/shared/theme/*"
-      ],
-      "$core/*": [
-        "src/core/*"
-      ],
-      "$dto/*": [
-        "src/shared/types/dto/*"
-      ],
-      "$dto/common": [
-        "src/shared/types/dto"
-      ],
-      "$helpers/*": [
-        "src/shared/utils/*"
-      ],
-      "$helpers/files.helper": [
-        "src/core/platform/files.helper"
-      ],
-      "$networking/*": [
-        "src/core/networking/*"
-      ],
-      "$hooks/*": [
-        "src/shared/hooks/*"
-      ],
-      "$hooks/common": [
-        "src/shared/hooks"
-      ],
-      "$locales/*": [
-        "src/shared/locales/*"
-      ],
-      "$modules/*": [
-        "src/modules/*"
-      ],
-      "$navigation/*": [
-        "src/app/navigation/*"
-      ],
-      "$store/*": [
-        "src/core/store/*"
-      ],
-      "$styles/*": [
-        "src/shared/styles/*"
-      ],
-      "$types/*": [
-        "src/shared/types/*"
-      ],
-      "$utils/*": [
-        "src/core/utils/*"
-      ],
-      "$utils/permissions": [
-        "src/core/platform/permissions"
-      ],
-      "$utils/storage": [
-        "src/core/storage/storage"
-      ],
-      "$validators/*": [
-        "src/modules/platform/auth/schemas/validators/*"
-      ],
+      ]
     }
   }
 }

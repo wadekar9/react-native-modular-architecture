@@ -6,8 +6,8 @@ import { Provider as StoreProvider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppThemeProvider from '@app/providers/app-theme.provider';
 import RootNavigator from '@app/navigation/root-navigator.navigation';
-import store from '$store/redux.store';
-import { container } from '$styles/flexbox';
+import store from '@core/store/redux.store';
+import { container } from '@shared/styles/flexbox';
 
 const App = () => (
   <AppThemeProvider>
