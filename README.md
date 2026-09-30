@@ -95,3 +95,30 @@ To learn more about React Native, take a look at the following resources:
 - [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
 - [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
 - [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+# Source Layers
+
+```text
+app/       composition, root navigation, providers
+  -> core/, shared/, modules/
+core/      non-UI infrastructure and app-level state
+  -> shared/
+modules/   platform capabilities and removable verticals
+  -> core/, shared/
+shared/    generic UI and pure helpers
+  -> shared/ and third-party packages only
+```
+
+## Dependency Rules
+
+- `shared` imports nothing from `core`, `modules`, or `app`.
+- `core` may import `shared`; it never imports `modules` or `app`.
+- `modules/platform` may import `core` and `shared`.
+- A vertical may import `core`, `shared`, and `modules/platform` through the platform entry point only. It never imports `app` or another vertical.
+- Only `app` imports `modules/registry.ts`.
+- `import/no-cycle` is enabled to prevent dependency cycles.
+
+## Vertical Registration
+
+Each vertical exports a `ModuleManifest` from `manifest.ts`. Its navigator is required inside `getNavigator`, so the registry can enumerate modules without loading their navigators. Add or remove a vertical by updating `modules/registry.ts` and its folder.

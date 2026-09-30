@@ -10,24 +10,19 @@ import {
 } from 'react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import {
-  fetchDummyJsonProducts,
-  type DummyJsonProduct,
-} from '@core/networking/dummyjson.api';
-import { useAppDispatch, useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { addToCart } from '@core/store/slices';
+import { getCatalogProducts, type CatalogProduct } from '@modules/catalog';
+import { useCart } from '@core/store/hooks/use-cart.hook';
 
 const InstamartHomeScreen = () => {
   const { colors } = useAppTheme();
-  const dispatch = useAppDispatch();
-  const cart = useAppSelector(state => state.cart);
-  const [products, setProducts] = useState<DummyJsonProduct[]>([]);
+  const { itemCount, total, addProduct } = useCart();
+  const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const catalog = await fetchDummyJsonProducts();
+        const catalog = await getCatalogProducts();
         setProducts(catalog);
       } finally {
         setLoading(false);
@@ -39,19 +34,17 @@ const InstamartHomeScreen = () => {
 
   const featuredProducts = useMemo(() => products.slice(0, 4), [products]);
 
-  const handleAddToCart = (product: DummyJsonProduct) => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        image: product.thumbnail,
-        category: product.category,
-      }),
-    );
+  const handleAddToCart = (product: CatalogProduct) => {
+    addProduct({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.thumbnail,
+      category: product.category,
+    });
   };
 
-  const renderItem = ({ item }: { item: DummyJsonProduct }) => (
+  const renderItem = ({ item }: { item: CatalogProduct }) => (
     <View style={styles.itemCard}>
       <Image source={{ uri: item.thumbnail }} style={styles.image} />
       <View style={styles.itemMeta}>
@@ -75,7 +68,7 @@ const InstamartHomeScreen = () => {
       <View style={styles.cartBanner}>
         <ThemeText variant="h4">Cart</ThemeText>
         <ThemeText variant="body5" style={{ color: colors['text-muted'] }}>
-          {cart.count} items • ${cart.total}
+          {itemCount} items • ${total}
         </ThemeText>
       </View>
 

@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { authSessionReducer } from '@core/auth';
-import { authUserReducer, cartReducer, flagsReducer } from './slices';
+import { authSessionReducer, authUserReducer } from '@core/auth';
+import { cartReducer, flagsReducer } from './slices';
 
 const reducer = combineReducers({
     session: authSessionReducer,

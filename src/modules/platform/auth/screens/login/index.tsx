@@ -8,16 +8,13 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { ThemedView, ThemeText } from '$components/ui';
-import { useAppTheme } from '$hooks/common';
-import { useAppDispatch } from '@core/store/hooks/store-dispatch-selector.hook';
-import { saveAccessToken, setSignedIn } from '@core/auth';
-import { setUser } from '@core/store/slices';
-import { loginToDummyJson } from '@core/networking/dummyjson.api';
+import { ThemedView, ThemeText } from '@shared/components/ui';
+import { useAppTheme } from '@shared/hooks';
+import { useSignIn } from '../../hooks/use-sign-in.hook';
 
 const Login: React.FC = () => {
   const { colors } = useAppTheme();
-  const dispatch = useAppDispatch();
+  const signIn = useSignIn();
   const [username, setUsername] = useState('emilys');
   const [password, setPassword] = useState('emilyspass');
   const [loading, setLoading] = useState(false);
@@ -28,21 +25,9 @@ const Login: React.FC = () => {
       setLoading(true);
       setError('');
 
-      const user = await loginToDummyJson({ username, password, expiresInMins: 60 });
-
-      saveAccessToken(user.token);
-      dispatch(setSignedIn(true));
-      dispatch(
-        setUser({
-          id: String(user.id),
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          avatar: user.image,
-        }),
-      );
-    } catch (exc: any) {
-      setError(exc?.message || 'Unable to sign in. Please try again.');
+      await signIn(username, password);
+    } catch (exc: unknown) {
+      setError(exc instanceof Error ? exc.message : 'Unable to sign in. Please try again.');
     } finally {
       setLoading(false);
     }

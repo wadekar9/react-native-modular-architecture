@@ -1,5 +1,5 @@
-import { COLORS } from '$constants/colors.constants';
-import { ITheme } from '$types/common.types';
+import { COLORS } from '@shared/constants/colors.constants';
+import { ITheme } from '@shared/types/common.types';
 import { StyleSheet } from 'react-native';
 
 export const styles = (theme: ITheme) => StyleSheet.create({

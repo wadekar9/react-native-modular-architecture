@@ -12,19 +12,13 @@ import {
 } from 'react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import {
-  fetchDummyJsonCategories,
-  fetchDummyJsonProducts,
-  type DummyJsonProduct,
-} from '@core/networking/dummyjson.api';
-import { useAppDispatch, useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { addToCart } from '@core/store/slices';
+import { getCatalogCategories, getCatalogProducts, type CatalogProduct } from '@modules/catalog';
+import { useCart } from '@core/store/hooks/use-cart.hook';
 
 const FoodHomeScreen = () => {
   const { colors } = useAppTheme();
-  const dispatch = useAppDispatch();
-  const cart = useAppSelector(state => state.cart);
-  const [products, setProducts] = useState<DummyJsonProduct[]>([]);
+  const { itemCount, total, addProduct } = useCart();
+  const [products, setProducts] = useState<CatalogProduct[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [search, setSearch] = useState('');
@@ -34,8 +28,8 @@ const FoodHomeScreen = () => {
     const load = async () => {
       try {
         const [catalog, availableCategories] = await Promise.all([
-          fetchDummyJsonProducts(),
-          fetchDummyJsonCategories(),
+          getCatalogProducts(),
+          getCatalogCategories(),
         ]);
         setProducts(catalog);
         setCategories(availableCategories);
@@ -58,19 +52,17 @@ const FoodHomeScreen = () => {
     });
   }, [products, search, selectedCategory]);
 
-  const handleAddToCart = (product: DummyJsonProduct) => {
-    dispatch(
-      addToCart({
-        id: product.id,
-        title: product.title,
-        price: product.price,
-        image: product.thumbnail,
-        category: product.category,
-      }),
-    );
+  const handleAddToCart = (product: CatalogProduct) => {
+    addProduct({
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.thumbnail,
+      category: product.category,
+    });
   };
 
-  const renderItem = ({ item }: { item: DummyJsonProduct }) => (
+  const renderItem = ({ item }: { item: CatalogProduct }) => (
     <View style={styles.productCard}>
       <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
       <View style={styles.productDetails}>
@@ -97,7 +89,7 @@ const FoodHomeScreen = () => {
       <View style={styles.cartBanner}>
         <ThemeText variant="h4">Cart</ThemeText>
         <ThemeText variant="body5" style={{ color: colors['text-muted'] }}>
-          {cart.count} items • ${cart.total}
+          {itemCount} items • ${total}
         </ThemeText>
       </View>
 
