@@ -6,4 +6,6 @@ export enum StackScreens {
     PAYMENT = "Payment",
     LOGIN = "Login",
     MAIN = "Main",
+    LOCATION_PICKER = "LocationPicker",
+    ADDRESS_SEARCH = "AddressSearch",
 }

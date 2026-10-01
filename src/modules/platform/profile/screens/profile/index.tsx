@@ -59,6 +59,11 @@ const Profile = ({ onLogout }: ProfileProps) => {
             onPress={() => navigation.navigate('Notifications')}
           />
           <MenuAction
+            label="Delivery address"
+            detail="Select location on map"
+            onPress={() => navigation.navigate('LocationPicker')}
+          />
+          <MenuAction
             label="Settings"
             detail="Appearance and preferences"
             onPress={() => navigation.navigate('Settings')}

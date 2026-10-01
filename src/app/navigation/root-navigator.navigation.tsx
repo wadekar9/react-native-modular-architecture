@@ -3,7 +3,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { AccountDetails, Login, Notifications, Payment, Profile, Settings } from '@modules/platform';
+import {
+  AccountDetails,
+  AddressSearch,
+  LocationPicker,
+  Login,
+  Notifications,
+  Payment,
+  Profile,
+  Settings,
+} from '@modules/platform';
 import { logout } from '@app/auth/logout';
 import type { RootStackParamList } from './navigation.types';
 import { linking } from './linking';
@@ -26,7 +35,7 @@ const RootNavigator = () => {
     useEffect(() => {
         const hideSplash = async () => {
             try {
-                if (BootSplash.isVisible()) {
+                if (await BootSplash.isVisible()) {
                     await BootSplash.hide({ fade: true });
                 }
             } catch {}
@@ -46,6 +55,8 @@ const RootNavigator = () => {
                         <RootStack.Screen name={StackScreens.NOTIFICATIONS} component={Notifications} />
                         <RootStack.Screen name={StackScreens.SETTINGS} component={Settings} />
                         <RootStack.Screen name={StackScreens.PAYMENT} component={Payment} />
+                        <RootStack.Screen name={StackScreens.LOCATION_PICKER} component={LocationPicker} />
+                        <RootStack.Screen name={StackScreens.ADDRESS_SEARCH} component={AddressSearch} />
                     </>
                 ) : (
                     <RootStack.Screen name={StackScreens.LOGIN} component={Login} />

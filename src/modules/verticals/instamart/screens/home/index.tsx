@@ -12,13 +12,19 @@ import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useCatalogProducts, type CatalogProduct } from '@modules/catalog';
 import { useCart } from '@core/store/hooks/use-cart.hook';
+import { useNavigation } from '@react-navigation/native';
+import { MapPin } from 'lucide-react-native';
+import { useSelectedAddress } from '@modules/platform';
 
 const EMPTY_PRODUCTS: CatalogProduct[] = [];
 
 const InstamartHomeScreen = () => {
+  const navigation = useNavigation<any>();
   const { colors } = useAppTheme();
   const { itemCount, total, addProduct } = useCart();
   const productsQuery = useCatalogProducts();
+  const selectedAddressQuery = useSelectedAddress();
+  const address = selectedAddressQuery.data;
   const products = productsQuery.data;
 
   const featuredProducts = useMemo(() => (products ?? EMPTY_PRODUCTS).slice(0, 4), [products]);
@@ -54,6 +60,24 @@ const InstamartHomeScreen = () => {
 
   return (
     <ThemedView style={styles.container}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Select delivery address"
+        onPress={() => navigation.navigate('LocationPicker')}
+        style={[styles.addressBanner, { borderBottomColor: colors.border }]}
+      >
+        <MapPin size={18} color={colors['brand-primary']} />
+        <View style={styles.addressBannerText}>
+          <ThemeText variant="body5" style={styles.boldText}>
+            Deliver to {address?.label ? `• ${address.label}` : ''}
+          </ThemeText>
+          <ThemeText variant="body5" style={{ color: colors['text-muted'] }} numberOfLines={1}>
+            {address?.formattedAddress ?? 'Select your delivery address'}
+          </ThemeText>
+        </View>
+        <Text style={[styles.arrowText, { color: colors['text-muted'] }]}>›</Text>
+      </Pressable>
+
       <View style={styles.cartBanner}>
         <ThemeText variant="h4">Cart</ThemeText>
         <ThemeText variant="body5" style={{ color: colors['text-muted'] }}>
@@ -127,6 +151,23 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 18,
     gap: 18,
+  },
+  addressBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  addressBannerText: {
+    flex: 1,
+    gap: 2,
+  },
+  boldText: {
+    fontWeight: '700',
+  },
+  arrowText: {
+    fontSize: 16,
   },
   cartBanner: {
     flexDirection: 'row',
