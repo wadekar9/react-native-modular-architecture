@@ -1,9 +1,19 @@
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { CatalogProduct } from '@modules/catalog/catalog.api';
 import { ThemeText } from '@shared/components/ui';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
+
+export type CatalogProduct = {
+    id: number;
+    title: string;
+    description?: string;
+    price: number;
+    rating?: number;
+    brand?: string;
+    category: string;
+    thumbnail: string;
+};
 
 interface ProductItemProps {
     theme: ITheme;
