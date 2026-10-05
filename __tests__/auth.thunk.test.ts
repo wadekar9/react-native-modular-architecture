@@ -3,9 +3,8 @@ import {
   authRequestReducer,
   authSessionReducer,
   authUserReducer,
-  clearSession,
-  getAccessToken,
-} from '../src/core/auth';
+} from '../src/core/store/slices';
+import { clearSession, getAccessToken } from '../src/core/storage/session.storage';
 import { login } from '../src/modules/platform/auth/services/auth.api';
 import { signInThunk } from '../src/modules/platform/auth/auth.thunks';
 

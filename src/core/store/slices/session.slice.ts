@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAccessToken } from './session';
+import { getAccessToken } from '@core/storage/session.storage';
 
 type AuthSessionState = {
   isSignedIn: boolean;

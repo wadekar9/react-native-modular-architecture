@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { clearSession, getAccessToken } from '@core/auth/session';
+import { clearSession, getAccessToken } from '@core/storage/session.storage';
 
 const onRequest = async (config: InternalAxiosRequestConfig) => {
 
