@@ -3,8 +3,7 @@ import { signInThunk } from '../auth.thunks';
 
 export const useSignIn = () => {
   const dispatch = useAppDispatch();
-  const status = useAppSelector(state => state.authRequest.signInStatus);
-  const error = useAppSelector(state => state.authRequest.signInError);
+  const {signInError: error, signInStatus: status} = useAppSelector(state => state.authRequest);
 
   const signIn = (username: string, password: string) =>
     dispatch(signInThunk({ username, password }));

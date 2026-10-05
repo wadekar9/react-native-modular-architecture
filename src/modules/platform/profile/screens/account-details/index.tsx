@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import type { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EStackScreens } from '@shared/constants/screens.constants';
 import { showMessage } from 'react-native-flash-message';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
+import { useAppSelector } from '@core/store/hooks';
 import { useProfileDetails, useSaveProfileDetails } from '../../profile.queries';
 
-type AccountDetailsNavigationProp = {
-  goBack: () => void;
-};
+const AccountDetails: React.FC<AppStackScreenProps<EStackScreens.ACCOUNT_DETAILS>> = ({ navigation }) => {
 
-const AccountDetails = () => {
-  const navigation = useNavigation<AccountDetailsNavigationProp>();
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => styling(colors), [colors]);
   const user = useAppSelector(state => state.user.user);

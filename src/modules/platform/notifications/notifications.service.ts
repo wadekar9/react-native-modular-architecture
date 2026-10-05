@@ -10,6 +10,7 @@ import {
 } from '@react-native-firebase/firestore';
 import { ensureFirebaseIdentity, getFirebaseDatabase, isFirebaseConfigured } from '@core/firebase/firebase';
 import { Storage, getJson } from '@core/storage/storage';
+import { EStackScreens } from '@shared/constants/screens.constants';
 
 export type NotificationItem = {
   id: string;
@@ -17,7 +18,7 @@ export type NotificationItem = {
   body: string;
   read: boolean;
   createdAt: Date | null;
-  route?: string;
+  route?: EStackScreens;
 };
 
 const LOCAL_NOTIFICATIONS_KEY = '@notifications.items';
@@ -29,7 +30,7 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     body: 'Explore food delivery, instant grocery, dining out, and events all in one place.',
     read: false,
     createdAt: new Date(),
-    route: 'Main',
+    route: EStackScreens.MAIN,
   },
   {
     id: 'notif-2',
@@ -37,7 +38,7 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     body: 'Add your contact number and details in Account Details to get personalized deals.',
     read: false,
     createdAt: new Date(Date.now() - 3600000),
-    route: 'AccountDetails',
+    route: EStackScreens.ACCOUNT_DETAILS,
   },
   {
     id: 'notif-3',
@@ -45,7 +46,7 @@ const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
     body: 'Manage your push notifications and alerts in Settings.',
     read: true,
     createdAt: new Date(Date.now() - 86400000),
-    route: 'Settings',
+    route: EStackScreens.SETTINGS,
   },
 ];
 
@@ -86,7 +87,7 @@ export const getNotifications = async (): Promise<NotificationItem[]> => {
         body: typeof data.body === 'string' ? data.body : '',
         read: data.read === true,
         createdAt: createdAt && typeof createdAt.toDate === 'function' ? createdAt.toDate() : null,
-        route: typeof data.route === 'string' ? data.route : undefined,
+        route: typeof data.route === 'string' ? data.route as EStackScreens : undefined,
       };
     });
   } catch {

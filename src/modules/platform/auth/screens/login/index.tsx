@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   Image,
   Pressable,
-  StyleSheet,
   Text,
   TextInput,
   View,
@@ -11,9 +10,15 @@ import {
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useSignIn } from '../../hooks/use-sign-in.hook';
+import { styling } from './styles';
+import { EStackScreens } from '@shared/constants/screens.constants';
+import { AppStackScreenProps } from '@shared/types/navigation.types';
 
-const Login: React.FC = () => {
-  const { colors } = useAppTheme();
+const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = () => {
+
+  const { colors, theme } = useAppTheme();
+  const styles = React.useMemo(() => styling(theme), [theme]);
+
   const { signIn, isLoading, error } = useSignIn();
   const [username, setUsername] = useState('emilys');
   const [password, setPassword] = useState('emilyspass');
@@ -78,68 +83,5 @@ const Login: React.FC = () => {
     </ThemedView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 24,
-  },
-  card: {
-    borderRadius: 20,
-    padding: 24,
-    borderWidth: 1,
-    borderColor: '#E5E7EB',
-    backgroundColor: '#FFFFFF',
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 4,
-  },
-  logo: {
-    width: 72,
-    height: 72,
-    borderRadius: 18,
-    alignSelf: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: {
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 14,
-    fontSize: 16,
-  },
-  button: {
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 6,
-  },
-  buttonText: {
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  helperText: {
-    marginTop: 14,
-    textAlign: 'center',
-    fontSize: 12,
-  },
-  error: {
-    color: '#DC2626',
-    marginBottom: 10,
-    fontSize: 12,
-  },
-});
 
 export default Login;

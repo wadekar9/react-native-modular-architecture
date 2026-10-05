@@ -59,7 +59,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     fontSize: 12,
   },
   error: {
-    color: COLORS[theme]['state-danger'],
+    color: '#DC2626',
     marginBottom: 10,
     fontSize: 12,
   },

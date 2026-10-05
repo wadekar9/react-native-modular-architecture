@@ -2,10 +2,10 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   Pressable,
-  StyleSheet,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import type { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EStackScreens } from '@shared/constants/screens.constants';
 import MapView, { type Region } from 'react-native-maps';
 import { Crosshair, MapPin, Search } from 'lucide-react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -22,11 +22,7 @@ import {
   useSelectedAddress,
   useSetSelectedAddress,
 } from '../../location.queries';
-
-type LocationPickerNavProp = {
-  goBack: () => void;
-  navigate: (screen: string) => void;
-};
+import { styling } from './styles';
 
 const INITIAL_REGION: Region = {
   latitude: DEFAULT_COORDINATES.latitude,
@@ -35,10 +31,10 @@ const INITIAL_REGION: Region = {
   longitudeDelta: 0.012,
 };
 
-const LocationPicker = () => {
-  const navigation = useNavigation<LocationPickerNavProp>();
-  const { colors } = useAppTheme();
-  const styles = React.useMemo(() => styling(colors), [colors]);
+const LocationPicker: React.FC<AppStackScreenProps<EStackScreens.LOCATION_PICKER>> = ({ navigation }) => {
+
+  const { colors, theme } = useAppTheme();
+  const styles = React.useMemo(() => styling(theme), [theme]);
   const mapRef = useRef<MapView>(null);
 
   const selectedAddrQuery = useSelectedAddress();
@@ -118,7 +114,7 @@ const LocationPicker = () => {
 
         <Pressable
           accessibilityRole="button"
-          onPress={() => navigation.navigate('AddressSearch')}
+          onPress={() => navigation.navigate(EStackScreens.ADDRESS_SEARCH)}
           style={[styles.searchBox, { backgroundColor: colors.surface, borderColor: colors.border }]}
         >
           <Search size={18} color={colors['text-muted']} />
@@ -165,97 +161,5 @@ const LocationPicker = () => {
     </ThemedView>
   );
 };
-
-const styling = (_colors: ReturnType<typeof useAppTheme>['colors']) =>
-  StyleSheet.create({
-    screen: { flex: 1 },
-    map: { flex: 1 },
-    topBar: {
-      position: 'absolute',
-      top: 50,
-      left: 16,
-      right: 16,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 10,
-    },
-    backButton: {
-      paddingHorizontal: 14,
-      paddingVertical: 10,
-      borderRadius: 12,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.15,
-      shadowRadius: 4,
-      elevation: 4,
-    },
-    searchBox: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 8,
-      paddingHorizontal: 14,
-      paddingVertical: 10,
-      borderRadius: 12,
-      borderWidth: 1,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.15,
-      shadowRadius: 4,
-      elevation: 4,
-    },
-    gpsButton: {
-      position: 'absolute',
-      right: 16,
-      bottom: 180,
-      width: 48,
-      height: 48,
-      borderRadius: 24,
-      alignItems: 'center',
-      justifyContent: 'center',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 4,
-      elevation: 4,
-    },
-    bottomCard: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      padding: 20,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      gap: 16,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: -3 },
-      shadowOpacity: 0.15,
-      shadowRadius: 6,
-      elevation: 8,
-    },
-    cardHeader: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      gap: 12,
-    },
-    addressInfo: {
-      flex: 1,
-      gap: 4,
-    },
-    loader: {
-      alignSelf: 'flex-start',
-      marginVertical: 4,
-    },
-    confirmBtn: {
-      minHeight: 48,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    confirmText: {
-      fontWeight: '700',
-    },
-  });
 
 export default LocationPicker;

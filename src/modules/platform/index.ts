@@ -1,6 +1,5 @@
 export * from './auth';
 export * from './location';
-export * from './media';
 export * from './notifications';
 export * from './payments';
 export * from './profile';

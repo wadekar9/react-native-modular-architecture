@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { CheckCheck } from 'lucide-react-native';
-import { useNavigation } from '@react-navigation/native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import {
@@ -10,23 +9,21 @@ import {
   useNotifications,
 } from '../../notifications.queries';
 import type { NotificationItem } from '../../notifications.service';
-
-type NotificationsNavigationProp = {
-  goBack: () => void;
-  navigate: (screen: string) => void;
-};
+import type { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EStackScreens } from '@shared/constants/screens.constants';
 
 const EmptyNotifications = React.memo(({ textColor }: { textColor: string }) => (
   <View style={emptyStyles.center}>
-    <ThemeText variant="h4">You’re all caught up</ThemeText>
+    <ThemeText variant="h4">You're all caught up</ThemeText>
     <ThemeText variant="body5" style={{ color: textColor }}>
       New account and service updates will appear here.
     </ThemeText>
   </View>
 ));
 
-const Notifications: React.FC = () => {
-  const navigation = useNavigation<NotificationsNavigationProp>();
+
+const Notifications: React.FC<AppStackScreenProps<EStackScreens.NOTIFICATIONS>> = ({ navigation }) => {
+
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => styling(colors), [colors]);
   const notificationsQuery = useNotifications();
@@ -40,7 +37,7 @@ const Notifications: React.FC = () => {
       markRead.mutate(item.id);
     }
     if (item.route) {
-      navigation.navigate(item.route);
+      navigation.navigate(item.route as never);
     }
   };
 

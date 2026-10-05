@@ -1,21 +1,14 @@
 import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { useNotifications, type NotificationItem } from '../../../notifications';
+import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EStackScreens } from '@shared/constants/screens.constants';
+import { NotificationItem, useNotifications } from '@modules/platform';
 
-type ProfileNavigationProp = {
-  navigate: (screen: string) => void;
-};
+const Profile: React.FC<AppStackScreenProps<EStackScreens.PROFILE>> = ({ navigation }) => {
 
-type ProfileProps = {
-  onLogout: () => void;
-};
-
-const Profile = ({ onLogout }: ProfileProps) => {
-  const navigation = useNavigation<ProfileNavigationProp>();
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => styling(colors), [colors]);
   const user = useAppSelector(state => state.user.user);
@@ -50,29 +43,29 @@ const Profile = ({ onLogout }: ProfileProps) => {
           <MenuAction
             label="Account details"
             detail="Name, email and phone"
-            onPress={() => navigation.navigate('AccountDetails')}
+            onPress={() => navigation.navigate(EStackScreens.ACCOUNT_DETAILS)}
           />
           <MenuAction
             label="Notifications"
             detail={unreadCount > 0 ? `${unreadCount} unread update${unreadCount > 1 ? 's' : ''}` : 'Your recent updates'}
             badge={unreadCount > 0 ? unreadCount : undefined}
-            onPress={() => navigation.navigate('Notifications')}
+            onPress={() => navigation.navigate(EStackScreens.NOTIFICATIONS)}
           />
           <MenuAction
             label="Delivery address"
             detail="Select location on map"
-            onPress={() => navigation.navigate('LocationPicker')}
+            onPress={() => navigation.navigate(EStackScreens.LOCATION_PICKER)}
           />
           <MenuAction
             label="Settings"
             detail="Appearance and preferences"
-            onPress={() => navigation.navigate('Settings')}
+            onPress={() => navigation.navigate(EStackScreens.SETTINGS)}
           />
         </View>
 
         <Pressable
           accessibilityRole="button"
-          onPress={onLogout}
+          onPress={() => navigation.reset({ index: 0, routes: [{ name: EStackScreens.LOGIN }] })}
           style={[styles.logoutButton, { backgroundColor: colors['brand-primary'] }]}
         >
           <Text style={[styles.logoutText, { color: colors.surface }]}>Log out</Text>
