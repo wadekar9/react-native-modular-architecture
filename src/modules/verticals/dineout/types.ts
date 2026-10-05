@@ -1,1 +1,0 @@
-export const DINEOUT_VERTICAL_ID = 'dineout' as const;

@@ -1,10 +1,9 @@
 import type { ModuleManifest } from '@modules/module.types';
-import { FOOD_VERTICAL_ID } from './types';
 
 const foodManifest: ModuleManifest = {
-  id: FOOD_VERTICAL_ID,
+  id: 'food',
   title: 'Food',
-  getNavigator: () => require('./navigation/vertical.navigator').default,
+  getNavigator: () => require('./navigation/food.stack').default,
 };
 
 export default foodManifest;

@@ -1,14 +1,10 @@
 import type { ModuleManifest } from './module.types';
-import dineoutManifest from './verticals/dineout/manifest';
-import eventsManifest from './verticals/events/manifest';
+import diningManifest from './verticals/dining/manifest';
 import foodManifest from './verticals/food/manifest';
-import instamartManifest from './verticals/instamart/manifest';
 
 export const verticals: ModuleManifest[] = [
   foodManifest,
-  instamartManifest,
-  dineoutManifest,
-  eventsManifest,
+  diningManifest
 ];
 
 export const getActiveVerticals = (flags: Record<string, boolean | undefined>) =>
