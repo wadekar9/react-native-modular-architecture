@@ -11,20 +11,17 @@ import {
   Notifications,
   Payment,
   Profile,
-  Settings,
+  Settings
 } from '@modules/platform';
-import { logout } from '@app/auth/logout';
-import type { RootStackParamList } from './navigation.types';
 import { linking } from './linking';
 import MainNavigator from './main-navigator.navigation';
 import { useNavigationTheme } from '@shared/hooks';
 import { usePushNotifications } from '@core/notifications';
 import { navigationRef } from '@core/navigation';
-import { StackScreens } from '@shared/constants/screens.constants';
+import { EStackScreens } from '@shared/constants/screens.constants';
+import { AppStackParamsList } from '@shared/types/navigation.types';
 
-const RootStack = createNativeStackNavigator<RootStackParamList>();
-
-const ProfileRoute = () => <Profile onLogout={logout} />;
+const RootStack = createNativeStackNavigator<AppStackParamsList>();
 
 const RootNavigator = () => {
     const navigationTheme = useNavigationTheme();
@@ -35,7 +32,7 @@ const RootNavigator = () => {
     useEffect(() => {
         const hideSplash = async () => {
             try {
-                if (await BootSplash.isVisible()) {
+                if (BootSplash.isVisible()) {
                     await BootSplash.hide({ fade: true });
                 }
             } catch {}
@@ -45,21 +42,21 @@ const RootNavigator = () => {
     }, []);
 
     return (
-        <NavigationContainer ref={navigationRef} theme={navigationTheme} linking={linking}>
+        <NavigationContainer<AppStackParamsList> ref={navigationRef} theme={navigationTheme} linking={linking}>
             <RootStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
                 {isSignedIn ? (
                     <>
-                        <RootStack.Screen name={StackScreens.MAIN} component={MainNavigator} />
-                        <RootStack.Screen name={StackScreens.PROFILE} component={ProfileRoute} />
-                        <RootStack.Screen name={StackScreens.ACCOUNT_DETAILS} component={AccountDetails} />
-                        <RootStack.Screen name={StackScreens.NOTIFICATIONS} component={Notifications} />
-                        <RootStack.Screen name={StackScreens.SETTINGS} component={Settings} />
-                        <RootStack.Screen name={StackScreens.PAYMENT} component={Payment} />
-                        <RootStack.Screen name={StackScreens.LOCATION_PICKER} component={LocationPicker} />
-                        <RootStack.Screen name={StackScreens.ADDRESS_SEARCH} component={AddressSearch} />
+                        <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
+                        <RootStack.Screen name={EStackScreens.PROFILE} component={Profile} />
+                        <RootStack.Screen name={EStackScreens.ACCOUNT_DETAILS} component={AccountDetails} />
+                        <RootStack.Screen name={EStackScreens.NOTIFICATIONS} component={Notifications} />
+                        <RootStack.Screen name={EStackScreens.SETTINGS} component={Settings} />
+                        <RootStack.Screen name={EStackScreens.PAYMENT} component={Payment} />
+                        <RootStack.Screen name={EStackScreens.LOCATION_PICKER} component={LocationPicker} />
+                        <RootStack.Screen name={EStackScreens.ADDRESS_SEARCH} component={AddressSearch} />
                     </>
                 ) : (
-                    <RootStack.Screen name={StackScreens.LOGIN} component={Login} />
+                    <RootStack.Screen name={EStackScreens.LOGIN} component={Login} />
                 )}
             </RootStack.Navigator>
         </NavigationContainer>

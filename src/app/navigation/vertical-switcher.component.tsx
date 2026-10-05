@@ -2,10 +2,12 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 import type { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { useAppTheme } from '@shared/hooks';
+import { ITheme } from '@shared/types/theme.types';
+import { COLORS } from '@shared/constants/colors.constants';
 
 const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarProps) => {
-  const { colors } = useAppTheme();
-  const styles = styling(colors);
+  const { theme } = useAppTheme();
+  const styles = styling(theme);
 
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bar}>
@@ -29,10 +31,10 @@ const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarP
   );
 };
 
-const styling = (colors: ReturnType<typeof useAppTheme>['colors']) => StyleSheet.create({
+const styling = (theme: ITheme) => StyleSheet.create({
   bar: {
     flexGrow: 0,
-    backgroundColor: colors.surface,
+    backgroundColor: COLORS[theme].surface,
   },
   tab: {
     minHeight: 48,
@@ -42,13 +44,13 @@ const styling = (colors: ReturnType<typeof useAppTheme>['colors']) => StyleSheet
     borderBottomColor: 'transparent',
   },
   selectedTab: {
-    borderBottomColor: colors['brand-primary'],
+    borderBottomColor: COLORS[theme]['brand-primary']
   },
   label: {
-    color: colors['text-secondary'],
+    color: COLORS[theme]['text-secondary'],
   },
   selectedLabel: {
-    color: colors['brand-primary'],
+    color: COLORS[theme]['brand-primary'],
   },
 });
 

@@ -1,24 +1,37 @@
 import type { LinkingOptions } from '@react-navigation/native';
-import type { RootStackParamList } from './navigation.types';
+import { EStackScreens, ETopScreens } from '@shared/constants/screens.constants';
+import { AppStackParamsList } from '@shared/types/navigation.types';
 
 /**
  * Deep linking configuration for the application.
  */
-export const linking: LinkingOptions<RootStackParamList> = {
-    prefixes: ['awesome://app'], // Replace with actual scheme
+export const linking: LinkingOptions<AppStackParamsList> = {
+    prefixes: ['awesome://app'],
     config: {
         screens: {
-            Login: 'login',
-            Main: {
+            [EStackScreens.LOGIN]: 'login',
+            [EStackScreens.MAIN]: {
                 screens: {
-                    food: 'food',
-                    instamart: 'instamart',
-                    dineout: 'dineout',
-                    events: 'events',
+                    [ETopScreens.FOOD]: {
+                        screens: {
+                            RecipeDetails: 'food/recipe/:id',
+                            FoodCart: 'food/cart',
+                        },
+                    },
+                    [ETopScreens.DINING]: {
+                        screens: {
+                            EventDetails: 'dining/event/:id',
+                        },
+                    },
                 },
             },
-            Profile: 'profile',
-            Payment: 'payment',
+            [EStackScreens.PROFILE]: 'profile',
+            [EStackScreens.ACCOUNT_DETAILS]: 'account-details',
+            [EStackScreens.NOTIFICATIONS]: 'notifications',
+            [EStackScreens.SETTINGS]: 'settings',
+            [EStackScreens.PAYMENT]: 'payment',
+            [EStackScreens.LOCATION_PICKER]: 'location-picker',
+            [EStackScreens.ADDRESS_SEARCH]: 'address-search',
         },
     },
 };

@@ -1,14 +1,16 @@
 import { createNavigationContainerRef } from '@react-navigation/native';
+import { EStackScreens } from '@shared/constants/screens.constants';
+import { AppStackParamsList } from '@shared/types/navigation.types';
 
-export const navigationRef = createNavigationContainerRef<any>();
+export const navigationRef = createNavigationContainerRef<AppStackParamsList>();
 
-export const navigate = (name: string, params?: object): void => {
+export function navigate(name: EStackScreens, params?: Record<string, unknown>) {
   if (navigationRef.isReady()) {
-    (navigationRef as any).navigate(name, params);
+    (navigationRef.navigate as any)(name, params);
   }
-};
+}
 
-export const goBack = (): void => {
+export const goBack = () => {
   if (navigationRef.isReady() && navigationRef.canGoBack()) {
     navigationRef.goBack();
   }

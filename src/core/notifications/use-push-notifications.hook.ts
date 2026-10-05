@@ -7,10 +7,11 @@ import {
   subscribeToPushMessages,
   type PushMessage,
 } from './push.service';
+import { EStackScreens } from '@shared/constants/screens.constants';
 
 export const usePushNotifications = (): void => {
   useEffect(() => {
-    const handlePushRoute = (route?: string) => {
+    const handlePushRoute = (route?: EStackScreens) => {
       if (!navigationRef.isReady()) {
         return;
       }
@@ -23,7 +24,7 @@ export const usePushNotifications = (): void => {
       }
 
       try {
-        navigate('Notifications');
+        navigate(EStackScreens.NOTIFICATIONS);
       } catch {}
     };
 
@@ -35,13 +36,13 @@ export const usePushNotifications = (): void => {
         description: message.body ?? '',
         type: 'info',
         duration: 4000,
-        onPress: () => handlePushRoute(message.route),
+        onPress: () => handlePushRoute(message.route as EStackScreens | undefined),
       });
     };
 
     const handleOpened = (message: PushMessage) => {
       queryClient.invalidateQueries({ queryKey: ['platform', 'notifications'] });
-      handlePushRoute(message.route);
+      handlePushRoute(message.route as EStackScreens | undefined);
     };
 
     getInitialPushMessage().then(initialMessage => {

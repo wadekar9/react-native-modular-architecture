@@ -1,11 +1,11 @@
 import React from 'react';
-import { ParamListBase } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getActiveVerticals } from '@modules/registry';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
 import VerticalSwitcher from './vertical-switcher.component';
+import { MainTopTabBarParamsList } from '@shared/types/navigation.types';
 
-const Tabs = createMaterialTopTabNavigator<ParamListBase>();
+const Tabs = createMaterialTopTabNavigator<MainTopTabBarParamsList>();
 
 const MainNavigator = () => {
   const flags = useAppSelector(state => state.flags);
@@ -22,7 +22,7 @@ const MainNavigator = () => {
       {activeVerticals.map(vertical => (
         <Tabs.Screen
           key={vertical.id}
-          name={vertical.id}
+          name={vertical.id as keyof MainTopTabBarParamsList}
           getComponent={vertical.getNavigator}
           options={{ title: vertical.title }}
         />
