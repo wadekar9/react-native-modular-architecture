@@ -1,8 +1,14 @@
 import type { ModuleManifest } from '../src/modules/module.types';
 
 const mockFoodNavigatorLoaded = jest.fn();
-jest.mock('../src/modules/verticals/food/navigation/vertical.navigator', () => {
+jest.mock('../src/modules/verticals/food/navigation/food.stack', () => {
   mockFoodNavigatorLoaded();
+  return { __esModule: true, default: () => null };
+});
+
+const mockDiningNavigatorLoaded = jest.fn();
+jest.mock('../src/modules/verticals/dining/navigation/dining.stack', () => {
+  mockDiningNavigatorLoaded();
   return { __esModule: true, default: () => null };
 });
 
@@ -10,11 +16,10 @@ import { getActiveVerticals, runLogoutHooks, verticals } from '../src/modules/re
 
 test('registry keeps vertical navigators lazy', () => {
   expect(mockFoodNavigatorLoaded).not.toHaveBeenCalled();
+  expect(mockDiningNavigatorLoaded).not.toHaveBeenCalled();
   expect(verticals.map(vertical => vertical.id)).toEqual([
     'food',
-    'instamart',
-    'dineout',
-    'events',
+    'dining',
   ]);
 });
 
