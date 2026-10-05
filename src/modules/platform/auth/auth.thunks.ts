@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { saveAccessToken } from '@core/storage/session.storage';
 import {
-  saveAccessToken,
   setSignedIn,
   setUser,
   signInFailed,
   signInStarted,
   signInSucceeded,
-} from '@core/auth';
+} from '@core/store/slices';
 import { login } from './services/auth.api';
 
 type SignInCredentials = {

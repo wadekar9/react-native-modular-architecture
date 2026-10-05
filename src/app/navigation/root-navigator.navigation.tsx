@@ -11,12 +11,14 @@ import {
   Notifications,
   Payment,
   Profile,
-  Settings
+  Settings,
+  usePushNotifications,
 } from '@modules/platform';
+import { runLogoutHooks } from '@modules/registry';
+import { queryClient } from '@core/networking/query-client';
 import { linking } from './linking';
 import MainNavigator from './main-navigator.navigation';
 import { useNavigationTheme } from '@shared/hooks';
-import { usePushNotifications } from '@core/notifications';
 import { navigationRef } from '@core/navigation';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackParamsList } from '@shared/types/navigation.types';
@@ -28,6 +30,15 @@ const RootNavigator = () => {
     const isSignedIn = useAppSelector(state => state.session.isSignedIn);
 
     usePushNotifications();
+
+    const wasSignedInRef = React.useRef(isSignedIn);
+    useEffect(() => {
+        if (wasSignedInRef.current && !isSignedIn) {
+            runLogoutHooks();
+            queryClient.clear();
+        }
+        wasSignedInRef.current = isSignedIn;
+    }, [isSignedIn]);
 
     useEffect(() => {
         const hideSplash = async () => {

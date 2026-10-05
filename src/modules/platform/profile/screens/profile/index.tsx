@@ -5,12 +5,13 @@ import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
 import { EStackScreens } from '@shared/constants/screens.constants';
-import { NotificationItem, useNotifications } from '@modules/platform';
+import { NotificationItem, useNotifications, useLogout } from '@modules/platform';
 
 const Profile: React.FC<AppStackScreenProps<EStackScreens.PROFILE>> = ({ navigation }) => {
 
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => styling(colors), [colors]);
+  const logout = useLogout();
   const user = useAppSelector(state => state.user.user);
   const notificationsQuery = useNotifications();
   const unreadCount = notificationsQuery.data?.filter((n: NotificationItem) => !n.read).length ?? 0;
@@ -65,7 +66,7 @@ const Profile: React.FC<AppStackScreenProps<EStackScreens.PROFILE>> = ({ navigat
 
         <Pressable
           accessibilityRole="button"
-          onPress={() => navigation.reset({ index: 0, routes: [{ name: EStackScreens.LOGIN }] })}
+          onPress={logout}
           style={[styles.logoutButton, { backgroundColor: colors['brand-primary'] }]}
         >
           <Text style={[styles.logoutText, { color: colors.surface }]}>Log out</Text>

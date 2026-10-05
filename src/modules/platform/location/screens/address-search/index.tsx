@@ -11,11 +11,8 @@ import { Crosshair, MapPin, Search, X, Home, Briefcase } from 'lucide-react-nati
 import { showMessage } from 'react-native-flash-message';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import {
-  DEFAULT_ADDRESS,
-  type AddressItem,
-  type PlacePrediction,
-} from '@core/location';
+import { DEFAULT_ADDRESS } from '../../services/geocoding.service';
+import type { AddressItem, PlacePrediction } from '../../types/location.types';
 import {
   useSavedAddresses,
   useSearchPlaces,

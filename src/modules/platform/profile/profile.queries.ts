@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAppDispatch, useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import { setUser } from '@core/auth';
+import { setUser } from '@core/store/slices';
 import { getProfileDetails, saveProfileDetails, type ProfileDetails } from './profile.service';
 
 export const profileQueryKey = ['platform', 'profile', 'details'] as const;

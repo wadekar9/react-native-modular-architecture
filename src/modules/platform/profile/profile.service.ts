@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc } from '@react-native-firebase/firestore';
 import { ensureFirebaseIdentity, getFirebaseDatabase, isFirebaseConfigured } from '@core/firebase/firebase';
 import { getJson, Storage } from '@core/storage/storage';
-import type { IAuthUser } from '@core/auth/types';
+import type { IAuthUser } from '@shared/types/user.types';
 
 const LOCAL_PROFILE_KEY = '@profile.details';
 

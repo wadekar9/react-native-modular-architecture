@@ -6,9 +6,8 @@ import {
   saveAddress,
   searchPlaces,
   setSelectedAddress,
-  type AddressItem,
-  type Coordinates,
-} from '@core/location';
+} from './services/geocoding.service';
+import type { AddressItem, Coordinates } from './types/location.types';
 
 export const locationKeys = {
   selectedAddress: ['platform', 'location', 'selected'] as const,

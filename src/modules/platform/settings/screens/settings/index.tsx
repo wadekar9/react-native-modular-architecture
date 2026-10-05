@@ -4,12 +4,11 @@ import { showMessage } from 'react-native-flash-message';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { isFirebaseConfigured } from '@core/firebase/firebase';
-import { registerPushDevice } from '@core/notifications/push.service';
 import type { AppStackScreenProps } from '@shared/types/navigation.types';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { useAppSettings, useSaveAppSettings } from '../../settings.queries';
 import { DEFAULT_SETTINGS } from '../../settings.service';
-import { useAddNotification } from '../../../notifications';
+import { registerPushDevice, useAddNotification } from '../../../notifications';
 import { styling } from './styles';
 import SettingSwitch from '../../components/SettingSwitch';
 

@@ -12,11 +12,8 @@ import { showMessage } from 'react-native-flash-message';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { BaseMapView } from '@shared/components/maps';
 import { useAppTheme } from '@shared/hooks';
-import {
-  DEFAULT_COORDINATES,
-  type AddressItem,
-  type Coordinates,
-} from '@core/location';
+import { DEFAULT_COORDINATES } from '../../services/geocoding.service';
+import type { AddressItem, Coordinates } from '../../types/location.types';
 import {
   useReverseGeocode,
   useSelectedAddress,
