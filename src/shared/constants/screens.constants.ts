@@ -1,14 +1,11 @@
 export enum EStackScreens {
-    PROFILE = "Profile",
-    ACCOUNT_DETAILS = "AccountDetails",
-    NOTIFICATIONS = "Notifications",
-    SETTINGS = "Settings",
-    PAYMENT = "Payment",
-    LOGIN = "Login",
     SPLASH = "Splash",
-    MAIN = "Main",
-    LOCATION_PICKER = "LocationPicker",
-    ADDRESS_SEARCH = "AddressSearch",
+    LOGIN = "Login",
+    REGISTER = "Register",
+    FORGOT_PASSWORD = "ForgotPassword",
+    OTP_VERIFICATION = "OTPVerification",
+    RESET_PASSWORD = "ResetPassword",
+    MAIN = "Main"
 }
 
 export enum ETopScreens {

@@ -4,16 +4,14 @@ import { MaterialTopTabNavigationProp, MaterialTopTabScreenProps } from '@react-
 import { EBottomScreens, EStackScreens, ETopScreens } from '@shared/constants/screens.constants';
 
 export type AppStackParamsList = {
-    [EStackScreens.PROFILE]: undefined;
-    [EStackScreens.ACCOUNT_DETAILS]: undefined;
-    [EStackScreens.NOTIFICATIONS]: undefined;
-    [EStackScreens.SETTINGS]: undefined;
-    [EStackScreens.PAYMENT]: undefined;
     [EStackScreens.SPLASH]: undefined;
     [EStackScreens.LOGIN]: undefined;
+    [EStackScreens.REGISTER]: undefined;
+    [EStackScreens.FORGOT_PASSWORD]: undefined;
+    [EStackScreens.OTP_VERIFICATION]: undefined;
+    [EStackScreens.RESET_PASSWORD]: undefined;
     [EStackScreens.MAIN]: undefined;
-    [EStackScreens.LOCATION_PICKER]: undefined;
-    [EStackScreens.ADDRESS_SEARCH]: undefined;
+
 }
 
 export type MainTopTabBarParamsList = {

@@ -1,3 +1,5 @@
+import { EDiningStackScreens } from '@modules/verticals/dining/constants/screens.constants';
+import { EFoodStackScreens } from '@modules/verticals/food/constants/screens.constants';
 import type { LinkingOptions } from '@react-navigation/native';
 import { EStackScreens, ETopScreens } from '@shared/constants/screens.constants';
 import { AppStackParamsList } from '@shared/types/navigation.types';
@@ -6,7 +8,7 @@ import { AppStackParamsList } from '@shared/types/navigation.types';
  * Deep linking configuration for the application.
  */
 export const linking: LinkingOptions<AppStackParamsList> = {
-    prefixes: ['awesome://app'],
+    prefixes: ['super://app'],
     config: {
         screens: {
             [EStackScreens.LOGIN]: 'login',
@@ -14,24 +16,17 @@ export const linking: LinkingOptions<AppStackParamsList> = {
                 screens: {
                     [ETopScreens.FOOD]: {
                         screens: {
-                            RecipeDetails: 'food/recipe/:id',
-                            FoodCart: 'food/cart',
+                            [EFoodStackScreens.RECIPE_DETAILS]: 'food/recipe/:id',
+                            [EFoodStackScreens.FOOD_CART]: 'food/cart',
                         },
                     },
                     [ETopScreens.DINING]: {
                         screens: {
-                            EventDetails: 'dining/event/:id',
+                            [EDiningStackScreens.EVENT_DETAILS]: 'dining/event/:id',
                         },
                     },
                 },
-            },
-            [EStackScreens.PROFILE]: 'profile',
-            [EStackScreens.ACCOUNT_DETAILS]: 'account-details',
-            [EStackScreens.NOTIFICATIONS]: 'notifications',
-            [EStackScreens.SETTINGS]: 'settings',
-            [EStackScreens.PAYMENT]: 'payment',
-            [EStackScreens.LOCATION_PICKER]: 'location-picker',
-            [EStackScreens.ADDRESS_SEARCH]: 'address-search',
+            }
         },
     },
 };

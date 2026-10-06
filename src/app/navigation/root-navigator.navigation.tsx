@@ -2,18 +2,7 @@ import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import BootSplash from 'react-native-bootsplash';
-import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
-import {
-  AccountDetails,
-  AddressSearch,
-  LocationPicker,
-  Login,
-  Notifications,
-  Payment,
-  Profile,
-  Settings,
-  usePushNotifications,
-} from '@modules/platform';
+import { useAppSelector } from '@core/store/hooks';
 import { runLogoutHooks } from '@modules/registry';
 import { queryClient } from '@core/networking/query-client';
 import { linking } from './linking';
@@ -22,14 +11,13 @@ import { useNavigationTheme } from '@shared/hooks';
 import { navigationRef } from '@core/navigation';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackParamsList } from '@shared/types/navigation.types';
+import Routes from '@modules/platform/routes';
 
 const RootStack = createNativeStackNavigator<AppStackParamsList>();
 
 const RootNavigator = () => {
     const navigationTheme = useNavigationTheme();
     const isSignedIn = useAppSelector(state => state.session.isSignedIn);
-
-    usePushNotifications();
 
     const wasSignedInRef = React.useRef(isSignedIn);
     useEffect(() => {
@@ -41,34 +29,31 @@ const RootNavigator = () => {
     }, [isSignedIn]);
 
     useEffect(() => {
-        const hideSplash = async () => {
-            try {
-                if (BootSplash.isVisible()) {
-                    await BootSplash.hide({ fade: true });
-                }
-            } catch {}
-        };
-
-        hideSplash();
+        (async () => {
+            if (BootSplash.isVisible()) {
+                await BootSplash.hide({ fade: true });
+            }
+        })();
     }, []);
 
     return (
-        <NavigationContainer<AppStackParamsList> ref={navigationRef} theme={navigationTheme} linking={linking}>
-            <RootStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
-                {isSignedIn ? (
-                    <>
-                        <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
-                        <RootStack.Screen name={EStackScreens.PROFILE} component={Profile} />
-                        <RootStack.Screen name={EStackScreens.ACCOUNT_DETAILS} component={AccountDetails} />
-                        <RootStack.Screen name={EStackScreens.NOTIFICATIONS} component={Notifications} />
-                        <RootStack.Screen name={EStackScreens.SETTINGS} component={Settings} />
-                        <RootStack.Screen name={EStackScreens.PAYMENT} component={Payment} />
-                        <RootStack.Screen name={EStackScreens.LOCATION_PICKER} component={LocationPicker} />
-                        <RootStack.Screen name={EStackScreens.ADDRESS_SEARCH} component={AddressSearch} />
-                    </>
-                ) : (
-                    <RootStack.Screen name={EStackScreens.LOGIN} component={Login} />
-                )}
+        <NavigationContainer
+            ref={navigationRef}
+            theme={navigationTheme}
+            linking={linking}
+        >
+            <RootStack.Navigator
+                initialRouteName={EStackScreens.SPLASH}
+                screenOptions={{ headerShown: false, animation: 'fade' }}
+            >
+                <RootStack.Screen name={EStackScreens.SPLASH} component={Routes.Splash} />
+                <RootStack.Screen name={EStackScreens.LOGIN} component={Routes.Login} />
+                <RootStack.Screen name={EStackScreens.REGISTER} component={Routes.Register} />
+                <RootStack.Screen name={EStackScreens.FORGOT_PASSWORD} component={Routes.ForgotPassword} />
+                <RootStack.Screen name={EStackScreens.RESET_PASSWORD} component={Routes.ResetPassword} />
+                <RootStack.Screen name={EStackScreens.OTP_VERIFICATION} component={Routes.OtpVerification} />
+
+                <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
             </RootStack.Navigator>
         </NavigationContainer>
     );
