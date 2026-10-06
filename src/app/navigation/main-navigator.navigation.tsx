@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getActiveVerticals } from '@modules/registry';
-import { useAppSelector } from '@core/store/hooks/store-dispatch-selector.hook';
+import { useAppSelector } from '@core/store/hooks';
 import VerticalSwitcher from './vertical-switcher.component';
 import { MainTopTabBarParamsList } from '@shared/types/navigation.types';
 

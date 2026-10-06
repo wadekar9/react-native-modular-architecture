@@ -24,6 +24,13 @@ const RootNavigator = () => {
         if (wasSignedInRef.current && !isSignedIn) {
             runLogoutHooks();
             queryClient.clear();
+            if (navigationRef.isReady()) {
+                navigationRef.reset({ index: 0, routes: [{ name: EStackScreens.LOGIN }] });
+            }
+        } else if (!wasSignedInRef.current && isSignedIn) {
+            if (navigationRef.isReady()) {
+                navigationRef.reset({ index: 0, routes: [{ name: EStackScreens.MAIN }] });
+            }
         }
         wasSignedInRef.current = isSignedIn;
     }, [isSignedIn]);

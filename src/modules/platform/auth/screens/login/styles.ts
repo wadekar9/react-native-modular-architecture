@@ -1,67 +1,100 @@
 import { COLORS } from '@shared/constants/colors.constants';
+import { EFonts, moderateScale } from '@shared/constants/styles.constants';
 import { ITheme } from '@shared/types/theme.types';
 import { StyleSheet } from 'react-native';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS[theme].background,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
+    paddingHorizontal: moderateScale(20),
+    paddingVertical: moderateScale(24),
   },
   card: {
-    borderRadius: 20,
-    padding: 24,
+    borderRadius: moderateScale(16),
+    padding: moderateScale(20),
     borderWidth: 1,
     borderColor: COLORS[theme].border,
-    backgroundColor: COLORS[theme].background,
+    backgroundColor: COLORS[theme].surface,
     shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 3,
   },
   logo: {
-    width: 72,
-    height: 72,
-    borderRadius: 18,
+    width: moderateScale(64),
+    height: moderateScale(64),
+    borderRadius: moderateScale(16),
     alignSelf: 'center',
-    marginBottom: 12,
+    marginBottom: moderateScale(12),
   },
   title: {
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: moderateScale(6),
   },
   subtitle: {
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: moderateScale(20),
   },
-  input: {
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 14,
-    fontSize: 16,
+  form: {
+    gap: moderateScale(14),
   },
-  button: {
-    borderRadius: 12,
-    paddingVertical: 14,
-    alignItems: 'center',
+  forgotPasswordContainer: {
+    alignSelf: 'flex-end',
+    marginTop: moderateScale(-4),
+    marginBottom: moderateScale(4),
+  },
+  forgotPasswordText: {
+    fontFamily: EFonts.MEDIUM,
+    fontSize: moderateScale(13),
+    color: COLORS[theme]['brand-primary'],
+  },
+  submitButton: {
+    marginTop: moderateScale(8),
+  },
+  footerRow: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 6,
+    alignItems: 'center',
+    marginTop: moderateScale(18),
+    gap: moderateScale(6),
   },
-  buttonText: {
-    fontWeight: '700',
-    fontSize: 16,
+  footerText: {
+    fontFamily: EFonts.REGULAR,
+    fontSize: moderateScale(14),
   },
-  helperText: {
-    marginTop: 14,
-    textAlign: 'center',
-    fontSize: 12,
+  footerLink: {
+    fontFamily: EFonts.SEMI_BOLD,
+    fontSize: moderateScale(14),
+    color: COLORS[theme]['brand-primary'],
   },
-  error: {
+  demoCard: {
+    marginTop: moderateScale(16),
+    padding: moderateScale(12),
+    borderRadius: moderateScale(8),
+    backgroundColor: COLORS[theme].background,
+    borderWidth: 1,
+    borderColor: COLORS[theme].border,
+    alignItems: 'center',
+  },
+  demoText: {
+    fontSize: moderateScale(12),
+    fontFamily: EFonts.REGULAR,
+  },
+  errorBanner: {
+    backgroundColor: 'rgba(239, 68, 68, 0.12)',
+    padding: moderateScale(10),
+    borderRadius: moderateScale(8),
+    marginBottom: moderateScale(6),
+  },
+  errorText: {
     color: COLORS[theme]['state-danger'],
-    marginBottom: 10,
-    fontSize: 12,
+    fontSize: moderateScale(13),
+    fontFamily: EFonts.REGULAR,
+    textAlign: 'center',
   },
 });
-

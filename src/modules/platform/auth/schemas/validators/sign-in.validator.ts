@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
-const signInValidatorSchema = z.object({
-    email: z.string().nonempty({ message: 'Please enter email address.' }),
-    password: z.string().nonempty({ message: 'Please enter password.' }).min(8, 'Password must be at least 8 characters long.'),
+export const signInValidatorSchema = z.object({
+  username: z.string().min(1, 'Please enter username or email.'),
+  password: z.string().min(1, 'Please enter password.').min(6, 'Password must be at least 6 characters long.'),
 });
 
-
-type signInValidatorSchemaType = z.infer<typeof signInValidatorSchema>;
-export { signInValidatorSchema, type signInValidatorSchemaType };
+export type SignInValidatorSchemaType = z.infer<typeof signInValidatorSchema>;
+export type signInValidatorSchemaType = SignInValidatorSchemaType;

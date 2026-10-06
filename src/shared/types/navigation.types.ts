@@ -8,10 +8,9 @@ export type AppStackParamsList = {
     [EStackScreens.LOGIN]: undefined;
     [EStackScreens.REGISTER]: undefined;
     [EStackScreens.FORGOT_PASSWORD]: undefined;
-    [EStackScreens.OTP_VERIFICATION]: undefined;
-    [EStackScreens.RESET_PASSWORD]: undefined;
+    [EStackScreens.OTP_VERIFICATION]: { email?: string } | undefined;
+    [EStackScreens.RESET_PASSWORD]: { email?: string; otp?: string } | undefined;
     [EStackScreens.MAIN]: undefined;
-
 }
 
 export type MainTopTabBarParamsList = {
