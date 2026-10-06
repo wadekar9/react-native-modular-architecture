@@ -6,7 +6,7 @@ import { useAppTheme, useSafeAreaInsetsStyle } from '@shared/hooks';
 import { COLORS } from '@shared/constants/colors.constants';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { ThemeText, IconButton } from '@shared/components/ui';
-import ArrowLeft from '@shared/assets/icons/arrow-left.svg';
+import { ArrowLeft } from '@shared/assets/icons';
 
 interface AppHeaderProps extends Omit<ViewProps, 'style'> {
     title?: string;

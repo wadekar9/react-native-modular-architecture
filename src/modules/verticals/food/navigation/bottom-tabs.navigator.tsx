@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FreezeOnBlur } from '@modules/platform';
+import { FreezeOnBlur } from '@shared/components/navigation';
 import { FoodBottomBarParamsList } from '../types/navigation.types';
 import { EFoodBottomScreens } from '../constants/screens.constants';
 import { FoodHome } from '../screens';

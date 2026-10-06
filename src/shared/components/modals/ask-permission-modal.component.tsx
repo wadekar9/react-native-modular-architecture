@@ -1,0 +1,136 @@
+import { useTranslation } from 'react-i18next';
+import { BottomSheetRef } from '@shared/types/common.types';
+import { ITheme } from '@shared/types/theme.types';
+import { waitForSeconds } from '@shared/utils/utils.helper';
+import { ThemeText, IconButton } from '@shared/components/ui';
+import React, { useCallback } from 'react';
+import { StyleSheet, View, Modal, Linking } from 'react-native';
+import { moderateScale } from '@shared/constants/styles.constants';
+import { COLORS } from '@shared/constants/colors.constants';
+import { EFonts, EFontSize } from '@shared/constants/styles.constants';
+
+interface PermissionModalProps {
+    theme: ITheme;
+}
+
+type MODE = 'media' | 'camera' | 'location' | 'notification';
+
+interface PermissionModalRef extends Omit<BottomSheetRef, 'open'> {
+    open: (e: MODE) => void;
+}
+
+const AskPermissionModal = React.forwardRef<PermissionModalRef, PermissionModalProps>(({
+    theme = 'light',
+}, ref) => {
+
+    const { t } = useTranslation();
+    const common_t = useCallback((key: string, options?: any) => t(`common:${key}`, options) as string, [t]);
+    const actions_t = useCallback((key: string, options?: any) => t(`actions:${key}`, options) as string, [t]);
+    const messages_t = useCallback((key: string, options?: any) => t(`messages:${key}`, options) as string, [t]);
+    const styles = styling(theme);
+
+    const [visible, setVisible] = React.useState<boolean>(false);
+    const [mode, setMode] = React.useState<MODE>('notification');
+
+    React.useImperativeHandle(ref, () => ({
+        open: (e: MODE) => {
+            setVisible(true);
+            setMode(e);
+        },
+        close: () => setVisible(false)
+    }), []);
+
+    function onOpenSettings() {
+        setVisible(false);
+        waitForSeconds(Linking.openSettings, 500);
+    }
+
+    function onCancel() {
+        setVisible(false);
+    }
+
+    const MESSAGE = React.useMemo(() => {
+        switch (mode) {
+            case 'camera': return common_t('PERMISSIONS_LABEL', { label: mode });
+            case 'media': return common_t('PERMISSIONS_LABEL', { label: mode });
+            case 'location': return common_t('PERMISSIONS_LABEL', { label: mode });
+            case 'notification': return common_t('PERMISSIONS_LABEL', { label: mode });
+            default: return '';
+        }
+    }, [common_t, mode]);
+
+    const DESCRIPTION = React.useMemo(() => {
+        switch (mode) {
+            case 'camera': return messages_t('CAMERA_PERMISSION');
+            case 'media': return messages_t('MEDIA_PERMISSION');
+            case 'location': return messages_t('LOCATION_PERMISSION');
+            case 'notification': return messages_t('NOTIFICATION_PERMISSION');
+            default: return '';
+        }
+    }, [messages_t, mode]);
+
+    return (
+        <Modal
+            visible={visible}
+            transparent={true}
+            animationType={'fade'}
+            onRequestClose={() => onCancel()}
+        >
+            <View style={styles.wrapper}>
+                <View style={styles.container}>
+                    <ThemeText style={styles.message}>{MESSAGE}</ThemeText>
+
+                    <ThemeText numberOfLines={3} style={styles.description}>{DESCRIPTION}</ThemeText>
+
+                    <View style={styles.actions}>
+                        <IconButton onPress={onCancel}>
+                            <ThemeText style={styles.label}>{actions_t('CANCEL')}</ThemeText>
+                        </IconButton>
+                        <IconButton onPress={onOpenSettings}>
+                            <ThemeText style={styles.label}>{actions_t('OPEN_SETTINGS')}</ThemeText>
+                        </IconButton>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+    )
+})
+
+export default React.memo(AskPermissionModal);
+
+const styling = (theme: ITheme) => StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: COLORS[theme].shadow,
+        paddingHorizontal: moderateScale(20)
+    },
+    container: {
+        width: '100%',
+        height: undefined,
+        padding: moderateScale(20),
+        backgroundColor: COLORS[theme].surface,
+        borderRadius: moderateScale(10),
+        gap: moderateScale(10),
+    },
+    message: {
+        textTransform: 'capitalize'
+    },
+    description: {
+        fontFamily: EFonts.MEDIUM,
+        fontSize: moderateScale(14),
+        color: COLORS[theme]['text-primary']
+    },
+    actions: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        gap: moderateScale(20)
+    },
+    label: {
+        fontFamily: EFonts.BOLD,
+        fontSize: EFontSize.LG,
+        color: COLORS[theme]['brand-primary']
+    }
+})

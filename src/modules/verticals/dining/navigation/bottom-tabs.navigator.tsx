@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FreezeOnBlur } from '@modules/platform';
+import { FreezeOnBlur } from '@shared/components/navigation';
 import { Events, Explore } from '../screens';
 import { DiningBottomBarParamsList } from '../types/navigation.types';
 import { EDiningBottomScreens } from '../constants/screens.constants';
@@ -17,5 +17,3 @@ const DiningBottomTabs = () => (
 );
 
 export default DiningBottomTabs;
-
-
