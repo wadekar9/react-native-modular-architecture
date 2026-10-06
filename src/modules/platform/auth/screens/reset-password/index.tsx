@@ -28,7 +28,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const email = route.params?.email || '';
-  const otp = route.params?.otp || '123456';
+  const otp = route.params?.otp || '';
   const { resetPassword, isLoading, error, resetError } = useResetPassword();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 

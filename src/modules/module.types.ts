@@ -7,5 +7,6 @@ export type ModuleManifest = {
   icon?: string;
   getNavigator: () => ComponentType;
   deepLinks?: Record<string, any>;
+  onRegister?: () => void;
   onLogout?: () => void;
 };

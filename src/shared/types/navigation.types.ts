@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { MaterialTopTabNavigationProp, MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs';
-import { EBottomScreens, EStackScreens, ETopScreens } from '@shared/constants/screens.constants';
+import { EBottomScreens, EStackScreens } from '@shared/constants/screens.constants';
 
 export type AppStackParamsList = {
     [EStackScreens.SPLASH]: undefined;
@@ -10,13 +10,11 @@ export type AppStackParamsList = {
     [EStackScreens.FORGOT_PASSWORD]: undefined;
     [EStackScreens.OTP_VERIFICATION]: { email?: string } | undefined;
     [EStackScreens.RESET_PASSWORD]: { email?: string; otp?: string } | undefined;
+    [EStackScreens.NOTIFICATIONS]: undefined;
     [EStackScreens.MAIN]: undefined;
 }
 
-export type MainTopTabBarParamsList = {
-    [ETopScreens.FOOD]: undefined;
-    [ETopScreens.DINING]: undefined;
-}
+export type MainTopTabBarParamsList = Record<string, undefined>;
 
 export type BottomBarParamsList = {
     [EBottomScreens.HOME]: undefined;

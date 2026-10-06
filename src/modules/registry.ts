@@ -7,8 +7,11 @@ export const verticals: ModuleManifest[] = [
   diningManifest
 ];
 
-export const getActiveVerticals = (flags: Record<string, boolean | undefined>) =>
-  verticals.filter(vertical => vertical.flag === undefined || flags[vertical.flag] === true);
+export const getActiveVerticals = (flags: Record<string, boolean | undefined>) => {
+  const active = verticals.filter(vertical => vertical.flag === undefined || flags[vertical.flag] === true);
+  active.forEach(vertical => vertical.onRegister?.());
+  return active;
+};
 
 export const runLogoutHooks = (): void => {
   verticals.forEach(vertical => vertical.onLogout?.());

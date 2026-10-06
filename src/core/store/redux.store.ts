@@ -22,9 +22,6 @@ export const removeReducer = (key: string) => {
     }
 };
 
-export type ApplicationStateType = ReturnType<typeof store.getState> & {
-    cart?: any;
-    [key: string]: any;
-};
+export type ApplicationStateType = ReturnType<typeof store.getState>;
 export type ApplicationDispatch = typeof store.dispatch;
 export default store;

@@ -105,7 +105,7 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
                     label="Verification Code (OTP)"
-                    placeholder="123456"
+                    placeholder="Enter 6-digit code"
                     value={value}
                     onChangeText={(text) => {
                       const cleaned = text.replace(/[^0-9]/g, '').slice(0, 6);
@@ -137,12 +137,6 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
               <Pressable accessibilityRole="button" onPress={handleResend} disabled={isLoading}>
                 <ThemeText style={styles.resendLink}>Resend</ThemeText>
               </Pressable>
-            </View>
-
-            <View style={styles.demoCard}>
-              <ThemeText style={[styles.demoText, { color: colors['text-muted'] }]}>
-                Demo verification code: 123456
-              </ThemeText>
             </View>
           </View>
         </ScrollView>

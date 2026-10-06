@@ -1,7 +1,9 @@
 import * as AuthScreens from './auth/screens';
+import { NotificationListScreen } from './notifications/screens';
 
 const Routes = {
-    ...AuthScreens
-}
+    ...AuthScreens,
+    NotificationList: NotificationListScreen,
+};
 
 export default Routes;

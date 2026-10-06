@@ -72,19 +72,6 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     fontSize: moderateScale(14),
     color: COLORS[theme]['brand-primary'],
   },
-  demoCard: {
-    marginTop: moderateScale(16),
-    padding: moderateScale(12),
-    borderRadius: moderateScale(8),
-    backgroundColor: COLORS[theme].background,
-    borderWidth: 1,
-    borderColor: COLORS[theme].border,
-    alignItems: 'center',
-  },
-  demoText: {
-    fontSize: moderateScale(12),
-    fontFamily: EFonts.REGULAR,
-  },
   errorBanner: {
     backgroundColor: 'rgba(239, 68, 68, 0.12)',
     padding: moderateScale(10),

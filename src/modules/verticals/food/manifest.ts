@@ -3,12 +3,13 @@ import { EFoodStackScreens } from './constants/screens.constants';
 import store, { injectReducer } from '@core/store/redux.store';
 import { cartReducer, clearCart } from './store/cart.slice';
 
-// Dynamically register vertical slice to Redux store
-injectReducer('cart', cartReducer);
-
 const foodManifest: ModuleManifest = {
   id: 'food',
   title: 'Food',
+  onRegister: () => {
+    // Dynamically register vertical slice to Redux store when active
+    injectReducer('cart', cartReducer);
+  },
   getNavigator: () => require('./navigation/food.stack').default,
   deepLinks: {
     screens: {

@@ -3,6 +3,7 @@ import { Image, View } from 'react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks';
+import { IMAGES } from '@shared/assets/images';
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
@@ -28,7 +29,7 @@ const Splash: React.FC<AppStackScreenProps<EStackScreens.SPLASH>> = ({ navigatio
     <ThemedView style={styles.container}>
       <View style={styles.card}>
         <Image
-          source={{ uri: 'https://dummyjson.com/icon/emilys/128' }}
+          source={IMAGES.REACT}
           style={styles.logo}
         />
         <ThemeText variant="h2" style={styles.title}>SuperApp</ThemeText>

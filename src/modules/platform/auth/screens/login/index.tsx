@@ -11,6 +11,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemedView, ThemeText, BaseTextInput, BaseButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
+import { IMAGES } from '@shared/assets/images';
 import { useSignIn } from '../../hooks';
 import {
   signInValidatorSchema,
@@ -32,8 +33,8 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
   } = useForm<SignInValidatorSchemaType>({
     resolver: zodResolver(signInValidatorSchema),
     defaultValues: {
-      username: 'emilys',
-      password: 'emilyspass',
+      username: '',
+      password: '',
     },
   });
 
@@ -65,7 +66,7 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
         >
           <View style={styles.card}>
             <Image
-              source={{ uri: 'https://dummyjson.com/icon/emilys/128' }}
+              source={IMAGES.REACT}
               style={styles.logo}
             />
             <ThemeText variant="h2" style={styles.title}>SuperApp</ThemeText>
@@ -140,12 +141,6 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
               <Pressable accessibilityRole="button" onPress={navigateToRegister}>
                 <ThemeText style={styles.footerLink}>Sign Up</ThemeText>
               </Pressable>
-            </View>
-
-            <View style={styles.demoCard}>
-              <ThemeText style={[styles.demoText, { color: colors['text-muted'] }]}>
-                Demo credentials: emilys / emilyspass
-              </ThemeText>
             </View>
           </View>
         </ScrollView>

@@ -5,12 +5,8 @@ export enum EStackScreens {
     FORGOT_PASSWORD = "ForgotPassword",
     OTP_VERIFICATION = "OTPVerification",
     RESET_PASSWORD = "ResetPassword",
+    NOTIFICATIONS = "Notifications",
     MAIN = "Main"
-}
-
-export enum ETopScreens {
-    FOOD = "food",
-    DINING = "dining",
 }
 
 export enum EBottomScreens {
