@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -7,10 +7,15 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemedView, ThemeText, BaseTextInput, BaseButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useSignIn } from '../../hooks';
-import { signInValidatorSchema } from '../../schemas/validators';
+import {
+  signInValidatorSchema,
+  type SignInValidatorSchemaType,
+} from '../../validators';
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
@@ -20,41 +25,21 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const { signIn, isLoading, error, resetError } = useSignIn();
-  const [username, setUsername] = useState('emilys');
-  const [password, setPassword] = useState('emilyspass');
-  const [validationErrors, setValidationErrors] = useState<{ username?: string; password?: string }>({});
 
-  const handleLogin = async () => {
+  const {
+    control,
+    handleSubmit,
+  } = useForm<SignInValidatorSchemaType>({
+    resolver: zodResolver(signInValidatorSchema),
+    defaultValues: {
+      username: 'emilys',
+      password: 'emilyspass',
+    },
+  });
+
+  const onSubmit = async (values: SignInValidatorSchemaType) => {
     resetError();
-    const result = signInValidatorSchema.safeParse({ username, password });
-    if (!result.success) {
-      const fieldErrors: { username?: string; password?: string } = {};
-      result.error.issues.forEach(issue => {
-        const field = issue.path[0] as keyof typeof fieldErrors;
-        if (field && !fieldErrors[field]) {
-          fieldErrors[field] = issue.message;
-        }
-      });
-      setValidationErrors(fieldErrors);
-      return;
-    }
-
-    setValidationErrors({});
-    await signIn({ username, password });
-  };
-
-  const handleUsernameChange = (text: string) => {
-    setUsername(text);
-    if (validationErrors.username) {
-      setValidationErrors(prev => ({ ...prev, username: undefined }));
-    }
-  };
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    if (validationErrors.password) {
-      setValidationErrors(prev => ({ ...prev, password: undefined }));
-    }
+    await signIn(values);
   };
 
   const navigateToRegister = () => {
@@ -95,27 +80,41 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
             ) : null}
 
             <View style={styles.form}>
-              <BaseTextInput
-                label="Username / Email"
-                placeholder="Enter your username or email"
-                value={username}
-                onChangeText={handleUsernameChange}
-                autoCapitalize="none"
-                autoComplete="username"
-                error={validationErrors.username}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="username"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Username / Email"
+                    placeholder="Enter your username or email"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    autoCapitalize="none"
+                    autoComplete="username"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
-              <BaseTextInput
-                label="Password"
-                placeholder="Enter your password"
-                value={password}
-                onChangeText={handlePasswordChange}
-                secureTextEntry
-                autoCapitalize="none"
-                autoComplete="password"
-                error={validationErrors.password}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Password"
+                    placeholder="Enter your password"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    autoComplete="password"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
               <Pressable
@@ -128,7 +127,7 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
 
               <BaseButton
                 label={isLoading ? 'Signing In...' : 'Sign In'}
-                onPress={handleLogin}
+                onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
               />

@@ -9,3 +9,4 @@ export const resetPasswordValidatorSchema = z.object({
 });
 
 export type ResetPasswordValidatorSchemaType = z.infer<typeof resetPasswordValidatorSchema>;
+

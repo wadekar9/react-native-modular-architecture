@@ -1,29 +1,61 @@
 import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '@core/store/hooks';
-import { resetSignInState } from '@core/store/slices';
-import { signInThunk } from '../auth.thunks';
-import { ILoginRequest } from '../types/auth.types';
+import { useMutation } from '@tanstack/react-query';
+import { useAppDispatch } from '@core/store/hooks';
+import { setSignedIn, setUser } from '@core/store/slices';
+import { saveAccessToken } from '@core/storage/session.storage';
+import { showFlashMessage, showErrorFlashMessage } from '@shared/utils';
+import { login } from '../services/auth.api';
+import type { ILoginRequest } from '../types/auth.types';
 
 export const useSignIn = () => {
   const dispatch = useAppDispatch();
-  const { signInError: error, signInStatus: status } = useAppSelector(state => state.authRequest);
 
-  const signIn = useCallback((credentialsOrUsername: ILoginRequest | string, password?: string) => {
-    const payload = typeof credentialsOrUsername === 'string'
-      ? { username: credentialsOrUsername, password: password || '' }
-      : credentialsOrUsername;
-    return dispatch(signInThunk(payload));
-  }, [dispatch]);
+  const mutation = useMutation({
+    mutationFn: async (credentials: ILoginRequest) => {
+      return login({ ...credentials, expiresInMins: 60 });
+    },
+    onSuccess: (result) => {
+      const token = result.token || result.accessToken;
+      if (token) {
+        saveAccessToken(token);
+      }
+      dispatch(
+        setUser({
+          id: String(result.id),
+          email: result.email,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          avatar: result.image,
+        })
+      );
+      dispatch(setSignedIn(true));
+      showFlashMessage({
+        type: 'success',
+        message: 'Signed In',
+        description: `Welcome back, ${result.firstName || result.username}!`,
+      });
+    },
+    onError: (err: Error) => {
+      showErrorFlashMessage(err.message || 'Unable to sign in. Please try again.');
+    },
+  });
 
-  const resetError = useCallback(() => {
-    dispatch(resetSignInState());
-  }, [dispatch]);
+  const signIn = useCallback(
+    (credentialsOrUsername: ILoginRequest | string, password?: string) => {
+      const payload: ILoginRequest =
+        typeof credentialsOrUsername === 'string'
+          ? { username: credentialsOrUsername, password: password || '' }
+          : credentialsOrUsername;
+      return mutation.mutateAsync(payload);
+    },
+    [mutation]
+  );
 
   return {
     signIn,
-    isLoading: status === 'pending',
-    isSuccess: status === 'succeeded',
-    error,
-    resetError,
+    isLoading: mutation.isPending,
+    isSuccess: mutation.isSuccess,
+    error: mutation.error?.message ?? null,
+    resetError: mutation.reset,
   };
 };

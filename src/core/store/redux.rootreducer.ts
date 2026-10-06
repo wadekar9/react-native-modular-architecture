@@ -1,6 +1,5 @@
 import { combineReducers, Reducer } from '@reduxjs/toolkit';
 import {
-  authRequestReducer,
   authSessionReducer,
   authUserReducer,
   flagsReducer,
@@ -9,7 +8,6 @@ import {
 export const staticReducers = {
   session: authSessionReducer,
   user: authUserReducer,
-  authRequest: authRequestReducer,
   flags: flagsReducer,
 };
 

@@ -1,10 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import {
-  authRequestReducer,
   authSessionReducer,
   authUserReducer,
+  setSignedIn,
+  setUser,
 } from '../src/core/store/slices';
-import { clearSession, getAccessToken } from '../src/core/storage/session.storage';
+import {
+  clearSession,
+  getAccessToken,
+  saveAccessToken,
+} from '../src/core/storage/session.storage';
 import {
   forgotPassword,
   login,
@@ -12,13 +17,6 @@ import {
   resetPassword,
   verifyOtp,
 } from '../src/modules/platform/auth/services/auth.api';
-import {
-  forgotPasswordThunk,
-  registerThunk,
-  resetPasswordThunk,
-  signInThunk,
-  verifyOtpThunk,
-} from '../src/modules/platform/auth/auth.thunks';
 
 jest.mock('../src/modules/platform/auth/services/auth.api', () => ({
   login: jest.fn(),
@@ -34,206 +32,164 @@ const mockedForgotPassword = jest.mocked(forgotPassword);
 const mockedVerifyOtp = jest.mocked(verifyOtp);
 const mockedResetPassword = jest.mocked(resetPassword);
 
-const createTestStore = () => configureStore({
-  reducer: {
-    authRequest: authRequestReducer,
-    session: authSessionReducer,
-    user: authUserReducer,
-  },
-});
+const createTestStore = () =>
+  configureStore({
+    reducer: {
+      session: authSessionReducer,
+      user: authUserReducer,
+    },
+  });
 
-describe('auth thunks', () => {
+describe('modular auth architecture', () => {
   beforeEach(() => {
     clearSession();
     jest.clearAllMocks();
   });
 
-  describe('sign-in thunk', () => {
-    it('stores the session and updates auth state when sign-in succeeds', async () => {
-      mockedLogin.mockResolvedValue({
-        id: 7,
-        username: 'demo',
-        email: 'demo@example.com',
-        firstName: 'Demo',
-        lastName: 'User',
-        gender: 'other',
-        image: 'https://example.com/avatar.png',
-        token: 'access-token',
-      });
+  describe('session & user core store', () => {
+    it('manages persistent session state without redux request pollution', () => {
       const store = createTestStore();
 
-      await store.dispatch(signInThunk({ username: 'demo', password: 'password' }));
+      expect(store.getState().session.isSignedIn).toBe(false);
+      expect(store.getState().user.user).toBeNull();
+      // Ensure transient request state is not part of the core store
+      expect((store.getState() as Record<string, unknown>).authRequest).toBeUndefined();
 
-      expect(getAccessToken()).toBe('access-token');
+      store.dispatch(
+        setUser({
+          id: '1',
+          email: 'emilys@example.com',
+          firstName: 'Emily',
+          lastName: 'Smith',
+        }),
+      );
+      store.dispatch(setSignedIn(true));
+
       expect(store.getState().session.isSignedIn).toBe(true);
-      expect(store.getState().user.user).toMatchObject({
-        id: '7',
-        email: 'demo@example.com',
-        firstName: 'Demo',
-      });
-      expect(store.getState().authRequest).toMatchObject({
-        signInStatus: 'succeeded',
-        signInError: null,
+      expect(store.getState().user.user).toEqual({
+        id: '1',
+        email: 'emilys@example.com',
+        firstName: 'Emily',
+        lastName: 'Smith',
       });
     });
 
-    it('exposes request errors and leaves the session signed out when sign-in fails', async () => {
-      mockedLogin.mockRejectedValue(new Error('Invalid credentials'));
-      const store = createTestStore();
+    it('persists and clears auth session tokens in secure storage', () => {
+      expect(getAccessToken()).toBeUndefined();
 
-      const action = await store.dispatch(signInThunk({ username: 'demo', password: 'wrong' }));
+      saveAccessToken('test-access-token-xyz');
+      expect(getAccessToken()).toBe('test-access-token-xyz');
 
-      expect(signInThunk.rejected.match(action)).toBe(true);
-      expect(store.getState().session.isSignedIn).toBe(false);
-      expect(store.getState().authRequest).toMatchObject({
-        signInStatus: 'failed',
-        signInError: 'Invalid credentials',
-      });
+      clearSession();
+      expect(getAccessToken()).toBeUndefined();
     });
   });
 
-  describe('register thunk', () => {
-    it('updates register state when registration succeeds', async () => {
-      mockedRegister.mockResolvedValue({
+  describe('auth services API integration', () => {
+    it('handles sign in API success and failure', async () => {
+      mockedLogin.mockResolvedValueOnce({
+        id: 7,
+        username: 'emilys',
+        email: 'emilys@example.com',
+        firstName: 'Emily',
+        lastName: 'Smith',
+        gender: 'female',
+        image: 'https://example.com/avatar.png',
+        token: 'access-token-123',
+      });
+
+      const response = await login({ username: 'emilys', password: 'password' });
+      expect(response.token).toBe('access-token-123');
+      expect(response.username).toBe('emilys');
+
+      mockedLogin.mockRejectedValueOnce(new Error('Invalid credentials'));
+      await expect(login({ username: 'emilys', password: 'wrong' })).rejects.toThrow(
+        'Invalid credentials',
+      );
+    });
+
+    it('handles register API success and failure', async () => {
+      mockedRegister.mockResolvedValueOnce({
         id: 99,
         username: 'newuser',
         email: 'newuser@example.com',
         firstName: 'New',
         lastName: 'User',
       });
-      const store = createTestStore();
 
-      const action = await store.dispatch(registerThunk({
+      const response = await register({
         username: 'newuser',
         email: 'newuser@example.com',
+        firstName: 'New',
+        lastName: 'User',
         password: 'password123',
-      }));
-
-      expect(registerThunk.fulfilled.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        registerStatus: 'succeeded',
-        registerError: null,
       });
+      expect(response.id).toBe(99);
+      expect(response.username).toBe('newuser');
+
+      mockedRegister.mockRejectedValueOnce(new Error('Email already registered'));
+      await expect(
+        register({
+          username: 'newuser',
+          email: 'newuser@example.com',
+          firstName: 'New',
+          lastName: 'User',
+          password: 'password123',
+        }),
+      ).rejects.toThrow('Email already registered');
     });
 
-    it('handles registration failure', async () => {
-      mockedRegister.mockRejectedValue(new Error('Username already exists'));
-      const store = createTestStore();
-
-      const action = await store.dispatch(registerThunk({
-        username: 'existing',
-        email: 'existing@example.com',
-        password: 'password123',
-      }));
-
-      expect(registerThunk.rejected.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        registerStatus: 'failed',
-        registerError: 'Username already exists',
-      });
-    });
-  });
-
-  describe('forgot password thunk', () => {
-    it('updates forgot password state when request succeeds', async () => {
-      mockedForgotPassword.mockResolvedValue({
+    it('handles forgot password API success and failure', async () => {
+      mockedForgotPassword.mockResolvedValueOnce({
         success: true,
-        message: 'OTP sent',
-        otp: '123456',
+        message: 'OTP sent successfully',
       });
-      const store = createTestStore();
 
-      const action = await store.dispatch(forgotPasswordThunk({ email: 'test@example.com' }));
+      const response = await forgotPassword({ email: 'user@example.com' });
+      expect(response.message).toBe('OTP sent successfully');
 
-      expect(forgotPasswordThunk.fulfilled.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        forgotPasswordStatus: 'succeeded',
-        forgotPasswordError: null,
-      });
+      mockedForgotPassword.mockRejectedValueOnce(new Error('User not found'));
+      await expect(forgotPassword({ email: 'unknown@example.com' })).rejects.toThrow(
+        'User not found',
+      );
     });
 
-    it('handles forgot password failure', async () => {
-      mockedForgotPassword.mockRejectedValue(new Error('Email not found'));
-      const store = createTestStore();
-
-      const action = await store.dispatch(forgotPasswordThunk({ email: 'unknown@example.com' }));
-
-      expect(forgotPasswordThunk.rejected.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        forgotPasswordStatus: 'failed',
-        forgotPasswordError: 'Email not found',
-      });
-    });
-  });
-
-  describe('verify otp thunk', () => {
-    it('updates otp state when verification succeeds', async () => {
-      mockedVerifyOtp.mockResolvedValue({
+    it('handles verify OTP API success and failure', async () => {
+      mockedVerifyOtp.mockResolvedValueOnce({
         success: true,
-        message: 'Verified',
-        resetToken: 'token-abc',
+        message: 'OTP verified',
       });
-      const store = createTestStore();
 
-      const action = await store.dispatch(verifyOtpThunk({ email: 'test@example.com', otp: '123456' }));
+      const response = await verifyOtp({ email: 'user@example.com', otp: '123456' });
+      expect(response.success).toBe(true);
 
-      expect(verifyOtpThunk.fulfilled.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        otpStatus: 'succeeded',
-        otpError: null,
-      });
+      mockedVerifyOtp.mockRejectedValueOnce(new Error('Invalid OTP'));
+      await expect(verifyOtp({ email: 'user@example.com', otp: '000000' })).rejects.toThrow(
+        'Invalid OTP',
+      );
     });
 
-    it('handles invalid otp failure', async () => {
-      mockedVerifyOtp.mockRejectedValue(new Error('Invalid OTP'));
-      const store = createTestStore();
-
-      const action = await store.dispatch(verifyOtpThunk({ email: 'test@example.com', otp: '000000' }));
-
-      expect(verifyOtpThunk.rejected.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        otpStatus: 'failed',
-        otpError: 'Invalid OTP',
-      });
-    });
-  });
-
-  describe('reset password thunk', () => {
-    it('updates reset password state when password reset succeeds', async () => {
-      mockedResetPassword.mockResolvedValue({
+    it('handles reset password API success and failure', async () => {
+      mockedResetPassword.mockResolvedValueOnce({
         success: true,
-        message: 'Password reset',
+        message: 'Password reset successful',
       });
-      const store = createTestStore();
 
-      const action = await store.dispatch(resetPasswordThunk({
-        email: 'test@example.com',
+      const response = await resetPassword({
+        email: 'user@example.com',
         otp: '123456',
-        newPassword: 'newPassword123',
-      }));
-
-      expect(resetPasswordThunk.fulfilled.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        resetPasswordStatus: 'succeeded',
-        resetPasswordError: null,
+        newPassword: 'newpassword123',
       });
-    });
+      expect(response.success).toBe(true);
 
-    it('handles reset password failure', async () => {
-      mockedResetPassword.mockRejectedValue(new Error('Reset token expired'));
-      const store = createTestStore();
-
-      const action = await store.dispatch(resetPasswordThunk({
-        email: 'test@example.com',
-        otp: '123456',
-        newPassword: 'newPassword123',
-      }));
-
-      expect(resetPasswordThunk.rejected.match(action)).toBe(true);
-      expect(store.getState().authRequest).toMatchObject({
-        resetPasswordStatus: 'failed',
-        resetPasswordError: 'Reset token expired',
-      });
+      mockedResetPassword.mockRejectedValueOnce(new Error('Reset token expired'));
+      await expect(
+        resetPassword({
+          email: 'user@example.com',
+          otp: '123456',
+          newPassword: 'newpassword123',
+        }),
+      ).rejects.toThrow('Reset token expired');
     });
   });
 });

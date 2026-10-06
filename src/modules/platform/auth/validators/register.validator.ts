@@ -13,3 +13,4 @@ export const registerValidatorSchema = z.object({
 });
 
 export type RegisterValidatorSchemaType = z.infer<typeof registerValidatorSchema>;
+

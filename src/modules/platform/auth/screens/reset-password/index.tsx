@@ -6,11 +6,16 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemedView, ThemeText, BaseTextInput, BaseButton } from '@shared/components/ui';
 import { AppHeader } from '@shared/components/navigation';
 import { useAppTheme } from '@shared/hooks';
 import { useResetPassword } from '../../hooks';
-import { resetPasswordValidatorSchema } from '../../schemas/validators';
+import {
+  resetPasswordValidatorSchema,
+  type ResetPasswordValidatorSchemaType,
+} from '../../validators';
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
@@ -25,55 +30,34 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
   const email = route.params?.email || '';
   const otp = route.params?.otp || '123456';
   const { resetPassword, isLoading, error, resetError } = useResetPassword();
-
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [validationErrors, setValidationErrors] = useState<{ password?: string; confirmPassword?: string }>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const handleResetPassword = async () => {
+  const {
+    control,
+    handleSubmit,
+  } = useForm<ResetPasswordValidatorSchemaType>({
+    resolver: zodResolver(resetPasswordValidatorSchema),
+    defaultValues: {
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = async (values: ResetPasswordValidatorSchemaType) => {
     resetError();
     setSuccessMessage(null);
-
-    const result = resetPasswordValidatorSchema.safeParse({ password, confirmPassword });
-    if (!result.success) {
-      const fieldErrors: { password?: string; confirmPassword?: string } = {};
-      result.error.issues.forEach(issue => {
-        const field = issue.path[0] as keyof typeof fieldErrors;
-        if (field && !fieldErrors[field]) {
-          fieldErrors[field] = issue.message;
-        }
+    try {
+      await resetPassword({
+        email,
+        otp,
+        newPassword: values.password,
       });
-      setValidationErrors(fieldErrors);
-      return;
-    }
-
-    setValidationErrors({});
-    const response = await resetPassword({
-      email,
-      otp,
-      newPassword: password,
-    });
-
-    if (response.meta.requestStatus === 'fulfilled') {
       setSuccessMessage('Password reset successfully! Redirecting to sign in...');
       setTimeout(() => {
         navigation.navigate(EStackScreens.LOGIN);
       }, 1500);
-    }
-  };
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text);
-    if (validationErrors.password) {
-      setValidationErrors(prev => ({ ...prev, password: undefined }));
-    }
-  };
-
-  const handleConfirmPasswordChange = (text: string) => {
-    setConfirmPassword(text);
-    if (validationErrors.confirmPassword) {
-      setValidationErrors(prev => ({ ...prev, confirmPassword: undefined }));
+    } catch {
+      // Error handled by mutation onError
     }
   };
 
@@ -113,31 +97,45 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
             ) : null}
 
             <View style={styles.form}>
-              <BaseTextInput
-                label="New Password"
-                placeholder="Enter new password"
-                value={password}
-                onChangeText={handlePasswordChange}
-                secureTextEntry
-                autoCapitalize="none"
-                error={validationErrors.password}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="New Password"
+                    placeholder="Enter new password"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
-              <BaseTextInput
-                label="Confirm New Password"
-                placeholder="Re-enter new password"
-                value={confirmPassword}
-                onChangeText={handleConfirmPasswordChange}
-                secureTextEntry
-                autoCapitalize="none"
-                error={validationErrors.confirmPassword}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="confirmPassword"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Confirm New Password"
+                    placeholder="Re-enter new password"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
               <BaseButton
                 label={isLoading ? 'Updating Password...' : 'Reset Password'}
-                onPress={handleResetPassword}
+                onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
               />

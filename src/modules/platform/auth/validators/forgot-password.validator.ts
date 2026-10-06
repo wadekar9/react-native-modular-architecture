@@ -5,3 +5,4 @@ export const forgotPasswordValidatorSchema = z.object({
 });
 
 export type ForgotPasswordValidatorSchemaType = z.infer<typeof forgotPasswordValidatorSchema>;
+

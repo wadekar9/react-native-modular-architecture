@@ -6,11 +6,16 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ThemedView, ThemeText, BaseTextInput, BaseButton } from '@shared/components/ui';
 import { AppHeader } from '@shared/components/navigation';
 import { useAppTheme } from '@shared/hooks';
 import { useRegister } from '../../hooks';
-import { registerValidatorSchema } from '../../schemas/validators';
+import {
+  registerValidatorSchema,
+  type RegisterValidatorSchemaType,
+} from '../../validators';
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
@@ -20,64 +25,40 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const { register, isLoading, error, resetError } = useRegister();
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const handleRegister = async () => {
+  const {
+    control,
+    handleSubmit,
+  } = useForm<RegisterValidatorSchemaType>({
+    resolver: zodResolver(registerValidatorSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  const onSubmit = async (values: RegisterValidatorSchemaType) => {
     resetError();
     setSuccessMessage(null);
-
-    const result = registerValidatorSchema.safeParse({
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      confirmPassword,
-    });
-
-    if (!result.success) {
-      const fieldErrors: Record<string, string> = {};
-      result.error.issues.forEach(issue => {
-        const field = issue.path[0] as string;
-        if (field && !fieldErrors[field]) {
-          fieldErrors[field] = issue.message;
-        }
+    try {
+      await register({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        username: values.username,
+        email: values.email,
+        password: values.password,
       });
-      setValidationErrors(fieldErrors);
-      return;
-    }
-
-    setValidationErrors({});
-    const response = await register({
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-    });
-
-    if (response.meta.requestStatus === 'fulfilled') {
       setSuccessMessage('Account created successfully! Redirecting to sign in...');
       setTimeout(() => {
         navigation.navigate(EStackScreens.LOGIN);
       }, 1200);
-    }
-  };
-
-  const clearFieldError = (field: string) => {
-    if (validationErrors[field]) {
-      setValidationErrors(prev => {
-        const next = { ...prev };
-        delete next[field];
-        return next;
-      });
+    } catch {
+      // Error handled by mutation onError
     }
   };
 
@@ -119,95 +100,119 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
             <View style={styles.form}>
               <View style={styles.row}>
                 <View style={styles.halfInput}>
-                  <BaseTextInput
-                    label="First Name"
-                    placeholder="John"
-                    value={firstName}
-                    onChangeText={text => {
-                      setFirstName(text);
-                      clearFieldError('firstName');
-                    }}
-                    autoCapitalize="words"
-                    error={validationErrors.firstName}
-                    disabled={isLoading}
+                  <Controller
+                    control={control}
+                    name="firstName"
+                    render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                      <BaseTextInput
+                        label="First Name"
+                        placeholder="John"
+                        value={value}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        autoCapitalize="words"
+                        error={fieldError?.message}
+                        disabled={isLoading}
+                      />
+                    )}
                   />
                 </View>
                 <View style={styles.halfInput}>
-                  <BaseTextInput
-                    label="Last Name"
-                    placeholder="Doe"
-                    value={lastName}
-                    onChangeText={text => {
-                      setLastName(text);
-                      clearFieldError('lastName');
-                    }}
-                    autoCapitalize="words"
-                    error={validationErrors.lastName}
-                    disabled={isLoading}
+                  <Controller
+                    control={control}
+                    name="lastName"
+                    render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                      <BaseTextInput
+                        label="Last Name"
+                        placeholder="Doe"
+                        value={value}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        autoCapitalize="words"
+                        error={fieldError?.message}
+                        disabled={isLoading}
+                      />
+                    )}
                   />
                 </View>
               </View>
 
-              <BaseTextInput
-                label="Username"
-                placeholder="Choose a username"
-                value={username}
-                onChangeText={text => {
-                  setUsername(text);
-                  clearFieldError('username');
-                }}
-                autoCapitalize="none"
-                autoComplete="username"
-                error={validationErrors.username}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="username"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Username"
+                    placeholder="Choose a username"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    autoCapitalize="none"
+                    autoComplete="username"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
-              <BaseTextInput
-                label="Email Address"
-                placeholder="you@example.com"
-                value={email}
-                onChangeText={text => {
-                  setEmail(text);
-                  clearFieldError('email');
-                }}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoComplete="email"
-                error={validationErrors.email}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Email Address"
+                    placeholder="you@example.com"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
-              <BaseTextInput
-                label="Password"
-                placeholder="Enter strong password (min 6 chars)"
-                value={password}
-                onChangeText={text => {
-                  setPassword(text);
-                  clearFieldError('password');
-                }}
-                secureTextEntry
-                autoCapitalize="none"
-                error={validationErrors.password}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Password"
+                    placeholder="Enter strong password (min 6 chars)"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
-              <BaseTextInput
-                label="Confirm Password"
-                placeholder="Re-enter password"
-                value={confirmPassword}
-                onChangeText={text => {
-                  setConfirmPassword(text);
-                  clearFieldError('confirmPassword');
-                }}
-                secureTextEntry
-                autoCapitalize="none"
-                error={validationErrors.confirmPassword}
-                disabled={isLoading}
+              <Controller
+                control={control}
+                name="confirmPassword"
+                render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
+                  <BaseTextInput
+                    label="Confirm Password"
+                    placeholder="Re-enter password"
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    error={fieldError?.message}
+                    disabled={isLoading}
+                  />
+                )}
               />
 
               <BaseButton
                 label={isLoading ? 'Creating Account...' : 'Create Account'}
-                onPress={handleRegister}
+                onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
               />

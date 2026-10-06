@@ -5,3 +5,4 @@ export const otpVerificationValidatorSchema = z.object({
 });
 
 export type OtpVerificationValidatorSchemaType = z.infer<typeof otpVerificationValidatorSchema>;
+
