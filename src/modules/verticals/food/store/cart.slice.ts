@@ -11,7 +11,7 @@ export type CartProduct = {
 
 export type CartItemInput = Omit<CartProduct, 'quantity'>;
 
-type CartState = {
+export type CartState = {
   items: CartProduct[];
   total: number;
   count: number;
@@ -70,3 +70,4 @@ const cartSlice = createSlice({
 
 export const { addToCart, updateQuantity, removeFromCart, clearCart } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
+

@@ -12,7 +12,8 @@ jest.mock('../src/modules/verticals/dining/navigation/dining.stack', () => {
   return { __esModule: true, default: () => null };
 });
 
-import { getActiveVerticals, runLogoutHooks, verticals } from '../src/modules/registry';
+import { getActiveVerticals, getVerticalDeepLinks, runLogoutHooks, verticals } from '../src/modules/registry';
+
 
 test('registry keeps vertical navigators lazy', () => {
   expect(mockFoodNavigatorLoaded).not.toHaveBeenCalled();
@@ -51,3 +52,10 @@ test('registry runs logout hooks', () => {
     verticals.pop();
   }
 });
+
+test('registry returns aggregated deep links from manifests', () => {
+  const deepLinks = getVerticalDeepLinks();
+  expect(deepLinks.food).toBeDefined();
+  expect(deepLinks.dining).toBeDefined();
+});
+

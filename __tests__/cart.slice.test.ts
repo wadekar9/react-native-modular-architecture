@@ -1,4 +1,5 @@
-import { cartReducer, addToCart, removeFromCart, clearCart } from '../src/core/store/slices/cart.slice';
+import { cartReducer, addToCart, removeFromCart, clearCart } from '../src/modules/verticals/food/store/cart.slice';
+
 
 describe('cart slice', () => {
   it('adds a product and increases quantity when the same product is added again', () => {

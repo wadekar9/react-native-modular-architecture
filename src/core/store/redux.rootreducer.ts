@@ -1,18 +1,24 @@
-import { combineReducers } from '@reduxjs/toolkit';
+import { combineReducers, Reducer } from '@reduxjs/toolkit';
 import {
   authRequestReducer,
   authSessionReducer,
   authUserReducer,
-  cartReducer,
   flagsReducer,
 } from './slices';
 
-const reducer = combineReducers({
+export const staticReducers = {
   session: authSessionReducer,
   user: authUserReducer,
   authRequest: authRequestReducer,
-  cart: cartReducer,
   flags: flagsReducer,
-});
+};
+
+export const createRootReducer = (asyncReducers: Record<string, Reducer<any>> = {}) =>
+  combineReducers({
+    ...staticReducers,
+    ...asyncReducers,
+  });
+
+const reducer = createRootReducer();
 
 export default reducer;

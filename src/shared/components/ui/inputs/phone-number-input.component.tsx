@@ -4,7 +4,9 @@ import PhoneInput from "react-native-phone-number-input";
 import { ChevronDown } from 'lucide-react-native';
 import { ThemeText } from '../themed';
 import { useAppTheme } from '@shared/hooks';
-import { removeCountryCode } from '@shared/utils/utils.helper';
+import { removeCountryCode } from '@shared/utils';
+
+
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
 import { COLORS } from '@shared/constants/colors.constants';
 import { ITheme } from '@shared/types/theme.types';

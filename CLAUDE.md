@@ -92,22 +92,43 @@ const foodManifest: ModuleManifest = {
   title: 'Food',
   flag: 'feature_food_enabled', // Optional remote feature flag
   getNavigator: () => require('./navigation/vertical.navigator').default, // Lazy loaded
-  onLogout: () => { /* Clear vertical cache */ },
+  deepLinks: {
+    screens: {
+      RecipeDetails: 'food/recipe/:id',
+      FoodCart: 'food/cart',
+    },
+  },
+  onLogout: () => { /* Clear vertical state */ },
 };
 ```
 
-### Headless Navigation Service
-Navigate from services, push listeners, or background tasks without React component context:
+### Dynamic Reducer Injection (`injectReducer`)
+Verticals own their state and register domain reducers dynamically without polluting `@core/store`:
 ```ts
-import { navigate, navigationRef } from '@core/navigation';
+import { injectReducer } from '@core/store/redux.store';
+import { cartReducer } from './store/cart.slice';
 
-navigate('Notifications');
+injectReducer('cart', cartReducer);
 ```
 
+### Manifest-Driven Deep Linking
+The App Shell aggregates deep linking routes dynamically via `getVerticalDeepLinks()` from registered vertical manifests without importing vertical screen constants into `linking.ts`.
+
+### Strategy-Pattern Permission Management
+Platform permissions (`@modules/platform/permissions`) use the polymorphic `PermissionManager` and `usePermission(type)` hook with specialized handlers for camera, media, location, and notification.
+
+### Two-Tier Storage Architecture
+* **`Storage`** (`@core/storage`): Fast MMKV cache for non-sensitive data and offline state.
+* **`SecureStorage`** (`@core/storage`): Hardware/vault-encrypted MMKV for sensitive auth tokens and credentials.
+
+### Network Resilient Queries (`onlineManager`)
+TanStack Query is subscribed to `@react-native-community/netinfo` via `setupOnlineManager()` in `@core/networking`, automatically pausing and resuming queries on network transitions.
+
 ### Dual-Layer Firestore Sync with Offline Fallback
-Services (such as `notifications.service.ts` and `settings.service.ts`) support dual mode:
+Services support dual mode:
 * **Online**: Reads/writes to Cloud Firestore (`users/{uid}/...`).
 * **Offline / Mock fallback**: Uses local MMKV storage (`Storage.set`, `getJson`) if Firebase is not yet configured, ensuring the app works in all environments.
+
 
 ---
 

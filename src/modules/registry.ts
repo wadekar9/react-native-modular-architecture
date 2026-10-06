@@ -13,3 +13,13 @@ export const getActiveVerticals = (flags: Record<string, boolean | undefined>) =
 export const runLogoutHooks = (): void => {
   verticals.forEach(vertical => vertical.onLogout?.());
 };
+
+export const getVerticalDeepLinks = (): Record<string, any> => {
+  const screens: Record<string, any> = {};
+  verticals.forEach(vertical => {
+    if (vertical.deepLinks) {
+      screens[vertical.id] = vertical.deepLinks;
+    }
+  });
+  return screens;
+};
