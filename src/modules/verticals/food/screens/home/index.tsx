@@ -1,20 +1,15 @@
 import React from 'react';
 import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
-import { ArrowRight, Plus, ShoppingBag, Star } from 'lucide-react-native';
+import { ArrowRight, Plus, Search, ShoppingBag, Star } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppDispatch, useAppSelector } from '@core/store/hooks';
 import { addToCart } from '../../store/cart.slice';
 import { selectFoodCart } from '../../store/food.selectors';
 import { EFoodBottomScreens, EFoodStackScreens } from '../../constants/screens.constants';
+import { MENU_ITEMS } from '../../constants/menu.constants';
 import type { FoodBottomBarScreenProps } from '../../types/navigation.types';
 import { styling } from './styles';
-
-const MENU_ITEMS = [
-  { id: 201, title: 'Miso-glazed salmon bowl', category: 'Balanced · Japanese', price: 420, image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80' },
-  { id: 202, title: 'Roasted tomato rigatoni', category: 'Vegetarian · Italian', price: 340, image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80' },
-  { id: 203, title: 'Crispy chicken sandwich', category: 'Bestseller · Comfort', price: 290, image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=800&q=80' },
-];
 
 const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
@@ -41,6 +36,16 @@ const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>>
           </Pressable>
         </View>
 
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Search food items"
+          onPress={() => navigation.navigate(EFoodStackScreens.FOOD_SEARCH)}
+          style={styles.searchEntry}
+        >
+          <Search size={19} color={colors['icon-muted']} />
+          <ThemeText variant="body5" style={styles.searchPlaceholder}>Search dishes, ingredients, cuisines</ThemeText>
+        </Pressable>
+
         <ImageBackground
           source={{ uri: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=85' }}
           style={styles.hero}
@@ -63,7 +68,7 @@ Made for you.</ThemeText>
             <ThemeText variant="h3">Today’s menu</ThemeText>
             <ThemeText variant="body5" style={styles.secondary}>A few favorites from our kitchen</ThemeText>
           </View>
-          <ThemeText variant="body5" style={styles.menuCount}>03 DISHES</ThemeText>
+          <ThemeText variant="body5" style={styles.menuCount}>{String(MENU_ITEMS.length).padStart(2, '0')} DISHES</ThemeText>
         </View>
 
         {MENU_ITEMS.map(item => {

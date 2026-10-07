@@ -8,6 +8,7 @@ export type FoodStackParamsList = {
     [EFoodStackScreens.FOOD_BOTTOM_TAB]: NavigatorScreenParams<FoodBottomBarParamsList> | undefined;
     [EFoodStackScreens.RECIPE_DETAILS]: undefined;
     [EFoodStackScreens.FOOD_CART]: undefined;
+    [EFoodStackScreens.FOOD_SEARCH]: undefined;
     [EFoodStackScreens.FOOD_PAYMENT]: undefined;
     [EFoodStackScreens.ORDER_CONFIRMATION]: { orderId: string };
     [EFoodStackScreens.ORDER_DETAILS]: { orderId: string };

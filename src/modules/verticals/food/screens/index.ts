@@ -5,3 +5,4 @@ export { default as MyOrders } from './my-orders';
 export { default as FoodPayment } from './payment';
 export { default as OrderConfirmation } from './order-confirmation';
 export { default as OrderDetails } from './order-details';
+export { default as FoodSearch } from './search';
