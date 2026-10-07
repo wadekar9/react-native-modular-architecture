@@ -12,6 +12,7 @@ export type FoodStackParamsList = {
 
 export type FoodBottomBarParamsList = {
     [EFoodBottomScreens.FOOD_HOME]: undefined;
+    [EFoodBottomScreens.MY_ORDERS]: undefined;
 };
 
 export type FoodStackScreenProps<T extends keyof FoodStackParamsList> = CompositeScreenProps<

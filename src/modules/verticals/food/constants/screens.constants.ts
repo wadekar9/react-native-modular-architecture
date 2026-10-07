@@ -6,4 +6,5 @@ export enum EFoodStackScreens {
 
 export enum EFoodBottomScreens {
     FOOD_HOME = 'FoodHome',
+    MY_ORDERS = 'MyOrders',
 }
