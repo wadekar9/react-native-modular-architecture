@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Check, Minus, Plus, Ticket } from 'lucide-react-native';
-import { BaseTextInput, ThemedView, ThemeText } from '@shared/components/ui';
+import { BaseTextInput, IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { getDiningEvent } from '../../api/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
@@ -54,14 +54,14 @@ const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BO
   return (
     <ThemedView style={styles.screen}>
       <View style={styles.topBar}>
-        <Pressable
+        <IconButton
           accessibilityRole="button"
           accessibilityLabel="Back to event"
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
           <ArrowLeft size={20} color={colors['text-primary']} />
-        </Pressable>
+        </IconButton>
         <ThemeText variant="h4">Your booking</ThemeText>
         <View style={styles.stepLabel}><ThemeText variant="body5" style={styles.stepText}>1 OF 1</ThemeText></View>
       </View>
@@ -109,7 +109,7 @@ const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BO
               <ThemeText variant="body5" style={styles.secondary}>₹{event.price.toLocaleString('en-IN')} per person</ThemeText>
             </View>
             <View style={styles.quantityControl}>
-              <Pressable
+              <IconButton
                 accessibilityRole="button"
                 accessibilityLabel="Remove one ticket"
                 disabled={ticketCount <= 1}
@@ -117,9 +117,9 @@ const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BO
                 style={[styles.quantityButton, ticketCount <= 1 && styles.quantityDisabled]}
               >
                 <Minus size={17} color={ticketCount <= 1 ? colors['icon-muted'] : colors['text-primary']} />
-              </Pressable>
+              </IconButton>
               <ThemeText variant="h4" style={styles.quantity}>{ticketCount}</ThemeText>
-              <Pressable
+              <IconButton
                 accessibilityRole="button"
                 accessibilityLabel="Add one ticket"
                 disabled={ticketCount >= event.capacity}
@@ -127,7 +127,7 @@ const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BO
                 style={[styles.quantityButton, ticketCount >= event.capacity && styles.quantityDisabled]}
               >
                 <Plus size={17} color={ticketCount >= event.capacity ? colors['icon-muted'] : colors['text-primary']} />
-              </Pressable>
+              </IconButton>
             </View>
           </View>
           <ThemeText variant="body5" style={styles.capacityNote}>Up to {event.capacity} tickets per booking</ThemeText>

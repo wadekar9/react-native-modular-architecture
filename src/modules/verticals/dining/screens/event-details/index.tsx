@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, CalendarDays, Check, Clock3, MapPin, Ticket } from 'lucide-react-native';
-import { ThemedView, ThemeText } from '@shared/components/ui';
+import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { getDiningEvent } from '../../api/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
@@ -29,14 +29,14 @@ const EventDetails: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_DE
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <ImageBackground source={{ uri: event.imageUrl }} resizeMode="cover" style={styles.hero}>
           <View style={styles.heroShade} />
-          <Pressable
+          <IconButton
             accessibilityRole="button"
             accessibilityLabel="Go back"
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
             <ArrowLeft size={20} color="#FFFFFF" />
-          </Pressable>
+          </IconButton>
           <View style={styles.heroCaption}>
             <ThemeText variant="body5" style={styles.category}>{event.category}</ThemeText>
             <ThemeText variant="h1" style={styles.heroTitle}>{event.title}</ThemeText>

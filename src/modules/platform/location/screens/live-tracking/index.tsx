@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import {
   View,
-  TouchableOpacity,
   Alert,
   StatusBar,
   ActivityIndicator,
@@ -9,6 +8,7 @@ import {
 } from 'react-native';
 import { ArrowLeft } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
+import { IconButton } from '@shared/components/ui';
 import { EmptyStatePage } from '@shared/components/pages';
 import { useAppTheme, useSafeAreaInsetsStyle } from '@shared/hooks';
 import { EStackScreens } from '@shared/constants/screens.constants';
@@ -68,14 +68,14 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
     return (
       <View style={styles.emptyContainer}>
         <View style={[styles.floatingHeader, { paddingTop: paddingTop + moderateScale(8) }]}>
-          <TouchableOpacity
+          <IconButton
             style={styles.headerIconBtn}
             onPress={handleBack}
             accessibilityRole="button"
             accessibilityLabel={common_t('GO_BACK')}
           >
             <ArrowLeft size={moderateScale(20)} color={colors['icon-default']} />
-          </TouchableOpacity>
+          </IconButton>
         </View>
         <EmptyStatePage
           title={common_t('NO_ACTIVE_TRIP')}
@@ -98,14 +98,14 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
 
       {/* Floating Header */}
       <View style={[styles.floatingHeader, { paddingTop: paddingTop + moderateScale(8) }]}>
-        <TouchableOpacity
+        <IconButton
           style={styles.headerIconBtn}
           onPress={handleBack}
           accessibilityRole="button"
           accessibilityLabel={common_t('GO_BACK')}
         >
           <ArrowLeft size={moderateScale(20)} color={colors['icon-default']} />
-        </TouchableOpacity>
+        </IconButton>
 
         <View style={styles.titleBadge}>
           <View style={styles.livePulseDot} />

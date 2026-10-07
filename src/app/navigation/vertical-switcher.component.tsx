@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Settings2 } from 'lucide-react-native';
 import type { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { useAppTheme } from '@shared/hooks';
+import { IconButton } from '@shared/components/ui';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 import { useAppTranslation } from '@core/i18n';
@@ -56,14 +57,14 @@ const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarP
           );
         })}
       </ScrollView>
-      <Pressable
+      <IconButton
         accessibilityRole="button"
         accessibilityLabel={common_t('SETTINGS')}
         onPress={() => navigation.getParent()?.navigate(EStackScreens.SETTINGS)}
         style={styles.settingsButton}
       >
         <Settings2 size={moderateScale(20)} color={COLORS[theme]['text-primary']} />
-      </Pressable>
+      </IconButton>
     </View>
   );
 };

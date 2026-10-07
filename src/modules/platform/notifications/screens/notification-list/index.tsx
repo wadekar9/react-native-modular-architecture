@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { CheckCheck, Trash2, BellOff } from 'lucide-react-native';
-import { ThemedScreen, ThemeText } from '@shared/components/ui';
+import { IconButton, ThemedScreen, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { EStackScreens } from '@shared/constants/screens.constants';
@@ -102,24 +102,24 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
     () => (
       <View style={styles.headerRightActions}>
         {unreadCount > 0 && (
-          <TouchableOpacity
+          <IconButton
             onPress={handleMarkAllAsRead}
             style={styles.headerActionBtn}
             accessibilityRole="button"
             accessibilityLabel={common_t('MARK_ALL_NOTIFICATIONS_READ')}
           >
             <CheckCheck size={moderateScale(20)} color={colors['brand-primary']} />
-          </TouchableOpacity>
+          </IconButton>
         )}
         {notifications.length > 0 && (
-          <TouchableOpacity
+          <IconButton
             onPress={handleClearAll}
             style={styles.headerActionBtn}
             accessibilityRole="button"
             accessibilityLabel={common_t('CLEAR_ALL_NOTIFICATIONS_ACCESSIBILITY')}
           >
             <Trash2 size={moderateScale(19)} color={colors['icon-destructive']} />
-          </TouchableOpacity>
+          </IconButton>
         )}
       </View>
     ),

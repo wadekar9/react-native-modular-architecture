@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useCallback, useMemo } from 'react';
-import { StyleSheet, View, TouchableOpacity, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type ViewStyle } from 'react-native';
 import MapView, { Polyline, type Region } from 'react-native-maps';
 import { Navigation, Maximize2, Compass } from 'lucide-react-native';
 import { BaseMapView, CustomMarker } from '@shared/components/maps';
+import { IconButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { COLORS } from '@shared/constants/colors.constants';
 import { moderateScale } from '@shared/constants/styles.constants';
@@ -158,32 +159,32 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
       {/* Floating Control Buttons */}
       {showControls && (
         <View style={styles.floatingControls}>
-          <TouchableOpacity
+          <IconButton
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleRecenterOnDriver}
             accessibilityRole="button"
             accessibilityLabel={common_t('RECENTER_MAP_ON_DRIVER')}
           >
             <Navigation size={moderateScale(20)} color={colors['brand-primary']} />
-          </TouchableOpacity>
+          </IconButton>
 
-          <TouchableOpacity
+          <IconButton
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleFitEntireRoute}
             accessibilityRole="button"
             accessibilityLabel={common_t('FIT_ENTIRE_ROUTE')}
           >
             <Maximize2 size={moderateScale(18)} color={colors['icon-default']} />
-          </TouchableOpacity>
+          </IconButton>
 
-          <TouchableOpacity
+          <IconButton
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleRecenterOnDriver}
             accessibilityRole="button"
             accessibilityLabel={common_t('ALIGN_COMPASS_HEADING')}
           >
             <Compass size={moderateScale(19)} color={colors['icon-default']} />
-          </TouchableOpacity>
+          </IconButton>
         </View>
       )}
     </View>

@@ -1,8 +1,9 @@
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 import { BottomTabBarButtonProps } from '@react-navigation/bottom-tabs'
 import { ITheme } from '@shared/types/theme.types';
 import { moderateScale, EFonts } from '@shared/constants/styles.constants';
+import { IconButton } from '@shared/components/ui';
 
 interface TabBarButtonProps extends BottomTabBarButtonProps {
     theme: ITheme;
@@ -30,7 +31,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props: any) => {
     const isFocused = remainingProps.accessibilityState?.selected;
 
     return (
-        <TouchableOpacity
+                <IconButton
             activeOpacity={pressOpacity}
             {...remainingProps}
             disabled={disabled ?? undefined}
@@ -42,7 +43,7 @@ const TabBarButton: React.FC<TabBarButtonProps> = (props: any) => {
             style={[styles.container, style]}
         >
             {isFocused ? icons.focused() : icons.unfocused()}
-        </TouchableOpacity>
+        </IconButton>
     )
 }
 

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ThemedView, ThemeText, BaseTextInput, BaseButton } from '@shared/components/ui';
+import { ThemedView, ThemeText, BaseTextInput, BaseButton, IconButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { IMAGES } from '@shared/assets/images';
 import { useSignIn } from '../../hooks';
@@ -69,14 +69,14 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.utilityRow}>
-            <Pressable
+            <IconButton
               accessibilityRole="button"
               accessibilityLabel={auth_t('SETTINGS')}
               onPress={() => navigation.navigate(EStackScreens.SETTINGS)}
               style={styles.settingsButton}
             >
               <Settings2 size={moderateScale(20)} color={colors['text-primary']} />
-            </Pressable>
+            </IconButton>
           </View>
           <View style={styles.card}>
             <Image

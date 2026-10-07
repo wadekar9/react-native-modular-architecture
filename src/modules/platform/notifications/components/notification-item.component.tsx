@@ -10,7 +10,7 @@ import {
   MessageSquare,
   Trash2,
 } from 'lucide-react-native';
-import { ThemeText } from '@shared/components/ui';
+import { IconButton, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { COLORS } from '@shared/constants/colors.constants';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
@@ -120,7 +120,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
           <ThemeText style={styles.timestamp}>{formattedTime}</ThemeText>
 
           {onDelete && (
-            <TouchableOpacity
+            <IconButton
               onPress={() => onDelete(notification)}
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={styles.deleteButton}
@@ -128,7 +128,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
               accessibilityLabel={common_t('DELETE_NOTIFICATION')}
             >
               <Trash2 size={moderateScale(15)} color={colors['icon-muted']} />
-            </TouchableOpacity>
+            </IconButton>
           )}
         </View>
       </View>
