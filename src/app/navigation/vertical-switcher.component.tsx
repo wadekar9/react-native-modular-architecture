@@ -5,6 +5,27 @@ import { useAppTheme } from '@shared/hooks';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 
+/**
+ * ============================================================================
+ * VERTICAL SWITCHER TAB BAR
+ * ============================================================================
+ *
+ * This component renders the top tab bar allowing users to switch between
+ * active verticals (e.g. Food, Dining, Grocery).
+ *
+ * HOW IT WORKS DYNAMICALLY:
+ * 1. ZERO HARDCODED TABS:
+ *    Instead of hardcoding tabs for "Food" and "Dining", it dynamically maps
+ *    over `state.routes` provided by `createMaterialTopTabNavigator`.
+ *
+ * 2. MANIFEST METADATA:
+ *    The tab label is extracted from `descriptors[route.key].options.title`, which
+ *    originates directly from each vertical's `manifest.title`.
+ *
+ * 3. FLUID HORIZONTAL SCROLLING:
+ *    Wrapped in a horizontal `ScrollView` so as new verticals are registered,
+ *    the tab bar scales naturally without layout truncation.
+ */
 const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarProps) => {
   const { theme } = useAppTheme();
   const styles = styling(theme);
@@ -44,7 +65,7 @@ const styling = (theme: ITheme) => StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   selectedTab: {
-    borderBottomColor: COLORS[theme]['brand-primary']
+    borderBottomColor: COLORS[theme]['brand-primary'],
   },
   label: {
     color: COLORS[theme]['text-secondary'],
