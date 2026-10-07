@@ -1,31 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { CartItemInput, CartState } from '../types/cart.types';
+import { loadPersistedCart } from './cart.persistence';
 
-export type CartProduct = {
-  id: number;
-  title: string;
-  price: number;
-  image: string;
-  category: string;
-  quantity: number;
-};
+export type {
+  CartItemInput,
+  CartProduct,
+  CartState,
+} from '../types/cart.types';
 
-export type CartItemInput = Omit<CartProduct, 'quantity'>;
-
-export type CartState = {
-  items: CartProduct[];
-  total: number;
-  count: number;
-};
-
-const initialState: CartState = {
-  items: [],
-  total: 0,
-  count: 0,
-};
+const initialState: CartState = loadPersistedCart();
 
 const normalizeCart = (state: CartState) => {
   state.count = state.items.reduce((sum, item) => sum + item.quantity, 0);
-  state.total = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  state.total = state.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
 };
 
 const cartSlice = createSlice({
@@ -44,7 +34,10 @@ const cartSlice = createSlice({
 
       normalizeCart(state);
     },
-    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
+    updateQuantity: (
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>,
+    ) => {
       const { id, quantity } = action.payload;
       const existing = state.items.find(item => item.id === id);
 
@@ -68,6 +61,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, updateQuantity, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, updateQuantity, removeFromCart, clearCart } =
+  cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
-
