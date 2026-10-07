@@ -21,6 +21,7 @@ module.exports = {
     '^@react-native-firebase/firestore$': '<rootDir>/__mocks__/react-native-firebase-firestore.js',
     '^@react-native-firebase/auth$': '<rootDir>/__mocks__/react-native-firebase-auth.js',
     '^@react-native-firebase/messaging$': '<rootDir>/__mocks__/react-native-firebase-messaging.js',
+    '^react-native-maps$': '<rootDir>/__mocks__/react-native-maps.js',
     '^\\$navigation/app-stack-navigator\\.navigation$': '<rootDir>/__mocks__/app-stack-navigator.js',
     '^\\$store/redux\\.store$': '<rootDir>/__mocks__/redux.store.ts',
   },

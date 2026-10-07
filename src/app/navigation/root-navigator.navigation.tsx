@@ -60,6 +60,7 @@ const RootNavigator = () => {
                 <RootStack.Screen name={EStackScreens.RESET_PASSWORD} component={Routes.ResetPassword} />
                 <RootStack.Screen name={EStackScreens.OTP_VERIFICATION} component={Routes.OtpVerification} />
                 <RootStack.Screen name={EStackScreens.NOTIFICATIONS} component={Routes.NotificationList} />
+                <RootStack.Screen name={EStackScreens.LIVE_TRACKING} component={Routes.LiveTracking} />
 
                 <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
             </RootStack.Navigator>

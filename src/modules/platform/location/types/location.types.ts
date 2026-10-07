@@ -28,3 +28,44 @@ export type PlacePrediction = {
   coordinates?: Coordinates;
 };
 
+export type LiveLocation = Coordinates & {
+  heading?: number; // In degrees 0 - 360
+  speed?: number; // In meters per second or km/h
+  altitude?: number;
+  timestamp: number;
+};
+
+export type TripStatus =
+  | 'assigned'
+  | 'picking_up'
+  | 'picked_up'
+  | 'on_the_way'
+  | 'arriving'
+  | 'completed'
+  | 'cancelled';
+
+export interface DriverInfo {
+  id: string;
+  name: string;
+  phone: string;
+  rating: number;
+  avatarUrl?: string;
+  vehicleModel: string;
+  vehiclePlate: string;
+  vehicleColor?: string;
+}
+
+export interface TrackingTrip {
+  tripId: string;
+  orderId?: string;
+  driver: DriverInfo;
+  status: TripStatus;
+  currentLocation: LiveLocation;
+  pickupLocation: AddressItem;
+  dropoffLocation: AddressItem;
+  routeCoordinates: Coordinates[];
+  currentRouteIndex: number;
+  etaMinutes: number;
+  distanceRemainingKm: number;
+  updatedAt: string;
+}
