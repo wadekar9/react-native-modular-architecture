@@ -24,19 +24,21 @@ import {
 } from '../../queries';
 import type { INotification, NotificationFilter } from '../../types/notification.types';
 import { styling } from './styles';
+import { useAppTranslation } from '@core/i18n';
 
-const FILTER_ITEMS: { id: NotificationFilter; label: string }[] = [
-  { id: 'all', label: 'All' },
-  { id: 'unread', label: 'Unread' },
-  { id: 'order', label: 'Orders' },
-  { id: 'promo', label: 'Promos' },
-  { id: 'system', label: 'System' },
+const FILTER_ITEMS: { id: NotificationFilter; key: string }[] = [
+  { id: 'all', key: 'ALL' },
+  { id: 'unread', key: 'UNREAD' },
+  { id: 'order', key: 'ORDERS' },
+  { id: 'promo', key: 'PROMOS' },
+  { id: 'system', key: 'SYSTEM' },
 ];
 
 const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFICATIONS>> = ({
   navigation,
 }) => {
   const { theme, colors } = useAppTheme();
+  const { common_t } = useAppTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
 
   const [activeFilter, setActiveFilter] = useState<NotificationFilter>('all');
@@ -83,18 +85,18 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
 
   const handleClearAll = useCallback(() => {
     Alert.alert(
-      'Clear All Notifications',
-      'Are you sure you want to remove all notifications?',
+      common_t('CLEAR_ALL_NOTIFICATIONS'),
+      common_t('REMOVE_ALL_NOTIFICATIONS_CONFIRM'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: common_t('CANCEL'), style: 'cancel' },
         {
-          text: 'Clear All',
+          text: common_t('CLEAR_ALL'),
           style: 'destructive',
           onPress: () => clearAllMutation.mutate(),
         },
       ],
     );
-  }, [clearAllMutation]);
+  }, [clearAllMutation, common_t]);
 
   const headerRight = useMemo(
     () => (
@@ -104,7 +106,7 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
             onPress={handleMarkAllAsRead}
             style={styles.headerActionBtn}
             accessibilityRole="button"
-            accessibilityLabel="Mark all notifications as read"
+            accessibilityLabel={common_t('MARK_ALL_NOTIFICATIONS_READ')}
           >
             <CheckCheck size={moderateScale(20)} color={colors['brand-primary']} />
           </TouchableOpacity>
@@ -114,14 +116,14 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
             onPress={handleClearAll}
             style={styles.headerActionBtn}
             accessibilityRole="button"
-            accessibilityLabel="Clear all notifications"
+            accessibilityLabel={common_t('CLEAR_ALL_NOTIFICATIONS_ACCESSIBILITY')}
           >
             <Trash2 size={moderateScale(19)} color={colors['icon-destructive']} />
           </TouchableOpacity>
         )}
       </View>
     ),
-    [unreadCount, notifications.length, handleMarkAllAsRead, handleClearAll, styles, colors],
+    [unreadCount, notifications.length, handleMarkAllAsRead, handleClearAll, styles, colors, common_t],
   );
 
   const renderFilterChips = useMemo(
@@ -134,9 +136,9 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
         >
           {FILTER_ITEMS.map((filter) => {
             const isActive = activeFilter === filter.id;
-            let displayLabel = filter.label;
+            let displayLabel = common_t(filter.key);
             if (filter.id === 'unread' && unreadCount > 0) {
-              displayLabel = `Unread (${unreadCount})`;
+              displayLabel = `${common_t('UNREAD')} (${unreadCount})`;
             }
 
             return (
@@ -158,7 +160,7 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
         </ScrollView>
       </View>
     ),
-    [activeFilter, unreadCount, styles],
+    [activeFilter, unreadCount, styles, common_t],
   );
 
   const renderEmptyComponent = useMemo(
@@ -166,16 +168,16 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
       <View style={styles.emptyContainer}>
         <BellOff size={moderateScale(56)} color={colors['icon-muted']} />
         <ThemeText style={styles.emptyTitle}>
-          {activeFilter === 'unread' ? 'No unread notifications' : 'No notifications yet'}
+          {activeFilter === 'unread' ? common_t('NO_UNREAD_NOTIFICATIONS') : common_t('NO_NOTIFICATIONS_YET')}
         </ThemeText>
         <ThemeText style={styles.emptyDescription}>
           {activeFilter === 'unread'
-            ? "You've read all your notifications. Great job!"
-            : 'When you receive alerts, orders, or updates, they will appear here.'}
+            ? common_t('READ_ALL_NOTIFICATIONS')
+            : common_t('NOTIFICATIONS_EMPTY_DESCRIPTION')}
         </ThemeText>
       </View>
     ),
-    [activeFilter, colors, styles],
+    [activeFilter, colors, styles, common_t],
   );
 
   const renderItem = useCallback(
@@ -194,7 +196,7 @@ const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFIC
   return (
     <ThemedScreen
       headerProps={{
-        title: 'Notifications',
+        title: common_t('NOTIFICATIONS'),
         showBackButton: true,
         rightComponent: headerRight,
       }}

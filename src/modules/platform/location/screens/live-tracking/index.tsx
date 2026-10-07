@@ -17,12 +17,14 @@ import { LiveMapView, LiveTrackingCard } from '../../components';
 import { useRealtimeTracking } from '../../hooks';
 import { styling } from './styles';
 import { moderateScale } from '@shared/constants';
+import { useAppTranslation } from '@core/i18n';
 
 export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE_TRACKING>> = ({
   navigation,
   route,
 }) => {
   const { theme, colors } = useAppTheme();
+  const { common_t } = useAppTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
   const { paddingTop } = useSafeAreaInsetsStyle(['top']);
 
@@ -40,19 +42,19 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
   const handleChat = useCallback(() => {
     if (!trip?.driver) return;
     Alert.alert(
-      'Live Driver Chat',
-      `Open chat channel with ${trip.driver.name}?`,
+      common_t('LIVE_DRIVER_CHAT'),
+      common_t('OPEN_CHAT_CONFIRM', { driver: trip.driver.name }),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: common_t('CANCEL'), style: 'cancel' },
         {
-          text: 'Open Chat',
+          text: common_t('OPEN_CHAT'),
           onPress: () => {
-            Alert.alert('Chat Connected', `Connected to ${trip.driver.name}`);
+            Alert.alert(common_t('CHAT_CONNECTED'), common_t('CONNECTED_TO_DRIVER', { driver: trip.driver.name }));
           },
         },
       ]
     );
-  }, [trip?.driver]);
+  }, [trip?.driver, common_t]);
 
   if (isLoading) {
     return (
@@ -70,14 +72,14 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
             style={styles.headerIconBtn}
             onPress={handleBack}
             accessibilityRole="button"
-            accessibilityLabel="Go back"
+            accessibilityLabel={common_t('GO_BACK')}
           >
             <ArrowLeft size={moderateScale(20)} color={colors['icon-default']} />
           </TouchableOpacity>
         </View>
         <EmptyStatePage
-          title="No Active Trip"
-          description="There is no active delivery or trip to track at this moment."
+          title={common_t('NO_ACTIVE_TRIP')}
+          description={common_t('NO_ACTIVE_TRIP_DESCRIPTION')}
         />
       </View>
     );
@@ -100,7 +102,7 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
           style={styles.headerIconBtn}
           onPress={handleBack}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel={common_t('GO_BACK')}
         >
           <ArrowLeft size={moderateScale(20)} color={colors['icon-default']} />
         </TouchableOpacity>
@@ -108,7 +110,7 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
         <View style={styles.titleBadge}>
           <View style={styles.livePulseDot} />
           <ThemeText style={styles.titleText}>
-            {trip.orderId ? `Order ${trip.orderId}` : 'Live Tracking'}
+            {trip.orderId ? common_t('ORDER_NUMBER', { orderId: trip.orderId }) : common_t('LIVE_TRACKING')}
           </ThemeText>
         </View>
       </View>

@@ -6,6 +6,7 @@ import { useAppTheme, useDebounce } from '@shared/hooks';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
+import { useTranslation } from 'react-i18next';
 
 interface BaseSearchbarRef {
     clear: () => void;
@@ -28,12 +29,15 @@ const BaseSearchbar = React.forwardRef<BaseSearchbarRef, BaseSearchbarProps>(({
     autoComplete = 'off',
     autoCorrect = false,
     clearButtonMode = 'while-editing',
-    placeholder = 'Search...',
+    placeholder: placeholderProp,
     returnKeyType = 'search',
     ...props
 }, ref) => {
 
     const { theme, colors } = useAppTheme();
+    const { t } = useTranslation();
+    const common_t = (key: string): string => t(`common:${key}`, { defaultValue: key }) as string;
+    const placeholder = placeholderProp ?? common_t('SEARCH');
     const styles = React.useMemo(() => styling(theme), [theme]);
 
     const inputRef = React.useRef<TextInput>(null);
@@ -100,7 +104,7 @@ const BaseSearchbar = React.forwardRef<BaseSearchbarRef, BaseSearchbarProps>(({
                 <IconButton
                     onPress={handleClear}
                     style={styles.icon}
-                    accessibilityLabel="Clear search"
+                    accessibilityLabel={common_t('CLEAR_SEARCH')}
                 >
                     <X width={moderateScale(20)} height={moderateScale(20)} color={colors['icon-default']} />
                 </IconButton>

@@ -51,10 +51,10 @@ const AskPermissionModal = React.forwardRef<PermissionModalRef, PermissionModalP
 
     const MESSAGE = React.useMemo(() => {
         switch (mode) {
-            case 'camera': return common_t('PERMISSIONS_LABEL', { label: mode });
-            case 'media': return common_t('PERMISSIONS_LABEL', { label: mode });
-            case 'location': return common_t('PERMISSIONS_LABEL', { label: mode });
-            case 'notification': return common_t('PERMISSIONS_LABEL', { label: mode });
+            case 'camera': return common_t('PERMISSIONS_LABEL', { label: common_t('CAMERA') });
+            case 'media': return common_t('PERMISSIONS_LABEL', { label: common_t('MEDIA') });
+            case 'location': return common_t('PERMISSIONS_LABEL', { label: common_t('LOCATION') });
+            case 'notification': return common_t('PERMISSIONS_LABEL', { label: common_t('NOTIFICATION') });
             default: return '';
         }
     }, [common_t, mode]);

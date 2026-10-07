@@ -7,6 +7,7 @@ import { COLORS } from '@shared/constants/colors.constants';
 import { moderateScale } from '@shared/constants/styles.constants';
 import { ThemeText, IconButton } from '@shared/components/ui';
 import { ArrowLeft } from '@shared/assets/icons';
+import { useTranslation } from 'react-i18next';
 
 interface AppHeaderProps extends Omit<ViewProps, 'style'> {
     title?: string;
@@ -31,6 +32,8 @@ const AppHeader: React.FC<AppHeaderProps> = ({
     const { paddingTop } = useSafeAreaInsetsStyle(['top']);
     const navigation = useNavigation();
     const { theme: appTheme } = useAppTheme();
+    const { t } = useTranslation();
+    const common_t = React.useCallback((key: string): string => t(`common:${key}`, { defaultValue: key }) as string, [t]);
 
     const activeTheme = theme || appTheme;
     const colors = COLORS[activeTheme];
@@ -50,7 +53,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({
                 <IconButton
                     onPress={handleBack}
                     style={styles.icon}
-                    accessibilityLabel="Go back"
+                    accessibilityLabel={common_t('GO_BACK')}
                 >
                     <ArrowLeft width={moderateScale(22)} height={moderateScale(22)} color={colors['icon-default']} />
                 </IconButton>

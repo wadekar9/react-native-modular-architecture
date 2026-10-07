@@ -6,6 +6,7 @@ import { BaseMapView, CustomMarker } from '@shared/components/maps';
 import { useAppTheme } from '@shared/hooks';
 import { COLORS } from '@shared/constants/colors.constants';
 import { moderateScale } from '@shared/constants/styles.constants';
+import { useAppTranslation } from '@core/i18n';
 import type { TrackingTrip, Coordinates } from '../types/location.types';
 
 export interface LiveMapViewProps {
@@ -23,6 +24,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
 }) => {
   const mapRef = useRef<MapView>(null);
   const { theme } = useAppTheme();
+  const { common_t } = useAppTranslation();
   const colors = COLORS[theme];
 
   const driverCoord = useMemo<Coordinates>(() => ({
@@ -127,7 +129,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
           coordinate={trip.pickupLocation.coordinates}
           variant="restaurant"
           pinColor="#F59E0B"
-          title="Pickup"
+          title={common_t('PICKUP')}
           description={trip.pickupLocation.formattedAddress}
         />
 
@@ -136,7 +138,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
           coordinate={trip.dropoffLocation.coordinates}
           variant="home"
           pinColor="#22C55E"
-          title="Drop-off"
+          title={common_t('DROPOFF')}
           description={trip.dropoffLocation.formattedAddress}
         />
 
@@ -160,7 +162,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleRecenterOnDriver}
             accessibilityRole="button"
-            accessibilityLabel="Recenter map on driver"
+            accessibilityLabel={common_t('RECENTER_MAP_ON_DRIVER')}
           >
             <Navigation size={moderateScale(20)} color={colors['brand-primary']} />
           </TouchableOpacity>
@@ -169,7 +171,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleFitEntireRoute}
             accessibilityRole="button"
-            accessibilityLabel="Fit entire route"
+            accessibilityLabel={common_t('FIT_ENTIRE_ROUTE')}
           >
             <Maximize2 size={moderateScale(18)} color={colors['icon-default']} />
           </TouchableOpacity>
@@ -178,7 +180,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
             style={[styles.controlButton, { backgroundColor: colors.surface }]}
             onPress={handleRecenterOnDriver}
             accessibilityRole="button"
-            accessibilityLabel="Align compass heading"
+            accessibilityLabel={common_t('ALIGN_COMPASS_HEADING')}
           >
             <Compass size={moderateScale(19)} color={colors['icon-default']} />
           </TouchableOpacity>

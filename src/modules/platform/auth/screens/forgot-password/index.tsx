@@ -19,9 +19,11 @@ import {
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { useAppTranslation } from '@core/i18n';
 
 const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
+  const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const { forgotPassword, isLoading, error, resetError } = useForgotPassword();
@@ -53,7 +55,7 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
 
   return (
     <ThemedView style={styles.container}>
-      <AppHeader title="Forgot Password" />
+      <AppHeader title={auth_t('FORGOT_PASSWORD_TITLE')} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -64,9 +66,9 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.card}>
-            <ThemeText variant="h3" style={styles.title}>Reset Password</ThemeText>
+            <ThemeText variant="h3" style={styles.title}>{auth_t('RESET_PASSWORD_HEADING')}</ThemeText>
             <ThemeText variant="body5" style={[styles.subtitle, { color: colors['text-muted'] }]}>
-              Enter your registered email address and we will send you a 6-digit verification code to reset your password.
+              {auth_t('FORGOT_PASSWORD_SUBTITLE')}
             </ThemeText>
 
             {error ? (
@@ -81,8 +83,8 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
                 name="email"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Email Address"
-                    placeholder="you@example.com"
+                    label={auth_t('EMAIL_ADDRESS')}
+                    placeholder={auth_t('EMAIL_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -96,7 +98,7 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
               />
 
               <BaseButton
-                label={isLoading ? 'Sending Code...' : 'Send Verification Code'}
+                label={isLoading ? auth_t('SENDING_CODE') : auth_t('SEND_VERIFICATION_CODE')}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
@@ -105,10 +107,10 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
 
             <View style={styles.footerRow}>
               <ThemeText style={[styles.footerText, { color: colors['text-muted'] }]}>
-                Remember your password?
+                {auth_t('REMEMBER_PASSWORD')}
               </ThemeText>
               <Pressable accessibilityRole="button" onPress={navigateToLogin}>
-                <ThemeText style={styles.footerLink}>Sign In</ThemeText>
+                <ThemeText style={styles.footerLink}>{auth_t('SIGN_IN')}</ThemeText>
               </Pressable>
             </View>
           </View>

@@ -20,6 +20,7 @@ import { COLORS } from '@shared/constants/colors.constants';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
 import { ITheme } from '@shared/types/theme.types';
 import type { TrackingTrip, TripStatus } from '../types/location.types';
+import { useAppTranslation } from '@core/i18n';
 
 export interface LiveTrackingCardProps {
   trip: TrackingTrip;
@@ -30,19 +31,19 @@ export interface LiveTrackingCardProps {
 const getStatusBadgeConfig = (status: TripStatus) => {
   switch (status) {
     case 'assigned':
-      return { label: 'Driver Assigned', color: '#64748B', bg: '#F1F5F9' };
+      return { label: 'DRIVER_ASSIGNED', color: '#64748B', bg: '#F1F5F9' };
     case 'picking_up':
-      return { label: 'Heading to Store', color: '#D97706', bg: '#FEF3C7' };
+      return { label: 'HEADING_TO_STORE', color: '#D97706', bg: '#FEF3C7' };
     case 'picked_up':
-      return { label: 'Order Picked Up', color: '#0284C7', bg: '#E0F2FE' };
+      return { label: 'ORDER_PICKED_UP', color: '#0284C7', bg: '#E0F2FE' };
     case 'on_the_way':
-      return { label: 'On the Way to You', color: '#2563EB', bg: '#DBEAFE' };
+      return { label: 'ON_THE_WAY_TO_YOU', color: '#2563EB', bg: '#DBEAFE' };
     case 'arriving':
-      return { label: 'Arriving Now!', color: '#16A34A', bg: '#DCFCE7' };
+      return { label: 'ARRIVING_NOW', color: '#16A34A', bg: '#DCFCE7' };
     case 'completed':
-      return { label: 'Delivered', color: '#16A34A', bg: '#DCFCE7' };
+      return { label: 'DELIVERED', color: '#16A34A', bg: '#DCFCE7' };
     default:
-      return { label: 'Tracking Live', color: '#4285F4', bg: '#E8F0FE' };
+      return { label: 'TRACKING_LIVE', color: '#4285F4', bg: '#E8F0FE' };
   }
 };
 
@@ -52,6 +53,7 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
   onResetPress,
 }) => {
   const { theme } = useAppTheme();
+  const { common_t } = useAppTranslation();
   const colors = COLORS[theme];
   const styles = styling(theme);
 
@@ -63,7 +65,7 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
       if (supported) {
         Linking.openURL(tel);
       } else {
-        Alert.alert('Call Driver', `Driver contact number: ${trip.driver.phone}`);
+        Alert.alert(common_t('CALL_DRIVER'), common_t('DRIVER_CONTACT_NUMBER', { phone: trip.driver.phone }));
       }
     });
   };
@@ -83,7 +85,7 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
         <View style={[styles.statusBadge, { backgroundColor: badgeConfig.bg }]}>
           <View style={[styles.statusDot, { backgroundColor: badgeConfig.color }]} />
           <ThemeText style={[styles.statusText, { color: badgeConfig.color }]}>
-            {badgeConfig.label}
+            {common_t(badgeConfig.label)}
           </ThemeText>
         </View>
 
@@ -91,8 +93,8 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
           <Clock size={moderateScale(15)} color={colors['brand-primary']} />
           <ThemeText style={styles.etaText}>
             {trip.status === 'completed'
-              ? 'Arrived'
-              : `${trip.etaMinutes} min • ${trip.distanceRemainingKm} km`}
+              ? common_t('ARRIVED')
+              : common_t('TRIP_ETA', { minutes: trip.etaMinutes, distance: trip.distanceRemainingKm })}
           </ThemeText>
         </View>
       </View>
@@ -142,20 +144,20 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
           style={[styles.actionBtn, { borderColor: colors.border }]}
           onPress={handleCallDriver}
           accessibilityRole="button"
-          accessibilityLabel="Call driver"
+          accessibilityLabel={common_t('CALL_DRIVER')}
         >
           <Phone size={moderateScale(18)} color={colors['text-primary']} />
-          <ThemeText style={styles.actionBtnLabel}>Call</ThemeText>
+          <ThemeText style={styles.actionBtnLabel}>{common_t('CALL')}</ThemeText>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.actionBtn, { borderColor: colors.border }]}
           onPress={onChatPress}
           accessibilityRole="button"
-          accessibilityLabel="Message driver"
+          accessibilityLabel={common_t('MESSAGE_DRIVER')}
         >
           <MessageSquare size={moderateScale(18)} color={colors['text-primary']} />
-          <ThemeText style={styles.actionBtnLabel}>Message</ThemeText>
+          <ThemeText style={styles.actionBtnLabel}>{common_t('MESSAGE')}</ThemeText>
         </TouchableOpacity>
 
         {onResetPress ? (
@@ -163,24 +165,24 @@ export const LiveTrackingCard: React.FC<LiveTrackingCardProps> = ({
             style={[styles.actionBtn, { borderColor: colors.border }]}
             onPress={onResetPress}
             accessibilityRole="button"
-            accessibilityLabel="Reset simulation"
+            accessibilityLabel={common_t('RESET_SIMULATION')}
           >
             <RotateCcw size={moderateScale(18)} color={colors['brand-primary']} />
             <ThemeText style={[styles.actionBtnLabel, { color: colors['brand-primary'] }]}>
-              Replay
+              {common_t('REPLAY')}
             </ThemeText>
           </TouchableOpacity>
         ) : null}
 
         <TouchableOpacity
           style={[styles.actionBtn, { borderColor: colors.border }]}
-          onPress={() => Alert.alert('Safety Support', 'Emergency assistance is available 24/7.')}
+          onPress={() => Alert.alert(common_t('SAFETY_SUPPORT'), common_t('SAFETY_SUPPORT_DESCRIPTION'))}
           accessibilityRole="button"
-          accessibilityLabel="Safety support"
+          accessibilityLabel={common_t('SAFETY_SUPPORT')}
         >
           <Shield size={moderateScale(18)} color={colors['state-danger']} />
           <ThemeText style={[styles.actionBtnLabel, { color: colors['state-danger'] }]}>
-            Help
+            {common_t('HELP')}
           </ThemeText>
         </TouchableOpacity>
       </View>

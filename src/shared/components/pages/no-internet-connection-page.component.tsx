@@ -1,6 +1,7 @@
 import { Image, StyleSheet, View } from 'react-native'
 import React from 'react'
 import { useNetInfoInstance } from "@react-native-community/netinfo";
+import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'
 import { RotateCcw } from 'lucide-react-native'
 import { useAppTheme } from '@shared/hooks';
@@ -16,6 +17,8 @@ const NoInternetConnectionPage: React.FC = () => {
   const { netInfo: { isConnected }, refresh } = useNetInfoInstance();
   const navigation = useNavigation();
   const { theme, colors } = useAppTheme();
+  const { t } = useTranslation();
+  const common_t = (key: string): string => t(`common:${key}`, { defaultValue: key }) as string;
   const styles = styling(theme);
 
   React.useEffect(() => {
@@ -34,14 +37,14 @@ const NoInternetConnectionPage: React.FC = () => {
           style={{ width: moderateScale(150), height: moderateScale(150) }}
           accessible={true}
           accessibilityRole="image"
-          accessibilityLabel="No Internet Illustration"
+          accessibilityLabel={common_t('NO_INTERNET_ILLUSTRATION')}
         />
 
         <View style={styles.content}>
-          <ThemeText style={styles.label}>No internet connection!</ThemeText>
-          <ThemeText style={styles.description}>Please check your network connection!</ThemeText>
+          <ThemeText style={styles.label}>{common_t('NO_INTERNET')}</ThemeText>
+          <ThemeText style={styles.description}>{common_t('CHECK_NETWORK')}</ThemeText>
           <BaseButton
-            label='Try Again'
+            label={common_t('TRY_AGAIN')}
             LeftAccessory={<RotateCcw width={moderateScale(20)} height={moderateScale(20)} color={colors['brand-primary']} />}
             containerStyle={[styles.buttonContainer, { borderColor: colors.border }]}
             labelStyle={{ color: colors['text-primary'] }}

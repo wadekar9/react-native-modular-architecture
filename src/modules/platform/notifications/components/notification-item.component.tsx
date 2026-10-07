@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { formatDistanceToNow } from 'date-fns';
+import { enUS, es, hi } from 'date-fns/locale';
 import {
   Bell,
   ShoppingBag,
@@ -15,6 +16,7 @@ import { COLORS } from '@shared/constants/colors.constants';
 import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.constants';
 import { ITheme } from '@shared/types/theme.types';
 import type { INotification, NotificationType } from '../types/notification.types';
+import { useAppTranslation } from '@core/i18n';
 
 export interface NotificationItemProps {
   notification: INotification;
@@ -71,16 +73,18 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onDelete,
 }) => {
   const { theme } = useAppTheme();
+  const { common_t, i18n } = useAppTranslation();
   const colors = COLORS[theme];
   const styles = styling(theme, notification.isRead);
 
   const formattedTime = React.useMemo(() => {
     try {
-      return formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true });
+      const locale = i18n.resolvedLanguage === 'es' ? es : i18n.resolvedLanguage === 'hi' ? hi : enUS;
+      return formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true, locale });
     } catch {
       return '';
     }
-  }, [notification.createdAt]);
+  }, [notification.createdAt, i18n.resolvedLanguage]);
 
   const iconTintColor = getIconTintColor(notification.type, theme);
   const iconBgColor = getIconBgColor(notification.type, theme);
@@ -91,7 +95,10 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
       onPress={() => onPress?.(notification)}
       style={styles.card}
       accessibilityRole="button"
-      accessibilityLabel={`${notification.isRead ? '' : 'Unread '}Notification: ${notification.title}`}
+      accessibilityLabel={common_t('NOTIFICATION_ACCESSIBILITY', {
+        state: notification.isRead ? '' : `${common_t('UNREAD')} `,
+        title: notification.title,
+      })}
     >
       <View style={[styles.iconContainer, { backgroundColor: iconBgColor }]}>
         {getNotificationIcon(notification.type, iconTintColor, moderateScale(20))}
@@ -118,7 +125,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={styles.deleteButton}
               accessibilityRole="button"
-              accessibilityLabel="Delete notification"
+              accessibilityLabel={common_t('DELETE_NOTIFICATION')}
             >
               <Trash2 size={moderateScale(15)} color={colors['icon-muted']} />
             </TouchableOpacity>

@@ -19,9 +19,11 @@ import {
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { useAppTranslation } from '@core/i18n';
 
 const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
+  const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const { register, isLoading, error, resetError } = useRegister();
@@ -53,7 +55,7 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
         email: values.email,
         password: values.password,
       });
-      setSuccessMessage('Account created successfully! Redirecting to sign in...');
+      setSuccessMessage(auth_t('ACCOUNT_CREATED'));
       setTimeout(() => {
         navigation.navigate(EStackScreens.LOGIN);
       }, 1200);
@@ -69,7 +71,7 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
 
   return (
     <ThemedView style={styles.container}>
-      <AppHeader title="Create Account" />
+      <AppHeader title={auth_t('REGISTER_TITLE')} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -80,9 +82,9 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.card}>
-            <ThemeText variant="h3" style={styles.title}>Join SuperApp</ThemeText>
+            <ThemeText variant="h3" style={styles.title}>{auth_t('REGISTER_HEADING')}</ThemeText>
             <ThemeText variant="body5" style={[styles.subtitle, { color: colors['text-muted'] }]}>
-              Fill in your details below to get started
+              {auth_t('REGISTER_SUBTITLE')}
             </ThemeText>
 
             {error ? (
@@ -105,8 +107,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                     name="firstName"
                     render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                       <BaseTextInput
-                        label="First Name"
-                        placeholder="John"
+                        label={auth_t('FIRST_NAME')}
+                        placeholder={auth_t('FIRST_NAME_PLACEHOLDER')}
                         value={value}
                         onChangeText={onChange}
                         onBlur={onBlur}
@@ -123,8 +125,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                     name="lastName"
                     render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                       <BaseTextInput
-                        label="Last Name"
-                        placeholder="Doe"
+                        label={auth_t('LAST_NAME')}
+                        placeholder={auth_t('LAST_NAME_PLACEHOLDER')}
                         value={value}
                         onChangeText={onChange}
                         onBlur={onBlur}
@@ -142,8 +144,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                 name="username"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Username"
-                    placeholder="Choose a username"
+                    label={auth_t('USERNAME')}
+                    placeholder={auth_t('USERNAME_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -160,8 +162,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                 name="email"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Email Address"
-                    placeholder="you@example.com"
+                    label={auth_t('EMAIL_ADDRESS')}
+                    placeholder={auth_t('EMAIL_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -179,8 +181,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                 name="password"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Password"
-                    placeholder="Enter strong password (min 6 chars)"
+                    label={auth_t('PASSWORD_LABEL')}
+                    placeholder={auth_t('STRONG_PASSWORD_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -197,8 +199,8 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
                 name="confirmPassword"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Confirm Password"
-                    placeholder="Re-enter password"
+                    label={auth_t('CONFIRM_PASSWORD')}
+                    placeholder={auth_t('REENTER_PASSWORD')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -211,7 +213,7 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
               />
 
               <BaseButton
-                label={isLoading ? 'Creating Account...' : 'Create Account'}
+                label={isLoading ? auth_t('CREATING_ACCOUNT') : auth_t('CREATE_ACCOUNT')}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
@@ -220,10 +222,10 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
 
             <View style={styles.footerRow}>
               <ThemeText style={[styles.footerText, { color: colors['text-muted'] }]}>
-                Already have an account?
+                {auth_t('ALREADY_HAVE_ACCOUNT_QUESTION')}
               </ThemeText>
               <Pressable accessibilityRole="button" onPress={navigateToLogin}>
-                <ThemeText style={styles.footerLink}>Sign In</ThemeText>
+                <ThemeText style={styles.footerLink}>{auth_t('SIGN_IN')}</ThemeText>
               </Pressable>
             </View>
           </View>

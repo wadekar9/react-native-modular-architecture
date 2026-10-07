@@ -7,6 +7,7 @@ import { EFonts, EFontSize, moderateScale } from '@shared/constants/styles.const
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 import { ThemedView, ThemeText } from '@shared/components/ui';
+import { useTranslation } from 'react-i18next';
 
 export interface EmptyStatePageProps {
   title?: string;
@@ -15,12 +16,14 @@ export interface EmptyStatePageProps {
 }
 
 const EmptyStatePage: React.FC<EmptyStatePageProps> = ({
-  title = "Oops!",
-  description = "Data not found",
+  title,
+  description,
   image = IMAGES.EMPTY_STATE
 }) => {
 
   const { theme } = useAppTheme();
+  const { t } = useTranslation();
+  const common_t = (key: string): string => t(`common:${key}`, { defaultValue: key }) as string;
   const styles = styling(theme);
 
   return (
@@ -31,12 +34,12 @@ const EmptyStatePage: React.FC<EmptyStatePageProps> = ({
           style={{ width: moderateScale(150), height: moderateScale(150) }}
           accessibilityRole="image"
           accessible={true}
-          accessibilityLabel="Empty State Illustration"
+          accessibilityLabel={common_t('EMPTY_STATE_ILLUSTRATION')}
         />
 
         <View style={styles.content}>
-          <ThemeText style={styles.label}>{title}</ThemeText>
-          <ThemeText style={styles.description}>{description}</ThemeText>
+          <ThemeText style={styles.label}>{title ?? common_t('EMPTY_STATE_TITLE')}</ThemeText>
+          <ThemeText style={styles.description}>{description ?? common_t('EMPTY_STATE_DESCRIPTION')}</ThemeText>
         </View>
       </View>
     </ThemedView>

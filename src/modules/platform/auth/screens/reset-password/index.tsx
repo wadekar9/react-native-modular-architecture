@@ -19,12 +19,14 @@ import {
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { useAppTranslation } from '@core/i18n';
 
 const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>> = ({
   navigation,
   route,
 }) => {
   const { colors, theme } = useAppTheme();
+  const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const email = route.params?.email || '';
@@ -52,7 +54,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
         otp,
         newPassword: values.password,
       });
-      setSuccessMessage('Password reset successfully! Redirecting to sign in...');
+      setSuccessMessage(auth_t('PASSWORD_RESET'));
       setTimeout(() => {
         navigation.navigate(EStackScreens.LOGIN);
       }, 1500);
@@ -68,7 +70,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
 
   return (
     <ThemedView style={styles.container}>
-      <AppHeader title="Reset Password" />
+      <AppHeader title={auth_t('RESET_PASSWORD_HEADING')} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -79,9 +81,9 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.card}>
-            <ThemeText variant="h3" style={styles.title}>New Password</ThemeText>
+            <ThemeText variant="h3" style={styles.title}>{auth_t('NEW_PASSWORD')}</ThemeText>
             <ThemeText variant="body5" style={[styles.subtitle, { color: colors['text-muted'] }]}>
-              Please set a new password for your account. Make sure it is at least 6 characters long.
+              {auth_t('RESET_PASSWORD_SUBTITLE_FULL')}
             </ThemeText>
 
             {error ? (
@@ -102,8 +104,8 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
                 name="password"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="New Password"
-                    placeholder="Enter new password"
+                    label={auth_t('NEW_PASSWORD')}
+                    placeholder={auth_t('NEW_PASSWORD_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -120,8 +122,8 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
                 name="confirmPassword"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Confirm New Password"
-                    placeholder="Re-enter new password"
+                    label={auth_t('CONFIRM_NEW_PASSWORD')}
+                    placeholder={auth_t('REENTER_PASSWORD')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -134,7 +136,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
               />
 
               <BaseButton
-                label={isLoading ? 'Updating Password...' : 'Reset Password'}
+                label={isLoading ? auth_t('UPDATING_PASSWORD') : auth_t('RESET_PASSWORD_BUTTON')}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
@@ -143,10 +145,10 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
 
             <View style={styles.footerRow}>
               <ThemeText style={[styles.footerText, { color: colors['text-muted'] }]}>
-                Remember your password?
+                {auth_t('REMEMBER_PASSWORD')}
               </ThemeText>
               <Pressable accessibilityRole="button" onPress={navigateToLogin}>
-                <ThemeText style={styles.footerLink}>Sign In</ThemeText>
+                <ThemeText style={styles.footerLink}>{auth_t('SIGN_IN')}</ThemeText>
               </Pressable>
             </View>
           </View>

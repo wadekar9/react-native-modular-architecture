@@ -19,12 +19,14 @@ import {
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { useAppTranslation } from '@core/i18n';
 
 const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATION>> = ({
   navigation,
   route,
 }) => {
   const { colors, theme } = useAppTheme();
+  const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const email = route.params?.email || 'your email address';
@@ -58,10 +60,10 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
   const handleResend = async () => {
     if (!route.params?.email) return;
     resetError();
-    setResendStatus('Resending verification code...');
+    setResendStatus(auth_t('RESENDING_CODE'));
     try {
       await resendOtp(route.params.email);
-      setResendStatus('New verification code sent!');
+      setResendStatus(auth_t('CODE_SENT'));
     } catch {
       setResendStatus(null);
     }
@@ -69,7 +71,7 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
 
   return (
     <ThemedView style={styles.container}>
-      <AppHeader title="Verify Code" />
+      <AppHeader title={auth_t('VERIFY_CODE')} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -80,9 +82,9 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.card}>
-            <ThemeText variant="h3" style={styles.title}>Enter Verification Code</ThemeText>
+            <ThemeText variant="h3" style={styles.title}>{auth_t('ENTER_VERIFICATION_CODE')}</ThemeText>
             <ThemeText variant="body5" style={[styles.subtitle, { color: colors['text-muted'] }]}>
-              Please enter the 6-digit code sent to{' '}
+              {auth_t('OTP_SENT_TO_EMAIL')}{' '}
               <ThemeText style={styles.emailHighlight}>{email}</ThemeText>
             </ThemeText>
 
@@ -104,8 +106,8 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
                 name="otp"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Verification Code (OTP)"
-                    placeholder="Enter 6-digit code"
+                    label={auth_t('OTP_LABEL')}
+                    placeholder={auth_t('OTP_PLACEHOLDER')}
                     value={value}
                     onChangeText={(text) => {
                       const cleaned = text.replace(/[^0-9]/g, '').slice(0, 6);
@@ -123,7 +125,7 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
               />
 
               <BaseButton
-                label={isLoading ? 'Verifying...' : 'Verify Code'}
+                label={isLoading ? auth_t('VERIFYING') : auth_t('VERIFY_CODE_BUTTON')}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isLoading || (otpValue?.length ?? 0) < 6}
                 containerStyle={styles.submitButton}
@@ -132,10 +134,10 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
 
             <View style={styles.resendRow}>
               <ThemeText style={[styles.resendText, { color: colors['text-muted'] }]}>
-                Didn't receive the code?
+                {auth_t('DID_NOT_RECEIVE_CODE')}
               </ThemeText>
               <Pressable accessibilityRole="button" onPress={handleResend} disabled={isLoading}>
-                <ThemeText style={styles.resendLink}>Resend</ThemeText>
+                <ThemeText style={styles.resendLink}>{auth_t('RESEND')}</ThemeText>
               </Pressable>
             </View>
           </View>
