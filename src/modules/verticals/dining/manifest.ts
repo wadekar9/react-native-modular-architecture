@@ -40,7 +40,8 @@ const diningManifest: ModuleManifest = {
    */
   deepLinks: {
     screens: {
-      [EDiningStackScreens.EVENT_DETAILS]: 'dining/event/:id',
+      [EDiningStackScreens.EVENT_DETAILS]: 'dining/event/:eventId',
+      [EDiningStackScreens.EVENT_BOOKING]: 'dining/event/:eventId/book',
     },
   },
 };

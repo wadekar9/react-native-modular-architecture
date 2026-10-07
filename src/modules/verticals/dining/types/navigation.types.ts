@@ -6,7 +6,15 @@ import { EDiningBottomScreens, EDiningStackScreens } from '../constants/screens.
 
 export type DiningStackParamsList = {
     [EDiningStackScreens.DINING_BOTTOM_NAV]: undefined;
-    [EDiningStackScreens.EVENT_DETAILS]: undefined;
+    [EDiningStackScreens.EVENT_DETAILS]: { eventId: string };
+    [EDiningStackScreens.EVENT_BOOKING]: { eventId: string };
+    [EDiningStackScreens.BOOKING_CONFIRMATION]: {
+        eventId: string;
+        bookingReference: string;
+        ticketCount: number;
+        attendeeEmail: string;
+        session: string;
+    };
 };
 
 export type DiningBottomBarParamsList = {

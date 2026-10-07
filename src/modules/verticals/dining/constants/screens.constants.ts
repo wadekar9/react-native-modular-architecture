@@ -6,4 +6,6 @@ export enum EDiningBottomScreens {
 export enum EDiningStackScreens {
   DINING_BOTTOM_NAV = 'DiningBottomNav',
   EVENT_DETAILS = 'EventDetails',
+  EVENT_BOOKING = 'EventBooking',
+  BOOKING_CONFIRMATION = 'BookingConfirmation',
 }
