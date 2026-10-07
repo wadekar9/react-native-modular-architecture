@@ -1,13 +1,73 @@
-import { COLORS } from "@shared/constants/colors.constants";
-import { moderateScale } from "@shared/constants/styles.constants";
-import { ITheme } from "@shared/types/theme.types";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { COLORS } from '@shared/constants/colors.constants';
+import { moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/theme.types';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
-  container: {
+  screen: {
     flex: 1,
-    padding: moderateScale(18),
-    gap: moderateScale(16),
+  },
+  content: { padding: SPACING.MD, paddingBottom: SPACING['2XL'], gap: SPACING.LG },
+  topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: SPACING.SM },
+  eyebrow: { color: COLORS[theme]['brand-primary'], fontFamily: EFonts.SEMI_BOLD },
+  title: { fontSize: 24, marginTop: SPACING.XS },
+  cartButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: RADIUS.SM,
+    borderWidth: 1,
+    borderColor: COLORS[theme].border,
     backgroundColor: COLORS[theme].surface,
-  }
+  },
+  cartBadge: {
+    position: 'absolute',
+    right: -4,
+    top: -5,
+    minWidth: 19,
+    height: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: RADIUS.FULL,
+    backgroundColor: COLORS[theme]['brand-primary'],
+  },
+  badgeText: { color: '#FFFFFF', fontSize: 10 },
+  hero: { height: moderateScale(196), justifyContent: 'flex-end', overflow: 'hidden', padding: SPACING.MD },
+  heroImage: { borderRadius: RADIUS.MD },
+  heroShade: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(13, 27, 20, 0.45)' },
+  heroContent: { gap: SPACING.SM },
+  rating: { flexDirection: 'row', alignItems: 'center', gap: SPACING.XS },
+  ratingText: { color: '#FFFFFF' },
+  heroTitle: { color: '#FFFFFF', maxWidth: 280 },
+  heroLink: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: SPACING.XS },
+  heroLinkText: { color: '#FFFFFF' },
+  sectionHeading: { flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: SPACING.SM },
+  secondary: { color: COLORS[theme]['text-secondary'] },
+  menuCount: { color: COLORS[theme]['text-secondary'], fontSize: 10 },
+  menuCard: {
+    flexDirection: 'row',
+    gap: SPACING.SM,
+    padding: SPACING.SM,
+    borderRadius: RADIUS.MD,
+    borderWidth: 1,
+    borderColor: COLORS[theme].border,
+    backgroundColor: COLORS[theme].surface,
+  },
+  menuImage: { width: 94, height: 104, backgroundColor: COLORS[theme]['surface-alt'] },
+  menuImageRadius: { borderRadius: RADIUS.SM },
+  menuDetails: { flex: 1, justifyContent: 'space-between', paddingVertical: SPACING.XS },
+  menuFooter: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: SPACING.XS },
+  addButton: {
+    minHeight: 34,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 2,
+    paddingHorizontal: SPACING.SM,
+    borderRadius: RADIUS.XS,
+    borderWidth: 1,
+    borderColor: COLORS[theme]['brand-primary'],
+  },
+  addLabel: { color: COLORS[theme]['brand-primary'] },
 });

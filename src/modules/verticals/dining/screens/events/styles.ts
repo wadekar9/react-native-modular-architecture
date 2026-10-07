@@ -21,7 +21,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
   },
   eyebrowText: {
     color: COLORS[theme]['brand-primary'],
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: EFonts.SEMI_BOLD,
     letterSpacing: 0,
   },
   headingRow: {

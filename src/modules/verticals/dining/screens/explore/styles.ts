@@ -1,7 +1,7 @@
 import { ITheme } from '@shared/types/theme.types';
 import { StyleSheet } from 'react-native';
 import { COLORS } from '@shared/constants/colors.constants';
-import { RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { EFonts, RADIUS, SPACING } from '@shared/constants/styles.constants';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
   container: {
@@ -14,7 +14,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
   },
   eyebrow: {
     color: COLORS[theme]['brand-primary'],
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: EFonts.SEMI_BOLD,
   },
   title: {
     fontSize: 26,
@@ -39,7 +39,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     flex: 1,
     paddingVertical: SPACING.SM,
     color: COLORS[theme]['text-primary'],
-    fontFamily: 'Poppins-Regular',
+    fontFamily: EFonts.REGULAR,
     fontSize: 13,
   },
   categories: {

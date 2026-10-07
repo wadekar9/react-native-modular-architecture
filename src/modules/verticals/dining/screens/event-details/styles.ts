@@ -70,7 +70,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     },
     factLabel: {
         color: COLORS[theme]['text-secondary'],
-        fontFamily: 'Poppins-SemiBold',
+        fontFamily: EFonts.SEMI_BOLD,
     },
     secondary: {
         color: COLORS[theme]['text-secondary'],

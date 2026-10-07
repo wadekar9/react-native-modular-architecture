@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { COLORS } from '@shared/constants/colors.constants';
-import { moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { EFonts, moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
 import type { ITheme } from '@shared/types/theme.types';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
@@ -26,7 +26,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
   },
   eyebrow: {
     color: COLORS[theme]['brand-primary'],
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: EFonts.SEMI_BOLD,
   },
   title: {
     textAlign: 'center',
@@ -90,7 +90,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
   },
   referenceLabel: {
     color: COLORS[theme]['text-secondary'],
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: EFonts.SEMI_BOLD,
   },
   reference: {
     color: COLORS[theme]['text-primary'],

@@ -1,12 +1,76 @@
-import { COLORS } from "@shared/constants/colors.constants";
-import { ITheme } from "@shared/types/theme.types";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { COLORS } from '@shared/constants/colors.constants';
+import { moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { ITheme } from '@shared/types/theme.types';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
-    container: {
-        flex: 1,
+    screen: { flex: 1 },
+    header: {
+        minHeight: moderateScale(68),
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.SM,
+        paddingHorizontal: SPACING.MD,
+        borderBottomWidth: 1,
+        borderBottomColor: COLORS[theme].border,
+    },
+    backButton: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center' },
+    headerText: { flex: 1, gap: 2 },
+    muted: { color: COLORS[theme]['text-secondary'] },
+    list: { padding: SPACING.MD, gap: SPACING.SM },
+    itemRow: {
+        minHeight: 112,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.SM,
+        padding: SPACING.SM,
+        borderWidth: 1,
+        borderColor: COLORS[theme].border,
+        borderRadius: RADIUS.MD,
+        backgroundColor: COLORS[theme].surface,
+    },
+    itemImage: { width: 76, height: 84, borderRadius: RADIUS.SM, backgroundColor: COLORS[theme]['surface-alt'] },
+    itemInfo: { flex: 1, gap: SPACING.XS },
+    itemActions: { height: 88, justifyContent: 'space-between', alignItems: 'flex-end' },
+    removeButton: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
+    quantityControl: {
+        height: 32,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: SPACING.XS,
+        borderWidth: 1,
+        borderColor: COLORS[theme].border,
+        borderRadius: RADIUS.SM,
+    },
+    quantityButton: { width: 30, height: 30, alignItems: 'center', justifyContent: 'center' },
+    quantity: { minWidth: 16, textAlign: 'center' },
+    checkoutPanel: {
+        padding: SPACING.MD,
+        gap: SPACING.SM,
+        borderTopWidth: 1,
+        borderTopColor: COLORS[theme].border,
+        backgroundColor: COLORS[theme].surface,
+    },
+    priceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    totalRow: { paddingTop: SPACING.SM, borderTopWidth: 1, borderTopColor: COLORS[theme].border },
+    primaryButton: {
+        minHeight: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: COLORS[theme].background,
-    }
+        marginTop: SPACING.XS,
+        borderRadius: RADIUS.SM,
+        backgroundColor: COLORS[theme]['brand-primary'],
+    },
+    primaryLabel: { color: '#FFFFFF' },
+    emptyState: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: SPACING.LG, gap: SPACING.SM },
+    emptyIcon: {
+        width: 64,
+        height: 64,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: SPACING.SM,
+        borderRadius: RADIUS.FULL,
+        backgroundColor: COLORS[theme]['brand-primary-soft'],
+    },
+    emptyCopy: { maxWidth: 260, textAlign: 'center', color: COLORS[theme]['text-secondary'] },
 });

@@ -1,0 +1,118 @@
+import { StyleSheet } from 'react-native';
+import { COLORS } from '@shared/constants/colors.constants';
+import {
+  moderateScale,
+  RADIUS,
+  SPACING,
+} from '@shared/constants/styles.constants';
+import type { ITheme } from '@shared/types/theme.types';
+
+export const styling = (theme: ITheme) => StyleSheet.create({
+    screen: { flex: 1 },
+    header: {
+      minHeight: moderateScale(64),
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: SPACING.SM,
+      paddingHorizontal: SPACING.MD,
+      borderBottomWidth: 1,
+      borderBottomColor: COLORS[theme].border,
+    },
+    backButton: {
+      width: 38,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerStep: { flex: 1, alignItems: 'flex-end' },
+    stepText: { color: COLORS[theme]['text-secondary'] },
+    content: {
+      padding: SPACING.MD,
+      paddingBottom: moderateScale(110),
+      gap: SPACING.LG,
+    },
+    section: { gap: SPACING.MD },
+    paymentOption: {
+      minHeight: moderateScale(68),
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: SPACING.SM,
+      paddingHorizontal: SPACING.SM,
+      borderWidth: 1,
+      borderColor: COLORS[theme].border,
+      borderRadius: RADIUS.SM,
+      backgroundColor: COLORS[theme].surface,
+    },
+    paymentSelected: { borderColor: COLORS[theme]['brand-primary'] },
+    paymentIcon: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderRadius: RADIUS.SM,
+      backgroundColor: COLORS[theme]['surface-alt'],
+    },
+    paymentIconSelected: {
+      backgroundColor: COLORS[theme]['brand-primary-soft'],
+    },
+    optionCopy: { flex: 1, gap: 2 },
+    muted: { color: COLORS[theme]['text-secondary'] },
+    radio: {
+      width: 20,
+      height: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: COLORS[theme]['text-muted'],
+      borderRadius: RADIUS.FULL,
+    },
+    radioSelected: {
+      borderColor: COLORS[theme]['brand-primary'],
+      backgroundColor: COLORS[theme]['brand-primary'],
+    },
+    demoNote: {
+      color: COLORS[theme]['text-secondary'],
+      lineHeight: 18,
+    },
+    summary: {
+      gap: SPACING.MD,
+      paddingVertical: SPACING.MD,
+      borderTopWidth: 1,
+      borderTopColor: COLORS[theme].border,
+    },
+    priceRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    totalRow: {
+      paddingTop: SPACING.SM,
+      borderTopWidth: 1,
+      borderTopColor: COLORS[theme].border,
+    },
+    error: { color: COLORS[theme]['state-danger'] },
+    bottomBar: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      minHeight: moderateScale(76),
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: SPACING.MD,
+      paddingVertical: SPACING.SM,
+      borderTopWidth: 1,
+      borderTopColor: COLORS[theme].border,
+      backgroundColor: COLORS[theme].surface,
+    },
+    confirmButton: {
+      minHeight: 48,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: SPACING.LG,
+      borderRadius: RADIUS.SM,
+      backgroundColor: COLORS[theme]['brand-primary'],
+    },
+    confirmText: { color: '#FFFFFF' },
+  });

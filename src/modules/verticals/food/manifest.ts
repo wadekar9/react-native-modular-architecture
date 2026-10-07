@@ -2,6 +2,7 @@ import type { ModuleManifest } from '@modules/module.types';
 import { EFoodStackScreens } from './constants/screens.constants';
 import store, { injectReducer } from '@core/store/redux.store';
 import { cartReducer, clearCart } from './store/cart.slice';
+import { foodOrdersReducer, clearFoodOrders } from './store/orders.slice';
 
 /**
  * ============================================================================
@@ -47,6 +48,7 @@ const foodManifest: ModuleManifest = {
    */
   onRegister: () => {
     injectReducer('cart', cartReducer);
+    injectReducer('foodOrders', foodOrdersReducer);
   },
 
   /**
@@ -61,6 +63,7 @@ const foodManifest: ModuleManifest = {
     screens: {
       [EFoodStackScreens.RECIPE_DETAILS]: 'food/recipe/:id',
       [EFoodStackScreens.FOOD_CART]: 'food/cart',
+      [EFoodStackScreens.ORDER_DETAILS]: 'food/orders/:orderId',
     },
   },
 
@@ -69,6 +72,7 @@ const foodManifest: ModuleManifest = {
    */
   onLogout: () => {
     store.dispatch(clearCart());
+    store.dispatch(clearFoodOrders());
   },
 };
 
