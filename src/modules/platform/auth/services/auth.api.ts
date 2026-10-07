@@ -1,5 +1,5 @@
 import { axiosInstance } from '@core/networking/axios-instance';
-import { API_ROUTES } from '@shared/constants';
+import { AUTH_API_ROUTES } from './auth.routes'
 import {
   IForgotPasswordRequest,
   IForgotPasswordResponse,
@@ -14,12 +14,12 @@ import {
 } from '../types/auth.types';
 
 export const login = async (credentials: ILoginRequest): Promise<ILoginResponse> => {
-  const { data } = await axiosInstance.post<ILoginResponse>(API_ROUTES.AUTH.LOGIN, credentials);
+  const { data } = await axiosInstance.post<ILoginResponse>(AUTH_API_ROUTES.LOGIN, credentials);
   return data;
 };
 
 export const register = async (payload: IRegisterRequest): Promise<IRegisterResponse> => {
-  const { data } = await axiosInstance.post<IRegisterResponse>(API_ROUTES.AUTH.REGISTER, {
+  const { data } = await axiosInstance.post<IRegisterResponse>(AUTH_API_ROUTES.REGISTER, {
     username: payload.username,
     email: payload.email,
     password: payload.password,
@@ -34,7 +34,7 @@ export const forgotPassword = async (
   payload: IForgotPasswordRequest,
 ): Promise<IForgotPasswordResponse> => {
   const { data } = await axiosInstance.post<IForgotPasswordResponse>(
-    API_ROUTES.AUTH.FORGOT_PASSWORD,
+    AUTH_API_ROUTES.FORGOT_PASSWORD,
     payload,
   );
   return data;
@@ -44,7 +44,7 @@ export const verifyOtp = async (
   payload: IVerifyOtpRequest,
 ): Promise<IVerifyOtpResponse> => {
   const { data } = await axiosInstance.post<IVerifyOtpResponse>(
-    API_ROUTES.AUTH.VERIFY_OTP,
+    AUTH_API_ROUTES.VERIFY_OTP,
     payload,
   );
   return data;
@@ -54,7 +54,7 @@ export const resetPassword = async (
   payload: IResetPasswordRequest,
 ): Promise<IResetPasswordResponse> => {
   const { data } = await axiosInstance.post<IResetPasswordResponse>(
-    API_ROUTES.AUTH.RESET_PASSWORD,
+    AUTH_API_ROUTES.RESET_PASSWORD,
     payload,
   );
   return data;

@@ -10,13 +10,12 @@ import {
 } from '@react-native-firebase/messaging';
 import { doc, setDoc } from '@react-native-firebase/firestore';
 import { ensureFirebaseIdentity, getFirebaseDatabase, isFirebaseConfigured } from '@core/firebase/firebase';
-import { EStackScreens } from '@shared/constants/screens.constants';
 
 export type PushMessage = {
   title?: string;
   body?: string;
   notificationId?: string;
-  route?: EStackScreens;
+  route?: string;
 };
 
 const requestPushPermission = async (): Promise<boolean> => {
@@ -78,7 +77,7 @@ export const getInitialPushMessage = async (): Promise<PushMessage | null> => {
       title: message.notification?.title,
       body: message.notification?.body,
       notificationId: typeof message.data?.notificationId === 'string' ? message.data.notificationId : undefined,
-      route: typeof message.data?.route === 'string' ? (message.data.route as EStackScreens) : undefined,
+      route: typeof message.data?.route === 'string' ? message.data.route : undefined,
     };
   } catch {
     return null;
@@ -119,7 +118,7 @@ export const subscribeToPushMessages = (
       title: message.notification?.title,
       body: message.notification?.body,
       notificationId: typeof message.data?.notificationId === 'string' ? message.data.notificationId : undefined,
-      route: typeof message.data?.route === 'string' ? (message.data.route as EStackScreens) : undefined,
+      route: typeof message.data?.route === 'string' ? message.data.route : undefined,
     });
 
     const unsubscribeForeground = onMessage(messaging, message => onForegroundMessage(mapMessage(message)));

@@ -1,10 +1,8 @@
-import { createNavigationContainerRef } from '@react-navigation/native';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackParamsList } from '@shared/types/navigation.types';
+import { createNavigationContainerRef, type ParamListBase } from '@react-navigation/native';
 
-export const navigationRef = createNavigationContainerRef<AppStackParamsList>();
+export const navigationRef = createNavigationContainerRef<ParamListBase>();
 
-export function navigate(name: EStackScreens, params?: Record<string, unknown>) {
+export function navigate(name: string, params?: Record<string, unknown>) {
   if (navigationRef.isReady()) {
     (navigationRef.navigate as any)(name, params);
   }
