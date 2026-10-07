@@ -61,6 +61,8 @@ const RootNavigator = () => {
                 <RootStack.Screen name={EStackScreens.OTP_VERIFICATION} component={Routes.OtpVerification} />
                 <RootStack.Screen name={EStackScreens.NOTIFICATIONS} component={Routes.NotificationList} />
                 <RootStack.Screen name={EStackScreens.LIVE_TRACKING} component={Routes.LiveTracking} />
+                <RootStack.Screen name={EStackScreens.SETTINGS} component={Routes.Settings} />
+                <RootStack.Screen name={EStackScreens.EDIT_PROFILE} component={Routes.EditProfile} />
 
                 <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
             </RootStack.Navigator>

@@ -12,6 +12,8 @@ export type AppStackParamsList = {
     [EStackScreens.RESET_PASSWORD]: { email?: string; otp?: string } | undefined;
     [EStackScreens.NOTIFICATIONS]: undefined;
     [EStackScreens.LIVE_TRACKING]: { tripId?: string } | undefined;
+    [EStackScreens.SETTINGS]: undefined;
+    [EStackScreens.EDIT_PROFILE]: undefined;
     [EStackScreens.MAIN]: undefined;
 }
 

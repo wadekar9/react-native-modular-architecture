@@ -7,6 +7,8 @@ export enum EStackScreens {
     RESET_PASSWORD = "ResetPassword",
     NOTIFICATIONS = "Notifications",
     LIVE_TRACKING = "LiveTracking",
+    SETTINGS = "Settings",
+    EDIT_PROFILE = "EditProfile",
     MAIN = "Main"
 }
 

@@ -14,6 +14,20 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     paddingHorizontal: moderateScale(20),
     paddingVertical: moderateScale(24),
   },
+  utilityRow: {
+    alignItems: 'flex-end',
+    marginBottom: moderateScale(12),
+  },
+  settingsButton: {
+    width: moderateScale(44),
+    height: moderateScale(44),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: moderateScale(8),
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: COLORS[theme].border,
+    backgroundColor: COLORS[theme].surface,
+  },
   card: {
     borderRadius: moderateScale(16),
     padding: moderateScale(20),

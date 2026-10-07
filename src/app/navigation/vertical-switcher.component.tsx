@@ -1,9 +1,13 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Settings2 } from 'lucide-react-native';
 import type { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { useAppTheme } from '@shared/hooks';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
+import { useAppTranslation } from '@core/i18n';
+import { EStackScreens } from '@shared/constants/screens.constants';
+import { moderateScale } from '@shared/constants/styles.constants';
 
 /**
  * ============================================================================
@@ -28,34 +32,57 @@ import { COLORS } from '@shared/constants/colors.constants';
  */
 const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarProps) => {
   const { theme } = useAppTheme();
+  const { common_t } = useAppTranslation();
   const styles = styling(theme);
 
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bar}>
-      {state.routes.map((route, index) => {
-        const focused = state.index === index;
-        const title = descriptors[route.key].options.title ?? route.name;
+    <View style={styles.container}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.bar}>
+        {state.routes.map((route, index) => {
+          const focused = state.index === index;
+          const defaultTitle = descriptors[route.key].options.title ?? route.name;
+          const title = common_t(`VERTICAL_${route.name.toUpperCase()}`, { defaultValue: defaultTitle });
 
-        return (
-          <Pressable
-            key={route.key}
-            accessibilityRole="tab"
-            accessibilityState={{ selected: focused }}
-            onPress={() => navigation.navigate(route.name)}
-            style={[styles.tab, focused && styles.selectedTab]}
-          >
-            <Text style={[styles.label, focused && styles.selectedLabel]}>{title}</Text>
-          </Pressable>
-        );
-      })}
-    </ScrollView>
+          return (
+            <Pressable
+              key={route.key}
+              accessibilityRole="tab"
+              accessibilityState={{ selected: focused }}
+              onPress={() => navigation.navigate(route.name)}
+              style={[styles.tab, focused && styles.selectedTab]}
+            >
+              <Text style={[styles.label, focused && styles.selectedLabel]}>{title}</Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={common_t('SETTINGS')}
+        onPress={() => navigation.getParent()?.navigate(EStackScreens.SETTINGS)}
+        style={styles.settingsButton}
+      >
+        <Settings2 size={moderateScale(20)} color={COLORS[theme]['text-primary']} />
+      </Pressable>
+    </View>
   );
 };
 
 const styling = (theme: ITheme) => StyleSheet.create({
-  bar: {
-    flexGrow: 0,
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: COLORS[theme].surface,
+  },
+  bar: {
+    flex: 1,
+    backgroundColor: COLORS[theme].surface,
+  },
+  settingsButton: {
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   tab: {
     minHeight: 48,

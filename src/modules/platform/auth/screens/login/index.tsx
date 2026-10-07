@@ -20,9 +20,13 @@ import {
 import { styling } from './styles';
 import { EStackScreens } from '@shared/constants/screens.constants';
 import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { useAppTranslation } from '@core/i18n';
+import { Settings2 } from 'lucide-react-native';
+import { moderateScale } from '@shared/constants/styles.constants';
 
 const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
+  const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const { signIn, isLoading, error, resetError } = useSignIn();
@@ -64,6 +68,16 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          <View style={styles.utilityRow}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={auth_t('SETTINGS')}
+              onPress={() => navigation.navigate(EStackScreens.SETTINGS)}
+              style={styles.settingsButton}
+            >
+              <Settings2 size={moderateScale(20)} color={colors['text-primary']} />
+            </Pressable>
+          </View>
           <View style={styles.card}>
             <Image
               source={IMAGES.REACT}
@@ -71,7 +85,7 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
             />
             <ThemeText variant="h2" style={styles.title}>SuperApp</ThemeText>
             <ThemeText variant="body5" style={[styles.subtitle, { color: colors['text-muted'] }]}>
-              Sign in with your account to continue
+              {auth_t('LOGIN_SUBTITLE')}
             </ThemeText>
 
             {error ? (
@@ -86,8 +100,8 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
                 name="username"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Username / Email"
-                    placeholder="Enter your username or email"
+                    label={auth_t('USERNAME_EMAIL_LABEL')}
+                    placeholder={auth_t('USERNAME_EMAIL_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -104,8 +118,8 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
                 name="password"
                 render={({ field: { onChange, onBlur, value }, fieldState: { error: fieldError } }) => (
                   <BaseTextInput
-                    label="Password"
-                    placeholder="Enter your password"
+                    label={auth_t('PASSWORD_LABEL')}
+                    placeholder={auth_t('PASSWORD_PLACEHOLDER')}
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -123,11 +137,11 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
                 onPress={navigateToForgotPassword}
                 style={styles.forgotPasswordContainer}
               >
-                <ThemeText style={styles.forgotPasswordText}>Forgot Password?</ThemeText>
+                <ThemeText style={styles.forgotPasswordText}>{auth_t('FORGOT_PASSWORD_QUESTION')}</ThemeText>
               </Pressable>
 
               <BaseButton
-                label={isLoading ? 'Signing In...' : 'Sign In'}
+                label={isLoading ? auth_t('SIGNING_IN') : auth_t('SIGN_IN')}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isLoading}
                 containerStyle={styles.submitButton}
@@ -136,10 +150,10 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
 
             <View style={styles.footerRow}>
               <ThemeText style={[styles.footerText, { color: colors['text-muted'] }]}>
-                Don't have an account?
+                {auth_t('DONT_HAVE_ACCOUNT_QUESTION')}
               </ThemeText>
               <Pressable accessibilityRole="button" onPress={navigateToRegister}>
-                <ThemeText style={styles.footerLink}>Sign Up</ThemeText>
+                <ThemeText style={styles.footerLink}>{auth_t('SIGN_UP')}</ThemeText>
               </Pressable>
             </View>
           </View>
