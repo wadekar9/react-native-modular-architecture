@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 import { Skeleton, SkeletonText, SkeletonCard } from '../src/shared/components/ui/skeleton';
-import { RecipeCardSkeleton } from '../src/modules/verticals/food/components/cards/recipe-card-skeleton.component';
-import { EventCardSkeleton } from '../src/modules/verticals/dining/components/event-card-skeleton.component';
+import { RecipeCardSkeleton } from '../src/modules/verticals/food/components/cards/recipe-card/recipe-card-skeleton.component';
+import { EventCardSkeleton } from '../src/modules/verticals/dining/components/event-card/event-card-skeleton.component';
 import RecipeDetailsSkeleton from '../src/modules/verticals/food/screens/recipe-details/recipe-details-skeleton.component';
 jest.mock('../src/shared/hooks/app-theme.hook', () => ({
   useAppTheme: () => ({
