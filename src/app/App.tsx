@@ -8,6 +8,7 @@ import RootNavigator from '@app/navigation/root-navigator.navigation';
 import { AppThemeProvider, QueryProvider } from '@app/providers';
 import '@core/i18n';
 import store from '@core/store/redux.store';
+import { OfflineBanner } from '@shared/components/ui/offline-banner';
 import { container } from '@shared/styles/flexbox';
 
 const App = () => (
@@ -18,6 +19,7 @@ const App = () => (
           <KeyboardProvider>
             <GestureHandlerRootView style={container}>
               <RootNavigator />
+              <OfflineBanner />
             </GestureHandlerRootView>
           </KeyboardProvider>
         </QueryProvider>

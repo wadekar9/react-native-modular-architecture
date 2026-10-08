@@ -4,6 +4,8 @@ import { ArrowLeft, Check, Minus, Plus, Ticket } from 'lucide-react-native';
 import { BaseTextInput, IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { getDiningEvent } from '../../services/events.data';
+import { persistDiningBooking, type DiningBooking } from '../../services/bookings.persistence';
+import { offlineSync } from '@core/database';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 import type { DiningStackScreenProps } from '../../types/navigation.types';
 import { useDiningTranslation } from '../../hooks';
@@ -44,9 +46,25 @@ const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BO
     }
 
     setError('');
+    const bookingReference = `TABLE-${Date.now().toString(36).toUpperCase()}`;
+    const bookingRecord: DiningBooking = {
+      id: bookingReference,
+      eventId: event.id,
+      bookingReference,
+      ticketCount,
+      attendeeName: cleanName,
+      attendeeEmail: cleanEmail,
+      session,
+      status: 'Confirmed',
+      createdAt: new Date().toISOString(),
+    };
+
+    persistDiningBooking(bookingRecord);
+    offlineSync.enqueue('dining_booking', 'create', bookingRecord);
+
     navigation.navigate(EDiningStackScreens.BOOKING_CONFIRMATION, {
       eventId: event.id,
-      bookingReference: `TABLE-${Date.now().toString(36).toUpperCase()}`,
+      bookingReference,
       ticketCount,
       attendeeEmail: cleanEmail,
       session,

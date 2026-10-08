@@ -6,8 +6,10 @@ import { EFoodStackScreens } from '../constants/screens.constants';
 import { DEMO_RECIPE_PRICE_INR, getDemoDeliveryFee } from '../constants/recipe-pricing.constants';
 import { clearCart } from '../store/cart.slice';
 import { addFoodOrder } from '../store/orders.slice';
+import { persistFoodOrder } from '../store/orders.persistence';
+import { offlineSync } from '@core/database';
 import { selectFoodCart } from '../store/food.selectors';
-import type { FoodPaymentMethod } from '../types/order.types';
+import type { FoodOrder, FoodPaymentMethod } from '../types/order.types';
 import type { FoodStackNavigationProps } from '../types/navigation.types';
 
 export const useFoodPayment = () => {
@@ -38,7 +40,7 @@ export const useFoodPayment = () => {
     if (cleanAddress.length < 8) return fail(food_t('VALIDATION_ENTER_ADDRESS'));
 
     const orderId = `FOOD-${Date.now().toString(36).toUpperCase()}`;
-    dispatch(addFoodOrder({
+    const orderRecord: FoodOrder = {
       id: orderId,
       createdAt: new Date().toISOString(),
       items: cart.items.map(item => ({ ...item })),
@@ -50,7 +52,11 @@ export const useFoodPayment = () => {
       customerName: cleanName,
       phone: cleanPhone,
       address: cleanAddress,
-    }));
+    };
+
+    persistFoodOrder(orderRecord);
+    offlineSync.enqueue('food_order', 'create', orderRecord);
+    dispatch(addFoodOrder(orderRecord));
     dispatch(clearCart());
     navigation.navigate(EFoodStackScreens.ORDER_CONFIRMATION, { orderId });
     return true;

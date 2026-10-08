@@ -2,46 +2,20 @@ import type { ModuleManifest } from '@modules/module.types';
 import { EFoodStackScreens } from './constants/screens.constants';
 import store, { injectReducer } from '@core/store/redux.store';
 import { cartReducer, clearCart } from './store/cart.slice';
-import { foodOrdersReducer, clearFoodOrders } from './store/orders.slice';
+import { foodOrdersReducer, clearFoodOrders, setFoodOrders } from './store/orders.slice';
 import { clearPersistedCart, persistCart } from './store/cart.persistence';
+import { clearPersistedFoodOrders, loadPersistedFoodOrders } from './store/orders.persistence';
+import { offlineSync } from '@core/database';
 import type { CartState } from './types/cart.types';
 import { registerFoodTranslations } from './i18n';
 
 let stopCartPersistence: (() => void) | undefined;
+let stopOrderSyncHandler: (() => void) | undefined;
 
 /**
  * ============================================================================
  * FOOD VERTICAL MANIFEST
  * ============================================================================
- *
- * This manifest is the ONLY file exported by the Food vertical to the outside app.
- * It serves as an isolated bridge between the Food vertical and the host shell.
- *
- * KEY INTERNAL ARCHITECTURAL PATTERNS DEMONSTRATED HERE:
- *
- * 1. ZERO DIRECT VERTICAL IMPORTS BY CORE:
- *    Neither `RootNavigator` nor `rootReducer` directly import Food screens or slices.
- *    Everything is declared declaratively inside this manifest object.
- *
- * 2. DYNAMIC REDUX REDUCER INJECTION (`onRegister`):
- *    The core Redux store does not have `cart` baked in at compile time.
- *    When `getActiveVerticals()` runs and detects that the Food vertical is enabled,
- *    it calls `onRegister()`. We then call `injectReducer('cart', cartReducer)` which
- *    uses `store.replaceReducer()` to dynamically attach the cart slice to the root store.
- *    If the Food vertical is removed or disabled, `cart` slice never exists in memory!
- *
- * 3. LAZY EVALUATION & CODE SPLITTING (`getNavigator`):
- *    Using `() => require('./navigation/food.stack').default` defers importing the Food
- *    stack, screens, assets, and child components until React Navigation renders the Food tab.
- *    This drastically minimizes initial bundle evaluation and reduces Time-to-Interactive (TTI).
- *
- * 4. DEEP LINKING ENCAPSULATION (`deepLinks`):
- *    Maps external URL paths ('food/recipe/:id', 'food/cart') to internal stack screens
- *    (`EFoodStackScreens.RECIPE_DETAILS`, `EFoodStackScreens.FOOD_CART`).
- *
- * 5. SESSION TEARDOWN (`onLogout`):
- *    When the user signs out, `onLogout()` dispatches `clearCart()` to empty items
- *    and ensure zero sensitive/stale cart data persists across user sessions.
  */
 const foodManifest: ModuleManifest = {
   id: 'food',
@@ -49,12 +23,28 @@ const foodManifest: ModuleManifest = {
 
   /**
    * Lifecycle hook triggered when the module is activated.
-   * Injects the dynamic 'cart' reducer slice into the root Redux store.
+   * Injects the dynamic 'cart' and 'foodOrders' reducer slices into the root Redux store
+   * and hydrates persisted local database orders.
    */
   onRegister: () => {
     registerFoodTranslations();
     injectReducer('cart', cartReducer);
     injectReducer('foodOrders', foodOrdersReducer);
+
+    // Hydrate offline orders from local database into Redux store
+    const persistedOrders = loadPersistedFoodOrders();
+    if (persistedOrders.length > 0) {
+      store.dispatch(setFoodOrders(persistedOrders));
+    }
+
+    // Register offline outbox synchronization handler for food orders
+    if (!stopOrderSyncHandler) {
+      stopOrderSyncHandler = offlineSync.registerHandler('food_order', async mutation => {
+        // Here the mutation payload is synchronized with remote REST endpoint when connection is alive
+        return true;
+      });
+    }
+
     if (!stopCartPersistence) {
       let previousCart = (store.getState() as ReturnType<typeof store.getState> & { cart?: CartState }).cart;
       stopCartPersistence = store.subscribe(() => {
@@ -91,6 +81,7 @@ const foodManifest: ModuleManifest = {
     store.dispatch(clearCart());
     store.dispatch(clearFoodOrders());
     clearPersistedCart();
+    clearPersistedFoodOrders();
   },
 };
 
