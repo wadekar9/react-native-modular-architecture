@@ -3,15 +3,17 @@ import { ScrollView, TextInput, View } from 'react-native';
 import { Search, SlidersHorizontal } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
+import { useAppTranslation } from '@core/i18n';
 import { styling } from './styles';
 import { EDiningBottomScreens } from '../../constants/screens.constants';
 import { DiningBottomBarScreenProps } from '../../types/navigation.types';
-import { DINING_EVENTS, EVENT_CATEGORIES } from '../../api/events.data';
+import { DINING_EVENTS, EVENT_CATEGORIES } from '../../services/events.data';
 import EventCard from '../../components/event-card.component';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 
 const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
+  const { dining_t } = useAppTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');
@@ -25,9 +27,9 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <ThemeText variant="body5" style={styles.eyebrow}>A SEAT AT THE TABLE</ThemeText>
-        <ThemeText variant="h1" style={styles.title}>Explore</ThemeText>
-        <ThemeText variant="body5" style={styles.subtitle}>Find a gathering worth slowing down for.</ThemeText>
+        <ThemeText variant="body5" style={styles.eyebrow}>{dining_t('EXPLORE_EYEBROW')}</ThemeText>
+        <ThemeText variant="h1" style={styles.title}>{dining_t('EXPLORE_TITLE')}</ThemeText>
+        <ThemeText variant="body5" style={styles.subtitle}>{dining_t('EXPLORE_SUBTITLE')}</ThemeText>
       </View>
 
       <View style={styles.searchBox}>
@@ -35,11 +37,11 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
         <TextInput
           value={search}
           onChangeText={setSearch}
-          placeholder="Dish, chef, or neighborhood"
+          placeholder={dining_t('SEARCH_PLACEHOLDER')}
           placeholderTextColor={colors['text-muted']}
           returnKeyType="search"
           style={styles.searchInput}
-          accessibilityLabel="Search dining events"
+          accessibilityLabel={dining_t('SEARCH_LABEL')}
         />
         <SlidersHorizontal size={18} color={colors['icon-default']} />
       </View>
@@ -47,6 +49,7 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.categories}>
         {EVENT_CATEGORIES.map(category => {
           const selected = selectedCategory === category;
+          const label = category === 'All' ? dining_t('CATEGORY_ALL') : category;
           return (
             <ThemeText
               key={category}
@@ -56,7 +59,7 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
               accessibilityState={{ selected }}
               style={[styles.categoryChip, selected && styles.categoryChipSelected]}
             >
-              {category}
+              {label}
             </ThemeText>
           );
         })}
@@ -64,8 +67,12 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
 
       <ScrollView contentContainerStyle={styles.eventList} showsVerticalScrollIndicator={false}>
         <View style={styles.resultHeader}>
-          <ThemeText variant="h3">{selectedCategory === 'All' ? 'Made for sharing' : selectedCategory}</ThemeText>
-          <ThemeText variant="body5" style={styles.resultCount}>{events.length} {events.length === 1 ? 'event' : 'events'}</ThemeText>
+          <ThemeText variant="h3">
+            {selectedCategory === 'All' ? dining_t('MADE_FOR_SHARING') : selectedCategory}
+          </ThemeText>
+          <ThemeText variant="body5" style={styles.resultCount}>
+            {events.length === 1 ? dining_t('EVENT_COUNT_ONE', { count: events.length }) : dining_t('EVENT_COUNT_OTHER', { count: events.length })}
+          </ThemeText>
         </View>
         {events.length ? events.map(event => (
           <EventCard
@@ -75,8 +82,8 @@ const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>
           />
         )) : (
           <View style={styles.emptyState}>
-            <ThemeText variant="h4">No events found</ThemeText>
-            <ThemeText variant="body5" style={styles.subtitle}>Try another search or category.</ThemeText>
+            <ThemeText variant="h4">{dining_t('NO_EVENTS_FOUND')}</ThemeText>
+            <ThemeText variant="body5" style={styles.subtitle}>{dining_t('TRY_ANOTHER')}</ThemeText>
           </View>
         )}
       </ScrollView>

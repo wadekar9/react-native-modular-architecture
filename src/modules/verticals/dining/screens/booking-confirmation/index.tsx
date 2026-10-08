@@ -3,13 +3,15 @@ import { Pressable, View } from 'react-native';
 import { Check, CalendarDays, Mail, Ticket } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { getDiningEvent } from '../../api/events.data';
+import { useAppTranslation } from '@core/i18n';
+import { getDiningEvent } from '../../services/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 import type { DiningStackScreenProps } from '../../types/navigation.types';
 import { styling } from './styles';
 
 const BookingConfirmation: React.FC<DiningStackScreenProps<EDiningStackScreens.BOOKING_CONFIRMATION>> = ({ navigation, route }) => {
   const { colors, theme } = useAppTheme();
+  const { dining_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const { eventId, bookingReference, ticketCount, attendeeEmail, session } = route.params;
   const event = getDiningEvent(eventId);
@@ -20,9 +22,9 @@ const BookingConfirmation: React.FC<DiningStackScreenProps<EDiningStackScreens.B
         <View style={styles.successMark}>
           <Check size={34} color={colors['state-success']} strokeWidth={2.5} />
         </View>
-        <ThemeText variant="body5" style={styles.eyebrow}>DEMO BOOKING CONFIRMED</ThemeText>
-        <ThemeText variant="h1" style={styles.title}>You’re on the list.</ThemeText>
-        <ThemeText variant="body5" style={styles.subtitle}>Your booking details are ready. This demo does not process payment or contact the venue.</ThemeText>
+        <ThemeText variant="body5" style={styles.eyebrow}>{dining_t('BOOKING_CONFIRMED')}</ThemeText>
+        <ThemeText variant="h1" style={styles.title}>{dining_t('ON_THE_LIST')}</ThemeText>
+        <ThemeText variant="body5" style={styles.subtitle}>{dining_t('CONFIRMED_SUBTITLE')}</ThemeText>
 
         <View style={styles.bookingDetails}>
           <View style={styles.eventHeading}>
@@ -39,14 +41,16 @@ const BookingConfirmation: React.FC<DiningStackScreenProps<EDiningStackScreens.B
           </View>
           <View style={styles.detailRow}>
             <Ticket size={17} color={colors['icon-muted']} />
-            <ThemeText variant="body5" style={styles.detailText}>{ticketCount} {ticketCount === 1 ? 'ticket' : 'tickets'}</ThemeText>
+            <ThemeText variant="body5" style={styles.detailText}>
+              {ticketCount === 1 ? dining_t('TICKET_COUNT_ONE', { count: ticketCount }) : dining_t('TICKET_COUNT_OTHER', { count: ticketCount })}
+            </ThemeText>
           </View>
           <View style={styles.detailRow}>
             <Mail size={17} color={colors['icon-muted']} />
             <ThemeText variant="body5" style={styles.detailText}>{attendeeEmail}</ThemeText>
           </View>
           <View style={styles.referenceBox}>
-            <ThemeText variant="body5" style={styles.referenceLabel}>REFERENCE</ThemeText>
+            <ThemeText variant="body5" style={styles.referenceLabel}>{dining_t('REFERENCE')}</ThemeText>
             <ThemeText variant="h4" style={styles.reference}>{bookingReference}</ThemeText>
           </View>
         </View>
@@ -57,7 +61,7 @@ const BookingConfirmation: React.FC<DiningStackScreenProps<EDiningStackScreens.B
         onPress={() => navigation.navigate(EDiningStackScreens.DINING_BOTTOM_NAV)}
         style={styles.doneButton}
       >
-        <ThemeText variant="body4" style={styles.doneText}>Back to dining</ThemeText>
+        <ThemeText variant="body4" style={styles.doneText}>{dining_t('BACK_TO_DINING')}</ThemeText>
       </Pressable>
     </ThemedView>
   );

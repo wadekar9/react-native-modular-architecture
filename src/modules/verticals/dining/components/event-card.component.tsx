@@ -3,6 +3,7 @@ import { ImageBackground, Pressable, View } from 'react-native';
 import { CalendarDays, MapPin } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
+import { useAppTranslation } from '@core/i18n';
 import type { DiningEvent } from '../types/event.types';
 import { styling } from './event-card.styles';
 
@@ -14,12 +15,13 @@ type EventCardProps = {
 
 const EventCard: React.FC<EventCardProps> = ({ event, onPress, featured = false }) => {
   const { colors, theme } = useAppTheme();
+  const { dining_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={`${event.title}, ${event.dateLabel}, from ₹${event.price}`}
+      accessibilityLabel={`${event.title}, ${event.dateLabel}, ₹${event.price}`}
       onPress={onPress}
       style={({ pressed }) => [styles.card, featured && styles.featuredCard, pressed && styles.pressed]}
     >
@@ -35,7 +37,9 @@ const EventCard: React.FC<EventCardProps> = ({ event, onPress, featured = false 
         </View>
         <View style={styles.imageCaption}>
           <ThemeText variant="h2" numberOfLines={2} style={styles.imageTitle}>{event.title}</ThemeText>
-          <ThemeText variant="body5" style={styles.imageHost}>Hosted by {event.host}</ThemeText>
+          <ThemeText variant="body5" style={styles.imageHost}>
+            {dining_t('HOSTED_BY', { host: event.host })}
+          </ThemeText>
         </View>
       </ImageBackground>
       <View style={styles.details}>
@@ -48,8 +52,13 @@ const EventCard: React.FC<EventCardProps> = ({ event, onPress, featured = false 
           <ThemeText variant="body5" numberOfLines={1} style={styles.mutedDetail}>{event.venue} · {event.neighborhood}</ThemeText>
         </View>
         <View style={styles.footer}>
-          <ThemeText variant="h4">₹{event.price.toLocaleString('en-IN')}<ThemeText variant="body5" style={styles.perTicket}> / person</ThemeText></ThemeText>
-          <ThemeText variant="body5" style={styles.availability}>{event.capacity} seats</ThemeText>
+          <ThemeText variant="h4">
+            ₹{event.price.toLocaleString('en-IN')}
+            <ThemeText variant="body5" style={styles.perTicket}>{dining_t('PER_TICKET')}</ThemeText>
+          </ThemeText>
+          <ThemeText variant="body5" style={styles.availability}>
+            {dining_t('SEATS', { count: event.capacity })}
+          </ThemeText>
         </View>
       </View>
     </Pressable>
