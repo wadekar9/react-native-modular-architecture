@@ -21,6 +21,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
       fontFamily: EFonts.SEMI_BOLD,
     },
     title: { fontSize: 25, marginTop: SPACING.XS },
+    demoNote: { marginTop: SPACING.XS, color: COLORS[theme]['text-secondary'] },
     countBadge: {
       minWidth: 36,
       height: 36,

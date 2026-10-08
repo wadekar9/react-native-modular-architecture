@@ -1,12 +1,44 @@
-import { COLORS } from "@shared/constants/colors.constants";
-import { ITheme } from "@shared/types/theme.types";
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
+import { COLORS } from '@shared/constants/colors.constants';
+import { moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
+import type { ITheme } from '@shared/types/theme.types';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: COLORS[theme].background,
-    }
+    screen: { flex: 1 },
+    content: { paddingBottom: moderateScale(102) },
+    hero: { height: moderateScale(320), justifyContent: 'space-between', padding: SPACING.MD },
+    heroImage: { borderBottomLeftRadius: RADIUS.MD, borderBottomRightRadius: RADIUS.MD },
+    heroShade: { ...StyleSheet.absoluteFill, backgroundColor: 'rgba(9, 18, 14, 0.4)' },
+    backButton: { width: 42, height: 42, alignItems: 'center', justifyContent: 'center', borderRadius: RADIUS.FULL, backgroundColor: 'rgba(12,19,15,0.48)' },
+    heroCaption: { gap: SPACING.XS },
+    cuisine: { alignSelf: 'flex-start', color: '#FFFFFF', backgroundColor: 'rgba(20,42,33,0.78)', paddingHorizontal: SPACING.SM, paddingVertical: SPACING.XS, borderRadius: RADIUS.XS },
+    title: { maxWidth: '94%', color: '#FFFFFF', fontSize: 25 },
+    ratingLine: { flexDirection: 'row', alignItems: 'center', gap: SPACING.XS },
+    heroMeta: { color: '#FFFFFF' },
+    metrics: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginHorizontal: SPACING.MD, marginTop: SPACING.MD, paddingVertical: SPACING.MD, borderWidth: 1, borderColor: COLORS[theme].border, borderRadius: RADIUS.MD, backgroundColor: COLORS[theme].surface },
+    metric: { flex: 1, alignItems: 'center', gap: SPACING.XS },
+    metricDivider: { width: 1, height: 48, backgroundColor: COLORS[theme].border },
+    secondary: { color: COLORS[theme]['text-secondary'], textAlign: 'center' },
+    metaLine: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: SPACING.SM, paddingHorizontal: SPACING.MD, paddingTop: SPACING.MD },
+    difficulty: { color: COLORS[theme]['brand-primary'], backgroundColor: COLORS[theme]['brand-primary-soft'], paddingHorizontal: SPACING.SM, paddingVertical: SPACING.XS, borderRadius: RADIUS.XS },
+    section: { gap: SPACING.MD, paddingHorizontal: SPACING.MD, paddingTop: SPACING.LG },
+    sectionHeading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    ingredientRow: { flexDirection: 'row', alignItems: 'flex-start', gap: SPACING.SM },
+    bullet: { width: 7, height: 7, marginTop: moderateScale(6), borderRadius: RADIUS.FULL, backgroundColor: COLORS[theme]['brand-primary'] },
+    ingredient: { flex: 1, color: COLORS[theme]['text-primary'], lineHeight: 21 },
+    instructionRow: { flexDirection: 'row', alignItems: 'flex-start', gap: SPACING.SM },
+    stepNumber: { width: 25, height: 25, alignItems: 'center', justifyContent: 'center', borderRadius: RADIUS.FULL, backgroundColor: COLORS[theme]['brand-primary-soft'] },
+    stepLabel: { color: COLORS[theme]['brand-primary'] },
+    instruction: { flex: 1, color: COLORS[theme]['text-secondary'], lineHeight: 21 },
+    tags: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.XS, padding: SPACING.MD },
+    tag: { paddingHorizontal: SPACING.SM, paddingVertical: SPACING.XS, borderRadius: RADIUS.XS, color: COLORS[theme]['text-secondary'], backgroundColor: COLORS[theme]['surface-alt'] },
+    mealTag: { paddingHorizontal: SPACING.SM, paddingVertical: SPACING.XS, borderRadius: RADIUS.XS, color: COLORS[theme]['brand-primary'], backgroundColor: COLORS[theme]['brand-primary-soft'] },
+    bottomBar: { position: 'absolute', left: 0, right: 0, bottom: 0, minHeight: moderateScale(76), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: SPACING.MD, paddingVertical: SPACING.SM, borderTopWidth: 1, borderTopColor: COLORS[theme].border, backgroundColor: COLORS[theme].surface },
+    addButton: { minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.SM, paddingHorizontal: SPACING.MD, borderRadius: RADIUS.SM, backgroundColor: COLORS[theme]['brand-primary'] },
+    addLabel: { color: '#FFFFFF' },
+    state: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: SPACING.LG, gap: SPACING.MD },
+    retryButton: { minHeight: 42, justifyContent: 'center', paddingHorizontal: SPACING.LG, borderRadius: RADIUS.SM, backgroundColor: COLORS[theme]['brand-primary'] },
+    retryLabel: { color: '#FFFFFF' },
+    backLink: { padding: SPACING.SM },
+    linkLabel: { color: COLORS[theme]['brand-primary'] },
 });

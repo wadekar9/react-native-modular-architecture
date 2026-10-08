@@ -1,103 +1,186 @@
 import React from 'react';
-import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
-import { ArrowRight, Plus, Search, ShoppingBag, Star } from 'lucide-react-native';
-import { ThemedView, ThemeText } from '@shared/components/ui';
+import { ActivityIndicator, FlatList, ImageBackground, Pressable, StyleSheet, View } from 'react-native';
+import { ArrowRight, Search, ShoppingBag } from 'lucide-react-native';
+import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppDispatch, useAppSelector } from '@core/store/hooks';
-import { addToCart } from '../../store/cart.slice';
-import { selectFoodCart } from '../../store/food.selectors';
-import { EFoodBottomScreens, EFoodStackScreens } from '../../constants/screens.constants';
-import { MENU_ITEMS } from '../../constants/menu.constants';
+import { useAppTranslation } from '@core/i18n';
+import { EFoodBottomScreens } from '../../constants/screens.constants';
 import type { FoodBottomBarScreenProps } from '../../types/navigation.types';
+import { SPACING } from '@shared/constants/styles.constants';
+import { RecipeCard, RecipeSortControl } from '../../components';
+import { useFoodHome } from '../../hooks';
 import { styling } from './styles';
 
-const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>> = ({ navigation }) => {
+const separatorStyles = StyleSheet.create({ item: { height: SPACING.SM } });
+const RecipeSeparator = () => <View style={separatorStyles.item} />;
+
+const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>> = () => {
   const { colors, theme } = useAppTheme();
+  const { food_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
-  const dispatch = useAppDispatch();
-  const cart = useAppSelector(selectFoodCart);
+  const {
+    cartCount,
+    demoPrice,
+    featuredRecipe,
+    listRecipes,
+    tags,
+    totalRecipes,
+    sortBy,
+    order,
+    isTagsLoading,
+    isLoading,
+    isError,
+    isRefreshing,
+    isFetchingNextPage,
+    openRecipe,
+    openTag,
+    openSearch,
+    openCart,
+    openOrders,
+    getQuantity,
+    addRecipe,
+    selectSort,
+    loadMore,
+    refresh,
+    retry,
+  } = useFoodHome();
+
+  const renderHeader = () => (
+    <View style={styles.headerContent}>
+      <View style={styles.topRow}>
+        <View style={styles.headingCopy}>
+          <ThemeText variant="body5" style={styles.eyebrow}>{food_t('EYEBROW')}</ThemeText>
+          <ThemeText variant="h1" style={styles.title}>{food_t('TITLE')}</ThemeText>
+        </View>
+        <IconButton
+          accessibilityRole="button"
+          accessibilityLabel={food_t('BASKET_ACCESSIBILITY', { count: cartCount })}
+          onPress={openCart}
+          style={styles.cartButton}
+        >
+          <ShoppingBag size={20} color={colors['text-primary']} />
+          {cartCount > 0 ? (
+            <View style={styles.cartBadge}>
+              <ThemeText variant="body5" style={styles.badgeText}>{cartCount}</ThemeText>
+            </View>
+          ) : null}
+        </IconButton>
+      </View>
+
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={food_t('SEARCH_RECIPES')}
+        onPress={openSearch}
+        style={styles.searchEntry}
+      >
+        <Search size={19} color={colors['icon-muted']} />
+        <ThemeText variant="body5" style={styles.searchPlaceholder}>
+          {food_t('SEARCH_PLACEHOLDER')}
+        </ThemeText>
+      </Pressable>
+
+      {featuredRecipe ? (
+        <Pressable accessibilityRole="button" onPress={() => openRecipe(featuredRecipe.id)} style={styles.featured}>
+          <ImageBackground source={{ uri: featuredRecipe.image }} style={styles.hero} imageStyle={styles.heroImage}>
+            <View style={styles.heroShade} />
+            <View style={styles.heroContent}>
+              <ThemeText variant="body5" style={styles.featuredEyebrow}>
+                {food_t('FEATURED_RECIPE', { cuisine: featuredRecipe.cuisine.toUpperCase() })}
+              </ThemeText>
+              <ThemeText variant="h2" style={styles.heroTitle} numberOfLines={2}>{featuredRecipe.name}</ThemeText>
+              <View style={styles.heroMeta}>
+                <ThemeText variant="body5" style={styles.heroMetaText}>
+                  {food_t('RATING_TIME', {
+                    rating: featuredRecipe.rating.toFixed(1),
+                    time: featuredRecipe.prepTimeMinutes + featuredRecipe.cookTimeMinutes,
+                  })}
+                </ThemeText>
+                <ArrowRight size={16} color="#FFFFFF" />
+              </View>
+            </View>
+          </ImageBackground>
+        </Pressable>
+      ) : null}
+
+      <View style={styles.sectionHeading}>
+        <View style={styles.sectionCopy}>
+          <ThemeText variant="h3">{food_t('BROWSE_BY_TAG')}</ThemeText>
+          <ThemeText variant="body5" style={styles.secondary}>{food_t('TAG_SUBTITLE')}</ThemeText>
+        </View>
+        {isTagsLoading ? <ActivityIndicator size="small" color={colors['brand-primary']} /> : null}
+      </View>
+      <FlatList
+        horizontal
+        data={tags}
+        keyExtractor={tag => tag}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tagList}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => openTag(item)} style={styles.tagChip}>
+            <ThemeText variant="body5" style={styles.tagLabel}>{item}</ThemeText>
+          </Pressable>
+        )}
+      />
+
+      <View style={styles.listHeading}>
+        <View>
+          <ThemeText variant="h3">{food_t('ALL_RECIPES')}</ThemeText>
+          <ThemeText variant="body5" style={styles.secondary}>
+            {food_t('TOTAL_RECIPES', { count: totalRecipes })}
+          </ThemeText>
+        </View>
+        <Pressable onPress={openOrders} style={styles.ordersLink}>
+          <ThemeText variant="body5" style={styles.ordersLabel}>{food_t('MY_ORDERS')}</ThemeText>
+        </Pressable>
+      </View>
+      <RecipeSortControl sortBy={sortBy} order={order} onChange={selectSort} />
+    </View>
+  );
 
   return (
     <ThemedView style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.topRow}>
-          <View>
-            <ThemeText variant="body5" style={styles.eyebrow}>GOOD FOOD, DELIVERED</ThemeText>
-            <ThemeText variant="h1" style={styles.title}>A little delicious.</ThemeText>
-          </View>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={`Basket, ${cart.count} items`}
-            onPress={() => navigation.navigate(EFoodStackScreens.FOOD_CART)}
-            style={styles.cartButton}
-          >
-            <ShoppingBag size={20} color={colors['text-primary']} />
-            {cart.count > 0 ? <View style={styles.cartBadge}><ThemeText variant="body5" style={styles.badgeText}>{cart.count}</ThemeText></View> : null}
-          </Pressable>
-        </View>
-
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Search food items"
-          onPress={() => navigation.navigate(EFoodStackScreens.FOOD_SEARCH)}
-          style={styles.searchEntry}
-        >
-          <Search size={19} color={colors['icon-muted']} />
-          <ThemeText variant="body5" style={styles.searchPlaceholder}>Search dishes, ingredients, cuisines</ThemeText>
-        </Pressable>
-
-        <ImageBackground
-          source={{ uri: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=85' }}
-          style={styles.hero}
-          imageStyle={styles.heroImage}
-        >
-          <View style={styles.heroShade} />
-          <View style={styles.heroContent}>
-            <View style={styles.rating}><Star size={13} color="#F8D28A" fill="#F8D28A" /><ThemeText variant="body5" style={styles.ratingText}>4.9 · Kitchen pick</ThemeText></View>
-            <ThemeText variant="h2" style={styles.heroTitle}>Made fresh.
-Made for you.</ThemeText>
-            <Pressable onPress={() => navigation.navigate(EFoodBottomScreens.MY_ORDERS)} style={styles.heroLink}>
-              <ThemeText variant="body5" style={styles.heroLinkText}>Your orders</ThemeText>
-              <ArrowRight size={15} color="#FFFFFF" />
-            </Pressable>
-          </View>
-        </ImageBackground>
-
-        <View style={styles.sectionHeading}>
-          <View>
-            <ThemeText variant="h3">Today’s menu</ThemeText>
-            <ThemeText variant="body5" style={styles.secondary}>A few favorites from our kitchen</ThemeText>
-          </View>
-          <ThemeText variant="body5" style={styles.menuCount}>{String(MENU_ITEMS.length).padStart(2, '0')} DISHES</ThemeText>
-        </View>
-
-        {MENU_ITEMS.map(item => {
-          const quantity = cart.items.find(cartItem => cartItem.id === item.id)?.quantity ?? 0;
+      <FlatList
+        data={listRecipes}
+        keyExtractor={recipe => String(recipe.id)}
+        ListHeaderComponent={renderHeader}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.45}
+        refreshing={isRefreshing}
+        onRefresh={refresh}
+        renderItem={({ item }) => {
           return (
-            <View key={item.id} style={styles.menuCard}>
-              <ImageBackground source={{ uri: item.image }} style={styles.menuImage} imageStyle={styles.menuImageRadius} />
-              <View style={styles.menuDetails}>
-                <ThemeText variant="body4" numberOfLines={2}>{item.title}</ThemeText>
-                <ThemeText variant="body5" style={styles.secondary}>{item.category}</ThemeText>
-                <View style={styles.menuFooter}>
-                  <ThemeText variant="h4">₹{item.price}</ThemeText>
-                  <Pressable
-                    accessibilityRole="button"
-                    accessibilityLabel={`Add ${item.title} to basket`}
-                    onPress={() => dispatch(addToCart(item))}
-                    style={styles.addButton}
-                  >
-                    <Plus size={15} color={colors['brand-primary']} />
-                    <ThemeText variant="body5" style={styles.addLabel}>{quantity ? `Add more · ${quantity}` : 'Add'}</ThemeText>
-                  </Pressable>
-                </View>
-              </View>
-            </View>
+            <RecipeCard
+              recipe={item}
+              demoPrice={demoPrice}
+              quantity={getQuantity(item.id)}
+              onPress={() => openRecipe(item.id)}
+              onAdd={() => addRecipe(item)}
+            />
           );
-        })}
-      </ScrollView>
+        }}
+        ItemSeparatorComponent={RecipeSeparator}
+        ListEmptyComponent={
+          isLoading ? (
+            <View style={styles.stateContainer}>
+              <ActivityIndicator size="large" color={colors['brand-primary']} />
+              <ThemeText variant="body5" style={styles.secondary}>{food_t('LOADING_RECIPES')}</ThemeText>
+            </View>
+          ) : isError ? (
+            <View style={styles.stateContainer}>
+              <ThemeText variant="h4">{food_t('RECIPES_LOAD_ERROR')}</ThemeText>
+              <ThemeText variant="body5" style={styles.secondary}>{food_t('CHECK_CONNECTION')}</ThemeText>
+              <Pressable onPress={retry} style={styles.retryButton}>
+                <ThemeText variant="body5" style={styles.retryLabel}>{food_t('RETRY')}</ThemeText>
+              </Pressable>
+            </View>
+          ) : null
+        }
+        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator style={styles.footerLoader} color={colors['brand-primary']} /> : null}
+      />
     </ThemedView>
   );
 };
 
-export default FoodHome
+export default FoodHome;

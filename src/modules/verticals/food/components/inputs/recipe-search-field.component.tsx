@@ -3,6 +3,7 @@ import { TextInput, View } from 'react-native';
 import { Search, X } from 'lucide-react-native';
 import { IconButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
+import { useAppTranslation } from '@core/i18n';
 import { styling } from './recipe-search-field.styles';
 
 type RecipeSearchFieldProps = {
@@ -13,6 +14,7 @@ type RecipeSearchFieldProps = {
 
 const RecipeSearchField: React.FC<RecipeSearchFieldProps> = ({ value, onChangeText, autoFocus = false }) => {
   const { colors, theme } = useAppTheme();
+  const { food_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (
@@ -22,15 +24,20 @@ const RecipeSearchField: React.FC<RecipeSearchFieldProps> = ({ value, onChangeTe
         autoFocus={autoFocus}
         value={value}
         onChangeText={onChangeText}
-        placeholder="Search recipes, ingredients, cuisines"
+        placeholder={food_t('SEARCH_PLACEHOLDER')}
         placeholderTextColor={colors['text-muted']}
         returnKeyType="search"
         autoCorrect={false}
         style={styles.searchInput}
-        accessibilityLabel="Search recipes"
+        accessibilityLabel={food_t('SEARCH_RECIPES')}
       />
       {value.length > 0 ? (
-        <IconButton accessibilityRole="button" accessibilityLabel="Clear search" onPress={() => onChangeText('')} style={styles.clearButton}>
+        <IconButton
+          accessibilityRole="button"
+          accessibilityLabel={food_t('CLEAR_SEARCH')}
+          onPress={() => onChangeText('')}
+          style={styles.clearButton}
+        >
           <X size={17} color={colors['icon-default']} />
         </IconButton>
       ) : null}

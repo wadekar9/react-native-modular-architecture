@@ -3,6 +3,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { ThemeText } from '@shared/components/ui';
 import type { RecipeSortField, RecipeSortOrder } from '../../types/recipe.types';
 import { useAppTheme } from '@shared/hooks';
+import { useAppTranslation } from '@core/i18n';
 import RecipeSortControl from './recipe-sort-control.component';
 import { styling } from './recipe-filter-bar.styles';
 
@@ -34,6 +35,7 @@ const RecipeFilterBar: React.FC<RecipeFilterBarProps> = ({
   hasActiveFilters,
 }) => {
   const { theme } = useAppTheme();
+  const { food_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   const renderChoices = (items: string[], selected: string, allLabel: string, onSelect: (value: string) => void) => (
@@ -55,14 +57,14 @@ const RecipeFilterBar: React.FC<RecipeFilterBarProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.filterHeading}>
-        <ThemeText variant="body5" style={styles.headingLabel}>MEAL TYPE</ThemeText>
-        {hasActiveFilters ? <Pressable onPress={onClear}><ThemeText variant="body5" style={styles.clearLabel}>Clear filters</ThemeText></Pressable> : null}
+        <ThemeText variant="body5" style={styles.headingLabel}>{food_t('MEAL_TYPE')}</ThemeText>
+        {hasActiveFilters ? <Pressable onPress={onClear}><ThemeText variant="body5" style={styles.clearLabel}>{food_t('CLEAR_FILTERS')}</ThemeText></Pressable> : null}
       </View>
-      {renderChoices(mealTypes, selectedMealType, 'All meals', onMealTypeChange)}
-      <ThemeText variant="body5" style={styles.headingLabel}>TAG</ThemeText>
-      {renderChoices(tags, selectedTag, 'All tags', onTagChange)}
+      {renderChoices(mealTypes, selectedMealType, food_t('ALL_MEALS'), onMealTypeChange)}
+      <ThemeText variant="body5" style={styles.headingLabel}>{food_t('TAG')}</ThemeText>
+      {renderChoices(tags, selectedTag, food_t('ALL_TAGS'), onTagChange)}
       <View style={styles.sortRow}>
-        <ThemeText variant="body5" style={styles.headingLabel}>SORT</ThemeText>
+        <ThemeText variant="body5" style={styles.headingLabel}>{food_t('SORT')}</ThemeText>
         <RecipeSortControl sortBy={sortBy} order={order} onChange={onSortChange} />
       </View>
     </View>

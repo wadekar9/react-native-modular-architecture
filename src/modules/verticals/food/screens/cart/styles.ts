@@ -31,6 +31,8 @@ export const styling = (theme: ITheme) => StyleSheet.create({
     },
     itemImage: { width: 76, height: 84, borderRadius: RADIUS.SM, backgroundColor: COLORS[theme]['surface-alt'] },
     itemInfo: { flex: 1, gap: SPACING.XS },
+    itemPrice: { alignItems: 'flex-start' },
+    demoLabel: { color: COLORS[theme]['text-muted'], fontSize: 9 },
     itemActions: { height: 88, justifyContent: 'space-between', alignItems: 'flex-end' },
     removeButton: { width: 32, height: 32, alignItems: 'center', justifyContent: 'center' },
     quantityControl: {
@@ -51,6 +53,7 @@ export const styling = (theme: ITheme) => StyleSheet.create({
         borderTopColor: COLORS[theme].border,
         backgroundColor: COLORS[theme].surface,
     },
+    demoNote: { color: COLORS[theme]['text-secondary'], textAlign: 'center' },
     priceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     totalRow: { paddingTop: SPACING.SM, borderTopWidth: 1, borderTopColor: COLORS[theme].border },
     primaryButton: {
