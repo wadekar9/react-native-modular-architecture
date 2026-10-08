@@ -8,7 +8,7 @@ import { styling } from './styles';
 import { EDiningBottomScreens } from '../../constants/screens.constants';
 import { DiningBottomBarScreenProps } from '../../types/navigation.types';
 import { DINING_EVENTS } from '../../services/events.data';
-import EventCard from '../../components/event-card.component';
+import { EventCard } from '../../components';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 
 const Events: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EVENTS>> = ({ navigation }) => {

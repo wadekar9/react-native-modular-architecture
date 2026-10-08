@@ -4,7 +4,7 @@ import { CalendarDays, MapPin } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
-import type { DiningEvent } from '../types/event.types';
+import type { DiningEvent } from '../../types/event.types';
 import { styling } from './event-card.styles';
 
 type EventCardProps = {
