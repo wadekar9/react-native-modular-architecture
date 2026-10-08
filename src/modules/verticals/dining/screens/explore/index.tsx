@@ -3,17 +3,17 @@ import { ScrollView, TextInput, View } from 'react-native';
 import { Search, SlidersHorizontal } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
-import { styling } from './styles';
 import { EDiningBottomScreens } from '../../constants/screens.constants';
 import { DiningBottomBarScreenProps } from '../../types/navigation.types';
 import { DINING_EVENTS, EVENT_CATEGORIES } from '../../services/events.data';
 import { EventCard } from '../../components';
 import { EDiningStackScreens } from '../../constants/screens.constants';
+import { useDiningTranslation } from '../../hooks';
+import { styling } from './styles';
 
 const Explore: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EXPLORE>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [search, setSearch] = useState('');

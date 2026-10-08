@@ -1,7 +1,6 @@
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabNavigationProp, BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
-import type { AppStackParamsList, AppStackScreenProps } from '@shared/types/navigation.types';
 import { EDiningBottomScreens, EDiningStackScreens } from '../constants/screens.constants';
 
 export type DiningStackParamsList = {
@@ -22,10 +21,7 @@ export type DiningBottomBarParamsList = {
     [EDiningBottomScreens.EVENTS]: undefined;
 };
 
-export type DiningStackScreenProps<T extends keyof DiningStackParamsList> = CompositeScreenProps<
-    NativeStackScreenProps<DiningStackParamsList, T>,
-    AppStackScreenProps<keyof AppStackParamsList>
->;
+export type DiningStackScreenProps<T extends keyof DiningStackParamsList> = NativeStackScreenProps<DiningStackParamsList, T>;
 export type DiningStackNavigationProps = NativeStackNavigationProp<DiningStackParamsList>;
 
 export type DiningBottomBarScreenProps<T extends keyof DiningBottomBarParamsList> = CompositeScreenProps<

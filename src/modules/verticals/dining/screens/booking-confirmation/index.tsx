@@ -3,15 +3,15 @@ import { Pressable, View } from 'react-native';
 import { Check, CalendarDays, Mail, Ticket } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { getDiningEvent } from '../../services/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 import type { DiningStackScreenProps } from '../../types/navigation.types';
+import { useDiningTranslation } from '../../hooks';
 import { styling } from './styles';
 
 const BookingConfirmation: React.FC<DiningStackScreenProps<EDiningStackScreens.BOOKING_CONFIRMATION>> = ({ navigation, route }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const { eventId, bookingReference, ticketCount, attendeeEmail, session } = route.params;
   const event = getDiningEvent(eventId);

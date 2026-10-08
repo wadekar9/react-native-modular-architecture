@@ -129,6 +129,18 @@ Services support dual mode:
 * **Online**: Reads/writes to Cloud Firestore (`users/{uid}/...`).
 * **Offline / Mock fallback**: Uses local MMKV storage (`Storage.set`, `getJson`) if Firebase is not yet configured, ensuring the app works in all environments.
 
+### Decentralized Vertical i18n Registration
+Vertical domains own their localization resources (e.g. `src/modules/verticals/food/i18n/` and `src/modules/verticals/dining/i18n/`). Rather than statically polluting `@core/i18n`, domain strings are dynamically registered into i18next via `registerTranslationBundle()` during vertical registration (`onRegister`). Verticals export dedicated domain translation hooks (`useFoodTranslation`, `useDiningTranslation`).
+
+### Pluggable Platform Module Manifests (`PlatformModuleManifest`)
+Cross-cutting platform features (`auth`, `location`, `notifications`, `settings`) declare manifests specifying their screens and lazy component loaders (`getComponent`). `RootNavigator` mounts platform screens dynamically from `getPlatformScreens()` rather than statically hardcoding every screen component.
+
+### Domain-Owned Navigation Contracts
+Screen route enums and stack parameter lists are decentralized out of `@shared` into domain packages:
+* Platform routes (`EAuthScreens`, `ELocationScreens`, `ENotificationScreens`, `ESettingsScreens`) reside in `@modules/platform/*`.
+* App shell routes (`ERootScreens.SPLASH`, `ERootScreens.MAIN`) and root `AppStackParamsList` reside in `@app/navigation`.
+* `@shared` remains 100% domain-agnostic and free of application-specific routes.
+
 
 ---
 

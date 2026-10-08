@@ -3,15 +3,14 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowRight, ClipboardList, MapPin, ReceiptText } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { EFoodBottomScreens } from '../../constants/screens.constants';
 import type { FoodBottomBarScreenProps } from '../../types/navigation.types';
-import { useFoodOrders } from '../../hooks';
+import { useFoodOrders, useFoodTranslation } from '../../hooks';
 import { styling } from './styles';
 
 const MyOrders: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.MY_ORDERS>> = () => {
   const { colors, theme } = useAppTheme();
-  const { food_t, i18n } = useAppTranslation();
+  const { food_t, i18n } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const { orders, browseRecipes, openOrder } = useFoodOrders();
 

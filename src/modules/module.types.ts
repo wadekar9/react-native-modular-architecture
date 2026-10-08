@@ -95,3 +95,25 @@ export type ModuleManifest = {
    */
   onLogout?: () => void;
 };
+
+/**
+ * ============================================================================
+ * PLATFORM MODULE MANIFEST CONTRACT
+ * ============================================================================
+ *
+ * Defines the contract for core cross-cutting platform capability modules
+ * (e.g. auth, location, notifications, settings).
+ */
+export type PlatformScreenEntry = {
+  name: string;
+  getComponent: () => ComponentType<any>;
+  options?: Record<string, any>;
+};
+
+export type PlatformModuleManifest = {
+  id: string;
+  title?: string;
+  screens: PlatformScreenEntry[];
+  onRegister?: () => void;
+  onLogout?: () => void;
+};

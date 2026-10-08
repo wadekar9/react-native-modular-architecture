@@ -1,0 +1,7 @@
+{
+  "name": "@superapp/vertical-food",
+  "version": "0.0.1",
+  "private": true,
+  "main": "manifest.ts"
+}
+

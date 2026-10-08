@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThemedScreen, ThemeText } from '@shared/components/ui';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import type { AppStackScreenProps } from '@shared/types/navigation.types';
+import { ESettingsScreens } from '../../constants/screens.constants';
+import type { SettingsScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 import { styling } from './styles';
 
-const EditProfile: React.FC<AppStackScreenProps<EStackScreens.EDIT_PROFILE>> = () => {
+const EditProfile: React.FC<SettingsScreenProps<ESettingsScreens.EDIT_PROFILE>> = () => {
   const styles = styling();
   const { nav_t } = useAppTranslation();
 

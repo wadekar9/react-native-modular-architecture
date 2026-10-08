@@ -3,7 +3,7 @@ import { ImageBackground, Pressable, View } from 'react-native';
 import { CalendarDays, MapPin } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
+import { useDiningTranslation } from '../../hooks';
 import type { DiningEvent } from '../../types/event.types';
 import { styling } from './event-card.styles';
 
@@ -15,7 +15,7 @@ type EventCardProps = {
 
 const EventCard: React.FC<EventCardProps> = ({ event, onPress, featured = false }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (

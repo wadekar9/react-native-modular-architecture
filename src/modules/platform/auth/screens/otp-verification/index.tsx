@@ -17,11 +17,11 @@ import {
   type OtpVerificationValidatorSchemaType,
 } from '../../validators';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import type { AuthScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 
-const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATION>> = ({
+const OTPVerification: React.FC<AuthScreenProps<EAuthScreens.OTP_VERIFICATION>> = ({
   navigation,
   route,
 }) => {
@@ -51,7 +51,7 @@ const OTPVerification: React.FC<AppStackScreenProps<EStackScreens.OTP_VERIFICATI
     setResendStatus(null);
     try {
       await verifyOtp({ email, otp: values.otp });
-      navigation.navigate(EStackScreens.RESET_PASSWORD, { email, otp: values.otp });
+      navigation.navigate(EAuthScreens.RESET_PASSWORD, { email, otp: values.otp });
     } catch {
       // Error handled by mutation onError
     }

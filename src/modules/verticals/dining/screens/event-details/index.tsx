@@ -3,15 +3,15 @@ import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, CalendarDays, Check, Clock3, MapPin, Ticket } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { getDiningEvent } from '../../services/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 import { DiningStackScreenProps } from '../../types/navigation.types';
+import { useDiningTranslation } from '../../hooks';
 import { styling } from './styles';
 
 const EventDetails: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_DETAILS>> = ({ navigation, route }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const event = getDiningEvent(route.params.eventId);
 

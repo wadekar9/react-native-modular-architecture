@@ -3,17 +3,17 @@ import { ScrollView, View } from 'react-native';
 import { ArrowUpRight, Sparkles } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { styling } from './styles';
 import { EDiningBottomScreens } from '../../constants/screens.constants';
 import { DiningBottomBarScreenProps } from '../../types/navigation.types';
 import { DINING_EVENTS } from '../../services/events.data';
 import { EventCard } from '../../components';
 import { EDiningStackScreens } from '../../constants/screens.constants';
+import { useDiningTranslation } from '../../hooks';
 
 const Events: React.FC<DiningBottomBarScreenProps<EDiningBottomScreens.EVENTS>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const [featured, ...upcoming] = DINING_EVENTS;
 

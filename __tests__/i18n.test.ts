@@ -1,6 +1,11 @@
 import i18n from '@core/i18n/i18n';
 import { changeAppLanguage, LANGUAGE_STORAGE_KEY } from '@core/i18n';
 import { Storage } from '@core/storage';
+import { registerFoodTranslations } from '../src/modules/verticals/food/i18n';
+import { registerDiningTranslations } from '../src/modules/verticals/dining/i18n';
+
+registerFoodTranslations();
+registerDiningTranslations();
 
 describe('app language and multi-language support', () => {
   afterEach(async () => {

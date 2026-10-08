@@ -5,6 +5,7 @@ import { cartReducer, clearCart } from './store/cart.slice';
 import { foodOrdersReducer, clearFoodOrders } from './store/orders.slice';
 import { clearPersistedCart, persistCart } from './store/cart.persistence';
 import type { CartState } from './types/cart.types';
+import { registerFoodTranslations } from './i18n';
 
 let stopCartPersistence: (() => void) | undefined;
 
@@ -51,6 +52,7 @@ const foodManifest: ModuleManifest = {
    * Injects the dynamic 'cart' reducer slice into the root Redux store.
    */
   onRegister: () => {
+    registerFoodTranslations();
     injectReducer('cart', cartReducer);
     injectReducer('foodOrders', foodOrdersReducer);
     if (!stopCartPersistence) {

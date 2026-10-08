@@ -11,8 +11,8 @@ import { CheckCheck, Trash2, BellOff } from 'lucide-react-native';
 import { IconButton, ThemedScreen, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { moderateScale } from '@shared/constants/styles.constants';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { ENotificationScreens } from '../../constants/screens.constants';
+import type { NotificationScreenProps } from '../../types/navigation.types';
 import { NotificationItem } from '../../components';
 import {
   useNotifications,
@@ -34,7 +34,7 @@ const FILTER_ITEMS: { id: NotificationFilter; key: string }[] = [
   { id: 'system', key: 'SYSTEM' },
 ];
 
-const NotificationListScreen: React.FC<AppStackScreenProps<EStackScreens.NOTIFICATIONS>> = ({
+const NotificationListScreen: React.FC<NotificationScreenProps<ENotificationScreens.NOTIFICATIONS>> = ({
   navigation,
 }) => {
   const { theme, colors } = useAppTheme();

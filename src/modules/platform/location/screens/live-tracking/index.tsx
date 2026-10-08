@@ -11,15 +11,14 @@ import { ThemeText } from '@shared/components/ui';
 import { IconButton } from '@shared/components/ui';
 import { EmptyStatePage } from '@shared/components/pages';
 import { useAppTheme, useSafeAreaInsetsStyle } from '@shared/hooks';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import type { AppStackScreenProps } from '@shared/types/navigation.types';
+import type { LiveTrackingScreenProps } from '../../types/navigation.types';
 import { LiveMapView, LiveTrackingCard } from '../../components';
 import { useRealtimeTracking } from '../../hooks';
 import { styling } from './styles';
 import { moderateScale } from '@shared/constants';
 import { useAppTranslation } from '@core/i18n';
 
-export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE_TRACKING>> = ({
+export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
   navigation,
   route,
 }) => {
@@ -35,7 +34,7 @@ export const LiveTrackingScreen: React.FC<AppStackScreenProps<EStackScreens.LIVE
     if (navigation.canGoBack()) {
       navigation.goBack();
     } else {
-      navigation.navigate(EStackScreens.MAIN);
+      (navigation.navigate as any)('Main');
     }
   }, [navigation]);
 

@@ -17,11 +17,11 @@ import {
   type ResetPasswordValidatorSchemaType,
 } from '../../validators';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import type { AuthScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 
-const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>> = ({
+const ResetPassword: React.FC<AuthScreenProps<EAuthScreens.RESET_PASSWORD>> = ({
   navigation,
   route,
 }) => {
@@ -56,7 +56,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
       });
       setSuccessMessage(auth_t('PASSWORD_RESET'));
       setTimeout(() => {
-        navigation.navigate(EStackScreens.LOGIN);
+        navigation.navigate(EAuthScreens.LOGIN);
       }, 1500);
     } catch {
       // Error handled by mutation onError
@@ -65,7 +65,7 @@ const ResetPassword: React.FC<AppStackScreenProps<EStackScreens.RESET_PASSWORD>>
 
   const navigateToLogin = () => {
     resetError();
-    navigation.navigate(EStackScreens.LOGIN);
+    navigation.navigate(EAuthScreens.LOGIN);
   };
 
   return (

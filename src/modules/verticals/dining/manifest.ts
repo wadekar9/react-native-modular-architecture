@@ -1,5 +1,6 @@
 import type { ModuleManifest } from '@modules/module.types';
 import { EDiningStackScreens } from './constants/screens.constants';
+import { registerDiningTranslations } from './i18n';
 
 /**
  * ============================================================================
@@ -29,6 +30,14 @@ import { EDiningStackScreens } from './constants/screens.constants';
 const diningManifest: ModuleManifest = {
   id: 'dining',
   title: 'Dining',
+
+  /**
+   * Lifecycle hook triggered when the module is activated.
+   * Registers domain translations into the i18n instance.
+   */
+  onRegister: () => {
+    registerDiningTranslations();
+  },
 
   /**
    * Lazy factory returning the root navigation stack of the Dining vertical.

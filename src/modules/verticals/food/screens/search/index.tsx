@@ -3,17 +3,16 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Search, ShoppingBag } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { SPACING } from '@shared/constants/styles.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
 import { RecipeCard, RecipeCardSkeleton, RecipeFilterBar, RecipeSearchField } from '../../components';
-import { useFoodSearch } from '../../hooks';
+import { useFoodSearch, useFoodTranslation } from '../../hooks';
 import { styling } from './styles';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 
 const FoodSearch: React.FC<FoodStackScreenProps<EFoodStackScreens.FOOD_SEARCH>> = () => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
   const {
     search: query,

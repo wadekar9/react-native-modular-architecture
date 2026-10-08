@@ -3,15 +3,15 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Check, Minus, Plus, Ticket } from 'lucide-react-native';
 import { BaseTextInput, IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { getDiningEvent } from '../../services/events.data';
 import { EDiningStackScreens } from '../../constants/screens.constants';
 import type { DiningStackScreenProps } from '../../types/navigation.types';
+import { useDiningTranslation } from '../../hooks';
 import { styling } from './styles';
 
 const EventBooking: React.FC<DiningStackScreenProps<EDiningStackScreens.EVENT_BOOKING>> = ({ navigation, route }) => {
   const { colors, theme } = useAppTheme();
-  const { dining_t } = useAppTranslation();
+  const { dining_t } = useDiningTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const event = getDiningEvent(route.params.eventId);
   const [ticketCount, setTicketCount] = useState(1);

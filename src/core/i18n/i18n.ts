@@ -35,4 +35,10 @@ export const changeAppLanguage = async (language: SupportedLanguage): Promise<vo
     await i18n.changeLanguage(language);
 };
 
+export const registerTranslationBundle = (namespace: string, bundles: Record<string, any>): void => {
+    Object.entries(bundles).forEach(([lng, bundle]) => {
+        i18n.addResourceBundle(lng, namespace, bundle, true, true);
+    });
+};
+
 export default { i18n };

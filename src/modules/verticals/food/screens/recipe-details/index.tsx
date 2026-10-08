@@ -3,16 +3,15 @@ import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Clock3, Flame, Plus, Star, Users } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
-import { useRecipeDetails } from '../../hooks';
+import { useFoodTranslation, useRecipeDetails } from '../../hooks';
 import RecipeDetailsSkeleton from './recipe-details-skeleton.component';
 import { styling } from './styles';
 
 const RecipeDetails: React.FC<FoodStackScreenProps<EFoodStackScreens.RECIPE_DETAILS>> = ({ route }) => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const {
     recipe,

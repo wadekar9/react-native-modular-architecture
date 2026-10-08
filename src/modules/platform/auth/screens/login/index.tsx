@@ -18,13 +18,14 @@ import {
   type SignInValidatorSchemaType,
 } from '../../validators';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import { ESettingsScreens } from '../../../settings';
+import type { AuthScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 import { Settings2 } from 'lucide-react-native';
 import { moderateScale } from '@shared/constants/styles.constants';
 
-const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation }) => {
+const Login: React.FC<AuthScreenProps<EAuthScreens.LOGIN>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
   const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
@@ -49,12 +50,12 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
 
   const navigateToRegister = () => {
     resetError();
-    navigation.navigate(EStackScreens.REGISTER);
+    navigation.navigate(EAuthScreens.REGISTER);
   };
 
   const navigateToForgotPassword = () => {
     resetError();
-    navigation.navigate(EStackScreens.FORGOT_PASSWORD);
+    navigation.navigate(EAuthScreens.FORGOT_PASSWORD);
   };
 
   return (
@@ -72,7 +73,7 @@ const Login: React.FC<AppStackScreenProps<EStackScreens.LOGIN>> = ({ navigation 
             <IconButton
               accessibilityRole="button"
               accessibilityLabel={auth_t('SETTINGS')}
-              onPress={() => navigation.navigate(EStackScreens.SETTINGS)}
+              onPress={() => navigation.navigate(ESettingsScreens.SETTINGS as any)}
               style={styles.settingsButton}
             >
               <Settings2 size={moderateScale(20)} color={colors['text-primary']} />

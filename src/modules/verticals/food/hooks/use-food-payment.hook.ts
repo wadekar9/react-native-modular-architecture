@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from '@core/store/hooks';
-import { useAppTranslation } from '@core/i18n';
+import { useFoodTranslation } from './use-food-translation.hook';
 import { EFoodStackScreens } from '../constants/screens.constants';
 import { DEMO_RECIPE_PRICE_INR, getDemoDeliveryFee } from '../constants/recipe-pricing.constants';
 import { clearCart } from '../store/cart.slice';
@@ -12,7 +12,7 @@ import type { FoodStackNavigationProps } from '../types/navigation.types';
 
 export const useFoodPayment = () => {
   const navigation = useNavigation<FoodStackNavigationProps>();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
 
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectFoodCart);

@@ -3,15 +3,14 @@ import { Pressable, View } from 'react-native';
 import { ArrowRight, Check, Clock3, MapPin, ReceiptText } from 'lucide-react-native';
 import { ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
-import { useOrderConfirmation } from '../../hooks';
+import { useFoodTranslation, useOrderConfirmation } from '../../hooks';
 import { styling } from './styles';
 
 const OrderConfirmation: React.FC<FoodStackScreenProps<EFoodStackScreens.ORDER_CONFIRMATION>> = ({ route }) => {
   const { colors, theme } = useAppTheme();
-  const { food_t, i18n } = useAppTranslation();
+  const { food_t, i18n } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const { order, backToFood, openOrderDetails, openOrders } = useOrderConfirmation(route.params.orderId);
 

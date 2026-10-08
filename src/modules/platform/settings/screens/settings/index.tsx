@@ -7,8 +7,8 @@ import { moderateScale } from '@shared/constants/styles.constants';
 import { useAppTheme } from '@shared/hooks';
 import type { IBaseTheme } from '@shared/types/theme.types';
 import { styling } from './styles';
-import { AppStackScreenProps } from '@shared/types';
-import { EStackScreens } from '@shared/constants/screens.constants';
+import { ESettingsScreens } from '../../constants/screens.constants';
+import type { SettingsScreenProps } from '../../types/navigation.types';
 
 const THEME_OPTIONS: { value: IBaseTheme; key: string; Icon: typeof Monitor }[] = [
     { value: 'default', key: 'SYSTEM', Icon: Monitor },
@@ -17,7 +17,7 @@ const THEME_OPTIONS: { value: IBaseTheme; key: string; Icon: typeof Monitor }[] 
 ];
 
 
-const Settings: React.FC<AppStackScreenProps<EStackScreens.SETTINGS>> = () => {
+const Settings: React.FC<SettingsScreenProps<ESettingsScreens.SETTINGS>> = () => {
 
     const { colors, selectedTheme, changeTheme } = useAppTheme();
     const { common_t, i18n } = useAppTranslation();

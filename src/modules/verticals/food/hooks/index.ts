@@ -6,3 +6,4 @@ export * from './use-food-payment.hook';
 export * from './use-food-orders.hook';
 export * from './use-order-confirmation.hook';
 export * from './use-order-details.hook';
+export * from './use-food-translation.hook';

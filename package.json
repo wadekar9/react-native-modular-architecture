@@ -2,6 +2,12 @@
   "name": "SuperApp",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "src/core",
+    "src/shared",
+    "src/modules/platform",
+    "src/modules/verticals/*"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",

@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 import { ThemeText } from '@shared/components/ui';
 import type { RecipeSortField, RecipeSortOrder } from '../../../types/recipe.types';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
+import { useFoodTranslation } from '../../../hooks';
 import { styling } from './recipe-sort-control.styles';
 
 type RecipeSortControlProps = {
@@ -20,7 +20,7 @@ const SORT_OPTIONS: { key: 'TOP_RATED' | 'A_TO_Z' | 'QUICKEST'; sortBy: RecipeSo
 
 const RecipeSortControl: React.FC<RecipeSortControlProps> = ({ sortBy, order, onChange }) => {
   const { theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (

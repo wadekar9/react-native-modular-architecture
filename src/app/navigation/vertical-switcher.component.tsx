@@ -7,7 +7,7 @@ import { IconButton } from '@shared/components/ui';
 import { ITheme } from '@shared/types/theme.types';
 import { COLORS } from '@shared/constants/colors.constants';
 import { useAppTranslation } from '@core/i18n';
-import { EStackScreens } from '@shared/constants/screens.constants';
+import { ESettingsScreens } from '@modules/platform';
 import { moderateScale } from '@shared/constants/styles.constants';
 
 /**
@@ -60,7 +60,7 @@ const VerticalSwitcher = ({ state, descriptors, navigation }: MaterialTopTabBarP
       <IconButton
         accessibilityRole="button"
         accessibilityLabel={common_t('SETTINGS')}
-        onPress={() => navigation.getParent()?.navigate(EStackScreens.SETTINGS)}
+        onPress={() => navigation.getParent()?.navigate(ESettingsScreens.SETTINGS as any)}
         style={styles.settingsButton}
       >
         <Settings2 size={moderateScale(20)} color={COLORS[theme]['text-primary']} />

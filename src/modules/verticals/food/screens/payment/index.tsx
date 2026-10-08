@@ -3,11 +3,10 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Check, CreditCard, Smartphone, Wallet } from 'lucide-react-native';
 import { BaseTextInput, IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
 import type { FoodPaymentMethod } from '../../types/order.types';
-import { useFoodPayment } from '../../hooks';
+import { useFoodPayment, useFoodTranslation } from '../../hooks';
 import { styling } from './styles';
 
 type PaymentOptionItem = {
@@ -25,7 +24,7 @@ const PAYMENT_OPTIONS: PaymentOptionItem[] = [
 
 const FoodPayment: React.FC<FoodStackScreenProps<EFoodStackScreens.FOOD_PAYMENT>> = () => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const {
     cart,

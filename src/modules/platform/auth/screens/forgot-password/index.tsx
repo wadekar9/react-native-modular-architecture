@@ -17,11 +17,11 @@ import {
   type ForgotPasswordValidatorSchemaType,
 } from '../../validators';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import type { AuthScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 
-const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD>> = ({ navigation }) => {
+const ForgotPassword: React.FC<AuthScreenProps<EAuthScreens.FORGOT_PASSWORD>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
   const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
@@ -42,7 +42,7 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
     resetError();
     try {
       await forgotPassword(values);
-      navigation.navigate(EStackScreens.OTP_VERIFICATION, { email: values.email });
+      navigation.navigate(EAuthScreens.OTP_VERIFICATION, { email: values.email });
     } catch {
       // Error handled by mutation onError
     }
@@ -50,7 +50,7 @@ const ForgotPassword: React.FC<AppStackScreenProps<EStackScreens.FORGOT_PASSWORD
 
   const navigateToLogin = () => {
     resetError();
-    navigation.navigate(EStackScreens.LOGIN);
+    navigation.navigate(EAuthScreens.LOGIN);
   };
 
   return (

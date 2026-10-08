@@ -3,12 +3,11 @@ import { ActivityIndicator, FlatList, ImageBackground, Pressable, StyleSheet, Vi
 import { ArrowRight, Search, ShoppingBag } from 'lucide-react-native';
 import { IconButton, Skeleton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { EFoodBottomScreens } from '../../constants/screens.constants';
 import type { FoodBottomBarScreenProps } from '../../types/navigation.types';
 import { RADIUS, SPACING, moderateScale } from '@shared/constants/styles.constants';
 import { RecipeCard, RecipeCardSkeleton, RecipeSortControl } from '../../components';
-import { useFoodHome } from '../../hooks';
+import { useFoodHome, useFoodTranslation } from '../../hooks';
 import { styling } from './styles';
 
 const separatorStyles = StyleSheet.create({ item: { height: SPACING.SM } });
@@ -16,7 +15,7 @@ const RecipeSeparator = () => <View style={separatorStyles.item} />;
 
 const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>> = () => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const {
     cartCount,

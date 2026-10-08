@@ -9,11 +9,11 @@ import { linking } from './linking';
 import MainNavigator from './main-navigator.navigation';
 import { useNavigationTheme } from '@shared/hooks';
 import { navigationRef } from '@core/navigation';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackParamsList } from '@shared/types/navigation.types';
-import Routes from '@modules/platform/routes';
+import { getPlatformScreens, EAuthScreens } from '@modules/platform';
+import { ERootScreens, type AppStackParamsList } from './navigation.types';
 
 const RootStack = createNativeStackNavigator<AppStackParamsList>();
+const platformScreens = getPlatformScreens();
 
 const RootNavigator = () => {
     const navigationTheme = useNavigationTheme();
@@ -25,11 +25,11 @@ const RootNavigator = () => {
             runLogoutHooks();
             queryClient.clear();
             if (navigationRef.isReady()) {
-                navigationRef.reset({ index: 0, routes: [{ name: EStackScreens.LOGIN }] });
+                navigationRef.reset({ index: 0, routes: [{ name: EAuthScreens.LOGIN }] });
             }
         } else if (!wasSignedInRef.current && isSignedIn) {
             if (navigationRef.isReady()) {
-                navigationRef.reset({ index: 0, routes: [{ name: EStackScreens.MAIN }] });
+                navigationRef.reset({ index: 0, routes: [{ name: ERootScreens.MAIN }] });
             }
         }
         wasSignedInRef.current = isSignedIn;
@@ -50,21 +50,19 @@ const RootNavigator = () => {
             linking={linking}
         >
             <RootStack.Navigator
-                initialRouteName={EStackScreens.SPLASH}
+                initialRouteName={EAuthScreens.SPLASH}
                 screenOptions={{ headerShown: false, animation: 'fade' }}
             >
-                <RootStack.Screen name={EStackScreens.SPLASH} component={Routes.Splash} />
-                <RootStack.Screen name={EStackScreens.LOGIN} component={Routes.Login} />
-                <RootStack.Screen name={EStackScreens.REGISTER} component={Routes.Register} />
-                <RootStack.Screen name={EStackScreens.FORGOT_PASSWORD} component={Routes.ForgotPassword} />
-                <RootStack.Screen name={EStackScreens.RESET_PASSWORD} component={Routes.ResetPassword} />
-                <RootStack.Screen name={EStackScreens.OTP_VERIFICATION} component={Routes.OtpVerification} />
-                <RootStack.Screen name={EStackScreens.NOTIFICATIONS} component={Routes.NotificationList} />
-                <RootStack.Screen name={EStackScreens.LIVE_TRACKING} component={Routes.LiveTracking} />
-                <RootStack.Screen name={EStackScreens.SETTINGS} component={Routes.Settings} />
-                <RootStack.Screen name={EStackScreens.EDIT_PROFILE} component={Routes.EditProfile} />
+                {platformScreens.map(screen => (
+                    <RootStack.Screen
+                        key={screen.name}
+                        name={screen.name as keyof AppStackParamsList}
+                        getComponent={screen.getComponent}
+                        options={screen.options}
+                    />
+                ))}
 
-                <RootStack.Screen name={EStackScreens.MAIN} component={MainNavigator} />
+                <RootStack.Screen name={ERootScreens.MAIN} component={MainNavigator} />
             </RootStack.Navigator>
         </NavigationContainer>
     );

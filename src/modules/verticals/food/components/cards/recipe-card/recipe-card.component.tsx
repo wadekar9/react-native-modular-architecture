@@ -3,7 +3,7 @@ import { Image, Pressable, View } from 'react-native';
 import { Clock3, Plus, Star } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
+import { useFoodTranslation } from '../../../hooks';
 import type { Recipe } from '../../../types/recipe.types';
 import { styling } from './recipe-card.styles';
 
@@ -17,7 +17,7 @@ type RecipeCardProps = {
 
 const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, demoPrice, quantity, onPress, onAdd }) => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const cookingTime = recipe.prepTimeMinutes + recipe.cookTimeMinutes;
 

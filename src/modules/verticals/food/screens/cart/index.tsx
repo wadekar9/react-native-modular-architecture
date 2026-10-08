@@ -3,15 +3,14 @@ import { Image, Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
 import { styling } from './styles';
 import { FoodStackScreenProps } from '../../types/navigation.types';
 import { EFoodStackScreens } from '../../constants/screens.constants';
-import { useFoodCart } from '../../hooks';
+import { useFoodCart, useFoodTranslation } from '../../hooks';
 
 const FoodCart: React.FC<FoodStackScreenProps<EFoodStackScreens.FOOD_CART>> = () => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const {
     cart,

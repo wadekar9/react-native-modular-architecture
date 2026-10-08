@@ -17,11 +17,11 @@ import {
   type RegisterValidatorSchemaType,
 } from '../../validators';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import type { AuthScreenProps } from '../../types/navigation.types';
 import { useAppTranslation } from '@core/i18n';
 
-const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navigation }) => {
+const Register: React.FC<AuthScreenProps<EAuthScreens.REGISTER>> = ({ navigation }) => {
   const { colors, theme } = useAppTheme();
   const { auth_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
@@ -57,7 +57,7 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
       });
       setSuccessMessage(auth_t('ACCOUNT_CREATED'));
       setTimeout(() => {
-        navigation.navigate(EStackScreens.LOGIN);
+        navigation.navigate(EAuthScreens.LOGIN);
       }, 1200);
     } catch {
       // Error handled by mutation onError
@@ -66,7 +66,7 @@ const Register: React.FC<AppStackScreenProps<EStackScreens.REGISTER>> = ({ navig
 
   const navigateToLogin = () => {
     resetError();
-    navigation.navigate(EStackScreens.LOGIN);
+    navigation.navigate(EAuthScreens.LOGIN);
   };
 
   return (

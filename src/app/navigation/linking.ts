@@ -1,6 +1,7 @@
 import type { LinkingOptions } from '@react-navigation/native';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackParamsList } from '@shared/types/navigation.types';
+import { EAuthScreens } from '@modules/platform';
+import { ERootScreens } from './root.constants';
+import type { AppStackParamsList } from './navigation.types';
 import { getVerticalDeepLinks } from '@modules/registry';
 
 /**
@@ -11,8 +12,8 @@ export const linking: LinkingOptions<AppStackParamsList> = {
     prefixes: ['super://app'],
     config: {
         screens: {
-            [EStackScreens.LOGIN]: 'login',
-            [EStackScreens.MAIN]: {
+            [EAuthScreens.LOGIN]: 'login',
+            [ERootScreens.MAIN]: {
                 screens: getVerticalDeepLinks(),
             },
         },

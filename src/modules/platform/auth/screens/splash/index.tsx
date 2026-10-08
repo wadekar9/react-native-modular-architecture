@@ -5,10 +5,10 @@ import { useAppTheme } from '@shared/hooks';
 import { useAppSelector } from '@core/store/hooks';
 import { IMAGES } from '@shared/assets/images';
 import { styling } from './styles';
-import { EStackScreens } from '@shared/constants/screens.constants';
-import { AppStackScreenProps } from '@shared/types/navigation.types';
+import { EAuthScreens } from '../../constants/screens.constants';
+import type { AuthScreenProps } from '../../types/navigation.types';
 
-const Splash: React.FC<AppStackScreenProps<EStackScreens.SPLASH>> = ({ navigation }) => {
+const Splash: React.FC<AuthScreenProps<EAuthScreens.SPLASH>> = ({ navigation }) => {
   const { theme } = useAppTheme();
   const styles = React.useMemo(() => styling(theme), [theme]);
   const isSignedIn = useAppSelector(state => state.session.isSignedIn);
@@ -16,9 +16,9 @@ const Splash: React.FC<AppStackScreenProps<EStackScreens.SPLASH>> = ({ navigatio
   useEffect(() => {
     const timer = setTimeout(() => {
       if (isSignedIn) {
-        navigation.replace(EStackScreens.MAIN);
+        (navigation.replace as any)('Main');
       } else {
-        navigation.replace(EStackScreens.LOGIN);
+        navigation.replace(EAuthScreens.LOGIN);
       }
     }, 1200);
 

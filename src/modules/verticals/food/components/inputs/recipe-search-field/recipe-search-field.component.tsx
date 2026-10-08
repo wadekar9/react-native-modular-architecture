@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 import { Search, X } from 'lucide-react-native';
 import { IconButton } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
-import { useAppTranslation } from '@core/i18n';
+import { useFoodTranslation } from '../../../hooks';
 import { styling } from './recipe-search-field.styles';
 
 type RecipeSearchFieldProps = {
@@ -14,7 +14,7 @@ type RecipeSearchFieldProps = {
 
 const RecipeSearchField: React.FC<RecipeSearchFieldProps> = ({ value, onChangeText, autoFocus = false }) => {
   const { colors, theme } = useAppTheme();
-  const { food_t } = useAppTranslation();
+  const { food_t } = useFoodTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
 
   return (
