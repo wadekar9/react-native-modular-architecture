@@ -1,0 +1,22 @@
+{
+  "HOME": "होम",
+  "FOOD": "खाना",
+  "DINING": "रेस्तरां",
+  "NOTIFICATIONS": "सूचनाएं",
+  "LIVE_TRACKING": "लाइव ट्रैकिंग",
+  "SETTINGS": "सेटिंग्स",
+  "PROFILE": "प्रोफ़ाइल",
+  "BACK": "वापस",
+  "MY_ORDERS": "मेरे ऑर्डर",
+  "EVENTS": "कार्यक्रम",
+  "EXPLORE": "खोजें",
+  "CART": "टोकरी",
+  "CHECKOUT": "चेकआउट",
+  "ORDER_DETAILS": "ऑर्डर विवरण",
+  "ORDER_CONFIRMATION": "ऑर्डर पुष्टि",
+  "EVENT_DETAILS": "कार्यक्रम विवरण",
+  "EVENT_BOOKING": "कार्यक्रम बुकिंग",
+  "BOOKING_CONFIRMATION": "बुकिंग पुष्टि",
+  "EDIT_PROFILE": "प्रोफ़ाइल संपादित करें"
+}
+

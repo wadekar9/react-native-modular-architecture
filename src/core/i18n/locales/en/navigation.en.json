@@ -6,6 +6,16 @@
   "LIVE_TRACKING": "Live Tracking",
   "SETTINGS": "Settings",
   "PROFILE": "Profile",
-  "BACK": "Back"
+  "BACK": "Back",
+  "MY_ORDERS": "My Orders",
+  "EVENTS": "Events",
+  "EXPLORE": "Explore",
+  "CART": "Basket",
+  "CHECKOUT": "Checkout",
+  "ORDER_DETAILS": "Order Details",
+  "ORDER_CONFIRMATION": "Order Confirmation",
+  "EVENT_DETAILS": "Event Details",
+  "EVENT_BOOKING": "Event Booking",
+  "BOOKING_CONFIRMATION": "Booking Confirmation",
+  "EDIT_PROFILE": "Edit Profile"
 }
-

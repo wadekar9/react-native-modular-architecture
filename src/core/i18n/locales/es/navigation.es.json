@@ -1,0 +1,22 @@
+{
+  "HOME": "Inicio",
+  "FOOD": "Comida",
+  "DINING": "Restaurantes",
+  "NOTIFICATIONS": "Notificaciones",
+  "LIVE_TRACKING": "Seguimiento en directo",
+  "SETTINGS": "Configuración",
+  "PROFILE": "Perfil",
+  "BACK": "Atrás",
+  "MY_ORDERS": "Mis pedidos",
+  "EVENTS": "Eventos",
+  "EXPLORE": "Explorar",
+  "CART": "Cesta",
+  "CHECKOUT": "Pago",
+  "ORDER_DETAILS": "Detalles del pedido",
+  "ORDER_CONFIRMATION": "Confirmación del pedido",
+  "EVENT_DETAILS": "Detalles del evento",
+  "EVENT_BOOKING": "Reserva de evento",
+  "BOOKING_CONFIRMATION": "Confirmación de reserva",
+  "EDIT_PROFILE": "Editar perfil"
+}
+
