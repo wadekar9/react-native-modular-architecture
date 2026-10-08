@@ -4,7 +4,7 @@ module.exports = {
     './node_modules/react-native-gesture-handler/jestSetup.js',
   ],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@reduxjs/toolkit|immer)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-reanimated|@reduxjs/toolkit|immer)/)',
   ],
   moduleNameMapper: {
     '^@app/(.*)$': '<rootDir>/src/app/$1',
@@ -24,5 +24,6 @@ module.exports = {
     '^react-native-maps$': '<rootDir>/__mocks__/react-native-maps.js',
     '^\\$navigation/app-stack-navigator\\.navigation$': '<rootDir>/__mocks__/app-stack-navigator.js',
     '^\\$store/redux\\.store$': '<rootDir>/__mocks__/redux.store.ts',
+    '^@d11/react-native-fast-image$': '<rootDir>/__mocks__/react-native-fast-image.js',
   },
 };

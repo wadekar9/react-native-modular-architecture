@@ -1,11 +1,12 @@
 import React from 'react';
-import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
 import { LegendList, LegendListProps } from '@legendapp/list';
 import { ITheme } from '@shared/types/theme.types';
 import { useAppTheme } from '@shared/hooks';
 import { COLORS } from '@shared/constants/colors.constants';
 import { EmptyStatePage } from '@shared/components/pages';
-import { moderateScale } from '@shared/constants/styles.constants';
+import { SPACING, moderateScale } from '@shared/constants/styles.constants';
+import { SkeletonCard } from '../skeleton';
 
 interface AppListProps<T> extends Omit<LegendListProps<T>, 'data'> {
     data: T[] | null | undefined;
@@ -16,6 +17,7 @@ interface AppListProps<T> extends Omit<LegendListProps<T>, 'data'> {
     emptyDescription?: string;
     theme?: ITheme;
     loadingComponent?: React.ReactNode;
+    skeletonComponent?: React.ReactNode;
     renderEmptyComponent?: React.ReactNode;
 }
 
@@ -28,6 +30,7 @@ function AppList<T>({
     emptyDescription,
     theme,
     loadingComponent,
+    skeletonComponent,
     renderEmptyComponent,
     contentContainerStyle,
     ...props
@@ -37,11 +40,17 @@ function AppList<T>({
     const colors = COLORS[activeTheme];
 
     if (isLoading && !data?.length) {
+        if (skeletonComponent) {
+            return <View style={contentContainerStyle}>{skeletonComponent}</View>;
+        }
+        if (loadingComponent) {
+            return <View style={styles.center}>{loadingComponent}</View>;
+        }
         return (
-            <View style={styles.center}>
-                {loadingComponent || (
-                    <ActivityIndicator size="large" color={colors['brand-primary']} />
-                )}
+            <View style={[styles.skeletonContainer, contentContainerStyle]}>
+                {Array.from({ length: 3 }).map((_, index) => (
+                    <SkeletonCard key={`applist-skeleton-${index}`} />
+                ))}
             </View>
         );
     }
@@ -90,5 +99,9 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         flex: 1,
+    },
+    skeletonContainer: {
+        padding: SPACING.MD,
+        gap: SPACING.SM,
     },
 });
