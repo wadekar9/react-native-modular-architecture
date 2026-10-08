@@ -90,6 +90,15 @@ export const styling = (theme: ITheme) =>
     },
     sectionCopy: { gap: SPACING.XS },
     secondary: { color: COLORS[theme]['text-secondary'] },
+    tagSkeletonRow: {
+      flexDirection: 'row',
+      gap: SPACING.XS,
+      paddingHorizontal: SPACING.MD,
+      paddingVertical: SPACING.XS,
+    },
+    recipeSkeletonContainer: {
+      gap: SPACING.SM,
+    },
     tagList: { gap: SPACING.XS, paddingRight: SPACING.MD },
     tagChip: {
       minHeight: moderateScale(34),

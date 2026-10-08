@@ -1,17 +1,17 @@
 import React, { useMemo } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Search, ShoppingBag } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
+import { SPACING } from '@shared/constants/styles.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
-import { RecipeCard, RecipeFilterBar, RecipeSearchField } from '../../components';
+import { RecipeCard, RecipeCardSkeleton, RecipeFilterBar, RecipeSearchField } from '../../components';
 import { useFoodSearch } from '../../hooks';
 import { styling } from './styles';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 
 const FoodSearch: React.FC<FoodStackScreenProps<EFoodStackScreens.FOOD_SEARCH>> = () => {
-
   const { colors, theme } = useAppTheme();
   const { food_t } = useAppTranslation();
   const styles = useMemo(() => styling(theme), [theme]);
@@ -98,9 +98,10 @@ const FoodSearch: React.FC<FoodStackScreenProps<EFoodStackScreens.FOOD_SEARCH>> 
         </View>
 
         {isLoading ? (
-          <View style={styles.emptyState}>
-            <ActivityIndicator size="large" color={colors['brand-primary']} />
-            <ThemeText variant="body5" style={styles.emptyCopy}>{food_t('LOADING_RECIPES')}</ThemeText>
+          <View style={{ gap: SPACING.SM }}>
+            {Array.from({ length: 4 }).map((_, index) => (
+              <RecipeCardSkeleton key={`search-skeleton-${index}`} />
+            ))}
           </View>
         ) : isError ? (
           <View style={styles.emptyState}>

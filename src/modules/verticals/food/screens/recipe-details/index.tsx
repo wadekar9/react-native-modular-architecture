@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, ImageBackground, Pressable, ScrollView, View } from 'react-native';
+import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
 import { ArrowLeft, Clock3, Flame, Plus, Star, Users } from 'lucide-react-native';
 import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
@@ -7,10 +7,10 @@ import { useAppTranslation } from '@core/i18n';
 import { EFoodStackScreens } from '../../constants/screens.constants';
 import type { FoodStackScreenProps } from '../../types/navigation.types';
 import { useRecipeDetails } from '../../hooks';
+import RecipeDetailsSkeleton from './recipe-details-skeleton.component';
 import { styling } from './styles';
 
 const RecipeDetails: React.FC<FoodStackScreenProps<EFoodStackScreens.RECIPE_DETAILS>> = ({ route }) => {
-
   const { colors, theme } = useAppTheme();
   const { food_t } = useAppTranslation();
   const styles = React.useMemo(() => styling(theme), [theme]);
@@ -26,12 +26,7 @@ const RecipeDetails: React.FC<FoodStackScreenProps<EFoodStackScreens.RECIPE_DETA
   } = useRecipeDetails(route.params.recipeId);
 
   if (isLoading) {
-    return (
-      <ThemedView style={styles.state}>
-        <ActivityIndicator size="large" color={colors['brand-primary']} />
-        <ThemeText variant="body5" style={styles.secondary}>{food_t('LOADING_RECIPES')}</ThemeText>
-      </ThemedView>
-    );
+    return <RecipeDetailsSkeleton />;
   }
 
   if (isError || !recipe) {

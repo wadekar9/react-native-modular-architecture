@@ -1,13 +1,13 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { ArrowRight, Search, ShoppingBag } from 'lucide-react-native';
-import { IconButton, ThemedView, ThemeText } from '@shared/components/ui';
+import { IconButton, Skeleton, ThemedView, ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
 import { EFoodBottomScreens } from '../../constants/screens.constants';
 import type { FoodBottomBarScreenProps } from '../../types/navigation.types';
-import { SPACING } from '@shared/constants/styles.constants';
-import { RecipeCard, RecipeSortControl } from '../../components';
+import { RADIUS, SPACING, moderateScale } from '@shared/constants/styles.constants';
+import { RecipeCard, RecipeCardSkeleton, RecipeSortControl } from '../../components';
 import { useFoodHome } from '../../hooks';
 import { styling } from './styles';
 
@@ -107,20 +107,28 @@ const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>>
           <ThemeText variant="h3">{food_t('BROWSE_BY_TAG')}</ThemeText>
           <ThemeText variant="body5" style={styles.secondary}>{food_t('TAG_SUBTITLE')}</ThemeText>
         </View>
-        {isTagsLoading ? <ActivityIndicator size="small" color={colors['brand-primary']} /> : null}
       </View>
-      <FlatList
-        horizontal
-        data={tags}
-        keyExtractor={tag => tag}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tagList}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => openTag(item)} style={styles.tagChip}>
-            <ThemeText variant="body5" style={styles.tagLabel}>{item}</ThemeText>
-          </Pressable>
-        )}
-      />
+
+      {isTagsLoading && tags.length === 0 ? (
+        <View style={styles.tagSkeletonRow}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={`tag-skel-${i}`} width={moderateScale(75 + (i % 2) * 20)} height={moderateScale(32)} borderRadius={RADIUS.FULL} />
+          ))}
+        </View>
+      ) : (
+        <FlatList
+          horizontal
+          data={tags}
+          keyExtractor={tag => tag}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tagList}
+          renderItem={({ item }) => (
+            <Pressable onPress={() => openTag(item)} style={styles.tagChip}>
+              <ThemeText variant="body5" style={styles.tagLabel}>{item}</ThemeText>
+            </Pressable>
+          )}
+        />
+      )}
 
       <View style={styles.listHeading}>
         <View>
@@ -163,9 +171,10 @@ const FoodHome: React.FC<FoodBottomBarScreenProps<EFoodBottomScreens.FOOD_HOME>>
         ItemSeparatorComponent={RecipeSeparator}
         ListEmptyComponent={
           isLoading ? (
-            <View style={styles.stateContainer}>
-              <ActivityIndicator size="large" color={colors['brand-primary']} />
-              <ThemeText variant="body5" style={styles.secondary}>{food_t('LOADING_RECIPES')}</ThemeText>
+            <View style={styles.recipeSkeletonContainer}>
+              {Array.from({ length: 4 }).map((_, index) => (
+                <RecipeCardSkeleton key={`recipe-skeleton-${index}`} />
+              ))}
             </View>
           ) : isError ? (
             <View style={styles.stateContainer}>
