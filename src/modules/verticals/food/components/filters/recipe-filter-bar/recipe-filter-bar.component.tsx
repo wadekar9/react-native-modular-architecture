@@ -1,10 +1,10 @@
 import React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { ThemeText } from '@shared/components/ui';
-import type { RecipeSortField, RecipeSortOrder } from '../../types/recipe.types';
+import type { RecipeSortField, RecipeSortOrder } from '../../../types/recipe.types';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
-import RecipeSortControl from './recipe-sort-control.component';
+import RecipeSortControl from '../recipe-sort-control/recipe-sort-control.component';
 import { styling } from './recipe-filter-bar.styles';
 
 type RecipeFilterBarProps = {

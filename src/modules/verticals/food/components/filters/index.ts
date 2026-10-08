@@ -1,2 +1,2 @@
-export { default as RecipeFilterBar } from './recipe-filter-bar.component';
-export { default as RecipeSortControl } from './recipe-sort-control.component';
+export * from './recipe-filter-bar';
+export * from './recipe-sort-control';

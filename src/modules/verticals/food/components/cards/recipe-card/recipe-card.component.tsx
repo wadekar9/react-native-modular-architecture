@@ -4,7 +4,7 @@ import { Clock3, Plus, Star } from 'lucide-react-native';
 import { ThemeText } from '@shared/components/ui';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
-import type { Recipe } from '../../types/recipe.types';
+import type { Recipe } from '../../../types/recipe.types';
 import { styling } from './recipe-card.styles';
 
 type RecipeCardProps = {

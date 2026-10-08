@@ -1,1 +1,1 @@
-export { default as RecipeSearchField } from './recipe-search-field.component';
+export * from './recipe-search-field';

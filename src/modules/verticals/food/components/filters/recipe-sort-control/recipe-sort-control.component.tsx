@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import { ThemeText } from '@shared/components/ui';
-import type { RecipeSortField, RecipeSortOrder } from '../../types/recipe.types';
+import type { RecipeSortField, RecipeSortOrder } from '../../../types/recipe.types';
 import { useAppTheme } from '@shared/hooks';
 import { useAppTranslation } from '@core/i18n';
 import { styling } from './recipe-sort-control.styles';
