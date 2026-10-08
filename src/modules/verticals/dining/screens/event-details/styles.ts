@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { COLORS } from '@shared/constants/colors.constants';
-import { moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { EFonts, moderateScale, RADIUS, SPACING } from '@shared/constants/styles.constants';
 import type { ITheme } from '@shared/types/theme.types';
 
 export const styling = (theme: ITheme) => StyleSheet.create({

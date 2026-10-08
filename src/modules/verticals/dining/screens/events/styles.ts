@@ -2,7 +2,7 @@
 import { ITheme } from '@shared/types/theme.types';
 import { StyleSheet } from 'react-native';
 import { COLORS } from '@shared/constants/colors.constants';
-import { RADIUS, SPACING } from '@shared/constants/styles.constants';
+import { EFonts, RADIUS, SPACING } from '@shared/constants/styles.constants';
 
 export const styling = (theme: ITheme) => StyleSheet.create({
   container: {

@@ -3,6 +3,10 @@ import { EFoodStackScreens } from './constants/screens.constants';
 import store, { injectReducer } from '@core/store/redux.store';
 import { cartReducer, clearCart } from './store/cart.slice';
 import { foodOrdersReducer, clearFoodOrders } from './store/orders.slice';
+import { clearPersistedCart, persistCart } from './store/cart.persistence';
+import type { CartState } from './types/cart.types';
+
+let stopCartPersistence: (() => void) | undefined;
 
 /**
  * ============================================================================
@@ -49,6 +53,16 @@ const foodManifest: ModuleManifest = {
   onRegister: () => {
     injectReducer('cart', cartReducer);
     injectReducer('foodOrders', foodOrdersReducer);
+    if (!stopCartPersistence) {
+      let previousCart = (store.getState() as ReturnType<typeof store.getState> & { cart?: CartState }).cart;
+      stopCartPersistence = store.subscribe(() => {
+        const cart = (store.getState() as ReturnType<typeof store.getState> & { cart?: CartState }).cart;
+        if (cart && cart !== previousCart) {
+          previousCart = cart;
+          persistCart(cart);
+        }
+      });
+    }
   },
 
   /**
@@ -61,7 +75,8 @@ const foodManifest: ModuleManifest = {
    */
   deepLinks: {
     screens: {
-      [EFoodStackScreens.RECIPE_DETAILS]: 'food/recipe/:id',
+      [EFoodStackScreens.RECIPE_DETAILS]: 'food/recipe/:recipeId',
+      [EFoodStackScreens.FOOD_SEARCH]: 'food/search',
       [EFoodStackScreens.FOOD_CART]: 'food/cart',
       [EFoodStackScreens.ORDER_DETAILS]: 'food/orders/:orderId',
     },
@@ -73,6 +88,7 @@ const foodManifest: ModuleManifest = {
   onLogout: () => {
     store.dispatch(clearCart());
     store.dispatch(clearFoodOrders());
+    clearPersistedCart();
   },
 };
 
